@@ -29,6 +29,9 @@ public class Game extends Application
 	private static final int SCALE_X = 2;
 	private static final int SCALE_Y = 2;
 	
+	private static double viewportX;
+	private static double viewportY;
+	
 	private VBox appRoot;
 	private Pane gameRoot;
 	private Canvas canvas;
@@ -54,10 +57,18 @@ public class Game extends Application
 		uiRoot.setAlignment(Pos.CENTER);
 		initiateContent();
 		
-		//Create the window.
+		//Create the scene for the game.
 		Scene scene = new Scene(appRoot, ROOM_WIDTH/2, ROOM_HEIGHT/2);
+		
+		//Add listeners for input.
 		scene.setOnKeyPressed(e -> Input.pressKey(e.getCode()));
 		scene.setOnKeyReleased(e -> Input.releaseKey(e.getCode()));
+		scene.setOnMousePressed(e -> Input.pressMouse(e.getButton(), 
+												e.getSceneX()/2-viewportX, 
+												e.getSceneY()/2-viewportY));
+		scene.setOnMouseReleased(e -> Input.releaseMouse(e.getButton()));
+		
+		//Initializes the window.
 		primaryStage.setResizable(false);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Random Generator");
@@ -118,6 +129,8 @@ public class Game extends Application
 									-(4*SCALE_Y-1)*ROOM_HEIGHT/(4*SCALE_Y), 0);
 		//Move viewport to player
 		gc.translate(viewX, viewY);
+		viewportX = viewX;
+		viewportY = viewY;
 		
 		render(gc);
 		gameRoot.getChildren().add(canvas);
@@ -226,11 +239,13 @@ public class Game extends Application
 						player.getX() < (4*SCALE_X-1)*ROOM_WIDTH/(4*SCALE_X))
 		{
 			gc.translate(viewX, 0);
+			viewportX += viewX;
 		}
 		if(player.getY() > ROOM_HEIGHT/(4*SCALE_Y) && 
 						player.getY() < (4*SCALE_Y-1)*ROOM_HEIGHT/(4*SCALE_Y))
 		{
 			gc.translate(0, viewY);
+			viewportY += viewY;
 		}
 	}
 }
