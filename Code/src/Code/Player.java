@@ -1,4 +1,4 @@
-package game_tutorial;
+package Code;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;

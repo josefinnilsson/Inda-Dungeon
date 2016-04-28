@@ -1,4 +1,4 @@
-package game_tutorial;
+package Code;
 
 import java.util.HashMap;
 

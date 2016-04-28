@@ -1,4 +1,4 @@
-package game_tutorial;
+package Code;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
