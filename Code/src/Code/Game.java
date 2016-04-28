@@ -96,7 +96,7 @@ public class Game extends Application
 				{
 					double playerX = (double) x*CELL_WIDTH+4;
 					double playerY = (double) y*CELL_HEIGHT+4;
-					player = new Player(playerX, playerY, "game_tutorial/" + 
+					player = new Player(playerX, playerY, "Res/" + 
 										"Indo.png", 8);
 					done = true;
 					break;

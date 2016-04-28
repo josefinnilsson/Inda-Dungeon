@@ -63,12 +63,12 @@ public class Player extends GameObject
 		//Switch sprite's direction
 		if(hspd > 0 && !flippedRight)
 		{
-			setImage("game_tutorial/IndoFlipped.png", 8);
+			setImage("Res/IndoFlipped.png", 8);
 			flippedRight = true;
 		}
 		else if(hspd < 0 && flippedRight)
 		{
-			setImage("game_tutorial/Indo.png", 8);
+			setImage("Res/Indo.png", 8);
 			flippedRight = false;
 		}
 	}
