@@ -5,7 +5,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 /**
- * This class represents an animatable image.
+ * This class represents an image, but with included methods for animating
+ * between frames within the image. The image must be created in such a way
+ * that every frame of the animation is added in a strictly horizontal grid, 
+ * or else the animation will fail.
  * 
  * @author Fredrik Omstedt
  * @version 1.0.0
@@ -29,6 +32,7 @@ public class Sprite extends Image
 		cellWidth = getWidth() / numCells;
 		cellHeight = getHeight();
 		
+		//Create rectangles with coordinates for each sub-image.
 		cells = new Rectangle2D[numCells];
 		for(int i = 0; i < numCells; i++)
 		{
@@ -40,8 +44,8 @@ public class Sprite extends Image
 	}
 	
 	/**
-	 * Animates into the given cell in the sprite sheet.
-	 * @param cell The cell to animate to.
+	 * Set which sub-image should be drawn.
+	 * @param cell The sub-image to animate to.
 	 */
 	public void animate(int cell)
 	{
@@ -49,7 +53,7 @@ public class Sprite extends Image
 	}
 	
 	/**
-	 * Draw the current frame using a graphics object.
+	 * Draw the current frame of the sprite using a graphics object.
 	 * @param gc The graphics object to use.
 	 */
 	public void draw(GraphicsContext gc, double x, double y, 

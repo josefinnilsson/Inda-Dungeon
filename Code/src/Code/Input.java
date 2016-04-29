@@ -6,19 +6,20 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
 /**
- * This class handles input by adding and removing key pressed to a map as
- * boolean values.
+ * This class handles input by adding and removing key presses and mouse
+ * button presses to maps with boolean values.
  * 
  * @author Fredrik Omstedt
  * @version 1.0.0
  */
 public class Input
 {
-	//This map contains values for every key that has been pressed.
-	//True means that it is currently being pressed, false if not.
+	//These map contains values for every key or button that has been pressed.
+	//True means that it is currently being pressed, false means it's not.
 	public static HashMap<KeyCode, Boolean> keys = new HashMap<>();
 	public static HashMap<MouseButton, Boolean> mouseButtons = new HashMap<>();
 	
+	//Mouse coordinates
 	public static double mouseX = 0;
 	public static double mouseY = 0;
 	
@@ -48,6 +49,16 @@ public class Input
 	public static void releaseKey(KeyCode key)
 	{
 		keys.put(key, false);
+	}
+	
+	/**
+	 * Returns whether a given mouse button is currently pressed.
+	 * @param button The button to check for.
+	 * @return true if the button is being pressed, false otherwise.
+	 */
+	public static boolean mousePressed(MouseButton button)
+	{
+		return mouseButtons.getOrDefault(button, false);
 	}
 	
 	/**

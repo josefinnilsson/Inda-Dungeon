@@ -1,27 +1,20 @@
 package Code;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 /**
- * This class contains a handful of useful methods for calculating various
- * things, such as position.
+ * This class contains a handful of useful mathematical methods for 
+ * calculating various things, such as positions or directions.
  * 
  * @author Fredrik Omstedt
  * @version 1.0.0
  */
-/**
- * @author fredrikomstedt
- *
- */
 public class MathMethods
 {
 	/**
-	 * Calculates the cathetus in the x direction from a hypotenuse and a 
+	 * Calculates the cathetus in the x-direction from a hypotenuse and a 
 	 * direction.
 	 * @param length The length of the hypotenuse.
 	 * @param direction The angle (based on unit circle) in degrees.
-	 * @return The cathetus in the x direction.
+	 * @return The cathetus in the x-direction.
 	 */
 	public static double lengthDirX(double length, double direction)
 	{
@@ -29,11 +22,11 @@ public class MathMethods
 	}
 	
 	/**
-	 * Calculates the cathetus in the y direction from a hypotenuse and a 
+	 * Calculates the cathetus in the y-direction from a hypotenuse and a 
 	 * direction.
 	 * @param length The length of the hypotenuse.
 	 * @param direction The angle (based on unit circle) in degrees.
-	 * @return The cathetus in the y direction.
+	 * @return The cathetus in the y-direction.
 	 */
 	public static double lengthDirY(double length, double direction)
 	{
@@ -94,7 +87,7 @@ public class MathMethods
 	}
 	
 	/**
-	 * Gets the direction between two points in degrees.
+	 * Gets the direction, in degrees, between two points.
 	 * 
 	 * @param x1 The x-coordinate of the first point.
 	 * @param y1 The y-coordinate of the first point.
@@ -109,22 +102,5 @@ public class MathMethods
 		double dy = y2 - y1;
 		double direction = Math.atan2(dy, dx);
 		return Math.toDegrees(direction);
-	}
-	
-	/**
-	 * Rounds a value to a certain amount of decimals.
-	 * @param value The value to round.
-	 * @param places The amount of decimals to keep.
-	 * @return the rounded value.
-	 * 
-	 * Found on StackOverflow from user Jonik
-	 */
-	public static double round(double value, int places) 
-	{
-	    if (places < 0) throw new IllegalArgumentException();
-
-	    BigDecimal bd = new BigDecimal(value);
-	    bd = bd.setScale(places, RoundingMode.HALF_UP);
-	    return bd.doubleValue();
 	}
 }

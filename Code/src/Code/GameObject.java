@@ -11,20 +11,23 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class GameObject
 {
+	//Coordinates
 	protected double x;
 	protected double y;
 	protected double prevX;
 	protected double prevY;
 	
+	//Speed
 	protected double hspd;
 	protected double vspd;
-	protected double width;
-	protected double height;
 	protected double speed;
 	
+	//Sprite of the object
 	protected Sprite image;
-	protected int subImageNumber;
-	protected int subImageMax;
+	protected double width;
+	protected double height;
+	protected int imageIndex;
+	protected int imageNumber;
 	protected double imageSpeed;
 	protected double incrementImage;
 	
@@ -43,8 +46,8 @@ public class GameObject
 		hspd = 0;
 		vspd = 0;
 		speed = 0;
-		subImageNumber = 0;
-		subImageMax = subImages;
+		imageIndex = 0;
+		imageNumber = subImages;
 		imageSpeed = 0;
 		incrementImage = 0;
 		
@@ -75,8 +78,8 @@ public class GameObject
 		//Animate the image
 		if(incrementImage >= 1)
 		{
-			subImageNumber = (subImageNumber + 1) % subImageMax;
-			image.animate(subImageNumber);
+			imageIndex = (imageIndex + 1) % imageNumber;
+			image.animate(imageIndex);
 			incrementImage--;
 		}
 		else
@@ -170,24 +173,6 @@ public class GameObject
 	}
 	
 	/**
-	 * Returns the object's hspd.
-	 * @return the object's hspd.
-	 */
-	public double getHSpd()
-	{
-		return hspd;
-	}
-	
-	/**
-	 * Returns the object's vspd.
-	 * @return the object's vspd.
-	 */
-	public double getVSpd()
-	{
-		return vspd;
-	}
-	
-	/**
 	 * Returns the object's previous x-coordinate.
 	 * @return the object's previous x-coordinate.
 	 */
@@ -206,6 +191,24 @@ public class GameObject
 	}
 	
 	/**
+	 * Returns the object's hspd.
+	 * @return the object's hspd.
+	 */
+	public double getHSpd()
+	{
+		return hspd;
+	}
+	
+	/**
+	 * Returns the object's vspd.
+	 * @return the object's vspd.
+	 */
+	public double getVSpd()
+	{
+		return vspd;
+	}
+	
+	/**
 	 * Set the object's image to a new one.
 	 * @param image The image to change to.
 	 * @param subImages The number of sub-images for the sprite.
@@ -215,5 +218,15 @@ public class GameObject
 		this.image = new Sprite(image, subImages);
 		width = this.image.getCellWidth();
 		height = this.image.getCellHeight();
+		imageNumber = subImages;
+	}
+	
+	/**
+	 * Returns the object's sprite.
+	 * @return the object's sprite.
+	 */
+	public Sprite getImage()
+	{
+		return image;
 	}
 }

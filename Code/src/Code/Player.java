@@ -2,7 +2,15 @@ package Code;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 
+/**
+ * This class represents the player object of the game. It handles input and
+ * controls the actions of the player.
+ * 
+ * @author Fredrik Omstedt
+ * @version 1.0.0
+ */
 public class Player extends GameObject
 {
 	//These states control in which way the player object updates, and are
@@ -11,6 +19,8 @@ public class Player extends GameObject
 	{
 		move,
 		dash,
+		attack,
+		shoot,
 		hurt,
 		dead
 	}
@@ -18,6 +28,14 @@ public class Player extends GameObject
 	private int xAxis;
 	private int yAxis;
 	private State state;
+	
+	//Holds different values depending on input.
+	private int rightKey;
+	private int leftKey;
+	private int upKey;
+	private int downKey;
+	private int leftMouse;
+	private int rightMouse;
 	
 	private boolean flippedRight;
 	
@@ -30,6 +48,7 @@ public class Player extends GameObject
 	public Player(double x, double y, String image, int subImages)
 	{
 		super(x, y, image, subImages);
+		getInput();
 		xAxis = 0;
 		yAxis = 0;
 		speed = 1;
@@ -44,15 +63,8 @@ public class Player extends GameObject
 	 */
 	public void setSpeed()
 	{
-		//Basically creates a unit circle with 8 different directions
-		int rightKey = (Input.keyPressed(KeyCode.D) || 
-						Input.keyPressed(KeyCode.RIGHT)) ? 1 : 0;
-		int leftKey = (Input.keyPressed(KeyCode.A) || 
-						Input.keyPressed(KeyCode.LEFT)) ? 1 : 0;
-		int upKey = (Input.keyPressed(KeyCode.W) || 
-						Input.keyPressed(KeyCode.UP)) ? 1 : 0;
-		int downKey = (Input.keyPressed(KeyCode.S) || 
-						Input.keyPressed(KeyCode.DOWN)) ? 1 : 0;
+		//Creates a "unit circle" with 8 different directions
+		getInput();
 		xAxis = rightKey - leftKey;
 		yAxis = downKey - upKey;
 		
@@ -90,6 +102,10 @@ public class Player extends GameObject
 				break;
 			case dash:
 				break;
+			case attack:
+				break;
+			case shoot:
+				break;
 			case dead:
 				break;
 			case hurt:
@@ -110,8 +126,8 @@ public class Player extends GameObject
 		{
 			if(incrementImage >= 1)
 			{
-				subImageNumber = (subImageNumber + 1) % subImageMax;
-				image.animate(subImageNumber);
+				imageIndex = (imageIndex + 1) % imageNumber;
+				image.animate(imageIndex);
 				incrementImage--;
 			}
 			else
@@ -121,8 +137,8 @@ public class Player extends GameObject
 		}
 		else
 		{
-			image.animate(subImageNumber);
-			subImageNumber = 0;
+			image.animate(imageIndex);
+			imageIndex = 0;
 		}
 	}
 	
@@ -158,5 +174,26 @@ public class Player extends GameObject
 		
 		//Move vertically
 		y += vspd;
+	}
+	
+	/**
+	 * Returns whether different mouse buttons or keys are currently being
+	 * pressed.
+	 */
+	private void getInput()
+	{
+		//Keys
+		rightKey = (Input.keyPressed(KeyCode.D) || 
+				Input.keyPressed(KeyCode.RIGHT)) ? 1 : 0;
+		leftKey = (Input.keyPressed(KeyCode.A) || 
+						Input.keyPressed(KeyCode.LEFT)) ? 1 : 0;
+		upKey = (Input.keyPressed(KeyCode.W) || 
+						Input.keyPressed(KeyCode.UP)) ? 1 : 0;
+		downKey = (Input.keyPressed(KeyCode.S) || 
+						Input.keyPressed(KeyCode.DOWN)) ? 1 : 0;
+		
+		//Mouse buttons
+		leftMouse = (Input.mousePressed(MouseButton.PRIMARY)) ? 1 : 0;
+		rightMouse = (Input.mousePressed(MouseButton.SECONDARY)) ? 1 : 0;
 	}
 }

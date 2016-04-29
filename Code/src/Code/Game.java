@@ -1,5 +1,8 @@
 package Code;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -14,29 +17,43 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
- * Generates a simple game utilizing random level generation.
+ * The main class for the game. This class controls the creation and 
+ * maintenance of the game window, as well as everything in it.
+ * 
+ * The game is a "dungeon crawler" utilizing randomly generated levels with a 
+ * 2.5D perspective. It is created using JavaFX.
  * 
  * @author Fredrik Omstedt
  * @version 1.0.0
  */
 public class Game extends Application
 {
+	//Random object to add randomness to spawning and things like that.
+	private Random r;
+	
+	//Level size
 	public static final int ROOM_WIDTH = 1024;
 	public static final int ROOM_HEIGHT = 1024;
 	public static final int CELL_WIDTH = 32;
 	public static final int CELL_HEIGHT = 32;
 	
+	//Zoom in for a better view
 	private static final int SCALE_X = 2;
 	private static final int SCALE_Y = 2;
 	
+	//Viewport coordinates
 	private static double viewportX;
 	private static double viewportY;
 	
+	//The different parts of the game window
 	private VBox appRoot;
 	private Pane gameRoot;
 	private Canvas canvas;
 	private GraphicsContext gc;
 	private HBox uiRoot;
+	
+	//This list contains all objects within the game.
+	private ArrayList<GameObject> objects;
 	
 	private Player player;
 	
@@ -50,6 +67,8 @@ public class Game extends Application
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{
+		r = new Random();
+		
 		//Create the different panes and initialize them.
 		appRoot = new VBox(2);
 		gameRoot = new Pane();
@@ -68,7 +87,7 @@ public class Game extends Application
 												e.getSceneY()/2-viewportY));
 		scene.setOnMouseReleased(e -> Input.releaseMouse(e.getButton()));
 		
-		//Initializes the window.
+		//Initialize the window.
 		primaryStage.setResizable(false);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Random Generator");
@@ -92,37 +111,25 @@ public class Game extends Application
 	 */
 	private void initiateContent()
 	{
+		objects = new ArrayList<GameObject>();
 		//Create a canvas to draw the level on.
 		canvas = new Canvas(ROOM_WIDTH, ROOM_HEIGHT);
 		gc = canvas.getGraphicsContext2D();
 		createLevel(ROOM_WIDTH, ROOM_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
 		
 		//TODO: Add other game objects
-		for(int x = 0; x < ROOM_WIDTH/CELL_WIDTH; x++)
-		{
-			boolean done = false;
-			for(int y = 0; y < ROOM_HEIGHT/CELL_HEIGHT; y++)
-			{
-				if(level[x][y] == RandomLevelGenerator.FLOOR)
-				{
-					double playerX = (double) x*CELL_WIDTH+4;
-					double playerY = (double) y*CELL_HEIGHT+4;
-					player = new Player(playerX, playerY, "Res/" + 
-										"Indo.png", 8);
-					done = true;
-					break;
-				}
-			}
-			if(done) break;
-		}
+		//Add the player to the room
+		addPlayer();
 		
-		//Draw everything to the canvas and set the correct scale of the view.
+		//Set the correct scale of the view.
 		gc.scale(SCALE_X, SCALE_Y);
 		
-		//Set the viewport's x and y coordinates.
+		//Set the viewport's x and y coordinates. The player object should be
+		//in the middle of the view (except for when close to edges).
 		double viewX = -(player.getX() - ROOM_WIDTH/(4*SCALE_X));
 		double viewY = -(player.getY() - ROOM_HEIGHT/(4*SCALE_Y));
-		//Make sure the view stays inside the screen.
+		
+		//Make sure the view only shows the level.
 		viewX = MathMethods.clamp(viewX, 
 									-(4*SCALE_X-1)*ROOM_WIDTH/(4*SCALE_X), 0);
 		viewY = MathMethods.clamp(viewY, 
@@ -132,10 +139,11 @@ public class Game extends Application
 		viewportX = viewX;
 		viewportY = viewY;
 		
+		//Draw everything to the screen.
 		render(gc);
 		gameRoot.getChildren().add(canvas);
 		
-		//Add a button to create new levels
+		//Add a button to create new levels. Temporary!!!
 		Button newLevelButton = new Button("NEW LEVEL");
 		newLevelButton.setOnAction(e -> 
 		{
@@ -161,8 +169,10 @@ public class Game extends Application
 		setViewport();
 		//Draws everything onto the canvas.
 		drawLevel(gc, ROOM_WIDTH, ROOM_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
-		player.render(gc);
-		//TODO: Add other objects' render code
+		for(GameObject object : objects)
+		{
+			object.render(gc);
+		}
 	}
 	
 	/**
@@ -170,8 +180,10 @@ public class Game extends Application
 	 */
 	private void update()
 	{
-		//TODO: Add objects' update code
-		player.update();
+		for(GameObject object : objects)
+		{
+			object.update();
+		}
 	}
 	
 	/**
@@ -187,7 +199,7 @@ public class Game extends Application
 		level = RandomLevelGenerator.generateLevel(roomWidth, roomHeight,
 													cellWidth, cellHeight);
 	}
-	
+	//TODO: Change so it draws images instead of squares!
 	/**
 	 * Draws the level onto the canvas.
 	 * @param gc The object to draw with.
@@ -205,6 +217,7 @@ public class Game extends Application
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, ROOM_WIDTH, ROOM_HEIGHT);
 		
+		//Go through every cell of the level
 		for(int x = 0; x < roomWidth/cellWidth; x++)
 		{
 			for(int y = 0; y < roomHeight/cellHeight; y++)
@@ -247,5 +260,23 @@ public class Game extends Application
 			gc.translate(0, viewY);
 			viewportY += viewY;
 		}
+	}
+	
+	/**
+	 * Finds a place to spawn the player object and puts it there.
+	 */
+	private void addPlayer()
+	{
+		int x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
+		int y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);
+		while(level[x][y] != RandomLevelGenerator.FLOOR)
+		{
+			x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
+			y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);
+		}
+		double playerX = (double) x*CELL_WIDTH+4;
+		double playerY = (double) y*CELL_HEIGHT+4;
+		player = new Player(playerX, playerY, "Res/Indo.png", 8);
+		objects.add(player);
 	}
 }
