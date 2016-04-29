@@ -5,8 +5,19 @@ import javafx.scene.input.KeyCode;
 
 public class Player extends GameObject
 {
+	//These states control in which way the player object updates, and are
+	//switched between depending on input and in-game events.
+	private enum State
+	{
+		move,
+		dash,
+		hurt,
+		dead
+	}
+	
 	private int xAxis;
 	private int yAxis;
+	private State state;
 	
 	private boolean flippedRight;
 	
@@ -24,6 +35,7 @@ public class Player extends GameObject
 		speed = 1;
 		imageSpeed = .2;
 		flippedRight = false;
+		state = State.move;
 	}
 	
 	/**
@@ -57,19 +69,33 @@ public class Player extends GameObject
 	@Override
 	public void update()
 	{
-		setSpeed();
-		move();
-		
-		//Switch sprite's direction
-		if(hspd > 0 && !flippedRight)
+		//Choose what to do depending on which state the player is in.
+		switch(state)
 		{
-			setImage("Res/IndoFlipped.png", 8);
-			flippedRight = true;
-		}
-		else if(hspd < 0 && flippedRight)
-		{
-			setImage("Res/Indo.png", 8);
-			flippedRight = false;
+			case move:
+				setSpeed();
+				move();
+				
+				//Switch sprite's direction
+				if(hspd > 0 && !flippedRight)
+				{
+					setImage("Res/IndoFlipped.png", 8);
+					flippedRight = true;
+				}
+				else if(hspd < 0 && flippedRight)
+				{
+					setImage("Res/Indo.png", 8);
+					flippedRight = false;
+				}
+				break;
+			case dash:
+				break;
+			case dead:
+				break;
+			case hurt:
+				break;
+			default:
+				break;
 		}
 	}
 	
