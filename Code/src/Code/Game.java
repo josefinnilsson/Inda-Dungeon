@@ -56,6 +56,7 @@ public class Game extends Application
 	private ArrayList<GameObject> objects;
 	
 	private Player player;
+	private static boolean playerType = true;
 	
 	public static int[][] level;
 	
@@ -153,8 +154,16 @@ public class Game extends Application
 			initiateContent();
 		});	
 		
+		//Add a button to change sex. Temporary!!!
+		Button characterButton = new Button("Change Character");
+		characterButton.setOnAction(e -> 
+		{
+			player.setPlayer(playerType);
+			playerType = !playerType;
+		});	
+		
 		//Add everything to the panes.
-		uiRoot.getChildren().add(newLevelButton);
+		uiRoot.getChildren().addAll(newLevelButton, characterButton);
 		appRoot.getChildren().addAll(gameRoot, uiRoot);
 	}
 	
@@ -241,9 +250,9 @@ public class Game extends Application
 		//The following might seem like magic but basically this code checks 
 		//where walls are in regards to floor tiles, and depending on how 
 		//they're positioned chooses what wall tile to draw.
-		for(int x = 0; x < roomWidth/cellWidth*2; x++)
+		for(int x = 0; x < roomWidth/cellWidth*2-1; x++)
 		{
-			for(int y = 0; y < roomHeight/cellHeight*2; y++)
+			for(int y = 0; y < roomHeight/cellHeight*2-1; y++)
 			{
 				if(level[x/2][y/2] == FLOOR)
 				{
@@ -365,9 +374,9 @@ public class Game extends Application
 		}
 		
 		//Draw the remaining walls
-		for(int x = 0; x < roomWidth/cellWidth*2; x++)
+		for(int x = 0; x < roomWidth/cellWidth*2-1; x++)
 		{
-			for(int y = 0; y < roomHeight/cellHeight*2; y++)
+			for(int y = 0; y < roomHeight/cellHeight*2-1; y++)
 			{
 				if(level[x/2][y/2] == FLOOR)
 				{

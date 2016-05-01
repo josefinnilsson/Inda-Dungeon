@@ -40,6 +40,8 @@ public class Player extends GameObject
 	private boolean flippedRight;
 	private boolean dashing;
 	private boolean dashable;
+
+	private boolean malePlayer;
 	
 	private Alarm dashAlarm;
 	
@@ -63,6 +65,8 @@ public class Player extends GameObject
 		dashable = true;
 		state = State.move;
 		dashAlarm = new Alarm();
+		
+		malePlayer = true;
 	}
 	
 	/**
@@ -254,12 +258,26 @@ public class Player extends GameObject
 	{
 		if(hspd > 0 && !flippedRight)
 		{
-			setImage("Res/Indo.png", 8);
+			if(malePlayer)
+			{
+				setImage("Res/Indo.png", 8);
+			}
+			else
+			{
+				setImage("Res/Inda.png", 8);
+			}
 			flippedRight = true;
 		}
 		else if(hspd < 0 && flippedRight)
 		{
-			setImage("Res/IndoFlipped.png", 8);
+			if(malePlayer)
+			{
+				setImage("Res/IndoFlipped.png", 8);
+			}
+			else
+			{
+				setImage("Res/IndaFlipped.png", 8);
+			}
 			flippedRight = false;
 		}
 	}
@@ -292,5 +310,37 @@ public class Player extends GameObject
 			}
 		}
 		move();
+	}
+	
+	/**
+	 * Sets the player to either male or female, depending on the parameter.
+	 * @param type What kind of player to play as, where true means male and
+	 * false means female.
+	 */
+	public void setPlayer(boolean type)
+	{
+		malePlayer = type;
+		if(malePlayer)
+		{
+			if(flippedRight)
+			{
+				setImage("Res/Indo.png", 8);
+			}
+			else
+			{
+				setImage("Res/IndoFlipped.png", 8);
+			}
+		}
+		else
+		{
+			if(flippedRight)
+			{
+				setImage("Res/Inda.png", 8);
+			}
+			else
+			{
+				setImage("Res/IndaFlipped.png", 8);
+			}
+		}
 	}
 }
