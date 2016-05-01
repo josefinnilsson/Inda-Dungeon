@@ -53,7 +53,7 @@ public class Player extends GameObject
 		yAxis = 0;
 		speed = 1;
 		imageSpeed = .2;
-		flippedRight = false;
+		flippedRight = true;
 		state = State.move;
 	}
 	
@@ -91,12 +91,12 @@ public class Player extends GameObject
 				//Switch sprite's direction
 				if(hspd > 0 && !flippedRight)
 				{
-					setImage("Res/IndoFlipped.png", 8);
+					setImage("Res/Indo.png", 8);
 					flippedRight = true;
 				}
 				else if(hspd < 0 && flippedRight)
 				{
-					setImage("Res/Indo.png", 8);
+					setImage("Res/IndoFlipped.png", 8);
 					flippedRight = false;
 				}
 				break;
