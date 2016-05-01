@@ -34,10 +34,14 @@ public class Player extends GameObject
 	private int leftKey;
 	private int upKey;
 	private int downKey;
-	private int leftMouse;
-	private int rightMouse;
+	private boolean leftMouse;
+	private boolean rightMouse;
 	
 	private boolean flippedRight;
+	private boolean dashing;
+	private boolean dashable;
+	
+	private Alarm dashAlarm;
 	
 	/**
 	 * Initialize the player object.
@@ -53,8 +57,12 @@ public class Player extends GameObject
 		yAxis = 0;
 		speed = 1;
 		imageSpeed = .2;
+		
 		flippedRight = true;
+		dashing = false;
+		dashable = true;
 		state = State.move;
+		dashAlarm = new Alarm();
 	}
 	
 	/**
@@ -81,26 +89,29 @@ public class Player extends GameObject
 	@Override
 	public void update()
 	{
+		//Count down alarms
+		dashAlarm.tick();
+		
 		//Choose what to do depending on which state the player is in.
 		switch(state)
 		{
 			case move:
+				//Check if time to dash
+				if(rightMouse && dashable)
+				{
+					state = State.dash;
+					dashAlarm.setTime(10);
+				}
+				
+				//Control movement
 				setSpeed();
 				move();
 				
-				//Switch sprite's direction
-				if(hspd > 0 && !flippedRight)
-				{
-					setImage("Res/Indo.png", 8);
-					flippedRight = true;
-				}
-				else if(hspd < 0 && flippedRight)
-				{
-					setImage("Res/IndoFlipped.png", 8);
-					flippedRight = false;
-				}
+				//Switch sprite's direction depending on speed
+				setSpriteDirection();
 				break;
 			case dash:
+				dash();
 				break;
 			case attack:
 				break;
@@ -193,7 +204,93 @@ public class Player extends GameObject
 						Input.keyPressed(KeyCode.DOWN)) ? 1 : 0;
 		
 		//Mouse buttons
-		leftMouse = (Input.mousePressed(MouseButton.PRIMARY)) ? 1 : 0;
-		rightMouse = (Input.mousePressed(MouseButton.SECONDARY)) ? 1 : 0;
+		leftMouse = Input.mousePressed(MouseButton.PRIMARY);
+		rightMouse = Input.mousePressed(MouseButton.SECONDARY);
+		
+		//Check if it's possible to dash
+		if(!rightMouse) dashable = true;
+	}
+	
+	/**
+	 * Sets the xAxis and yAxis relative to the mouse coordinates.
+	 */
+	private void setAxesToMouse()
+	{
+		double mouseX = Input.mouseX;
+		double mouseY = Input.mouseY;
+		int dash4DirLimit = 12;
+		
+		if(mouseX > x + width + dash4DirLimit)
+		{
+			xAxis = 1;
+		}
+		else if(mouseX < x - dash4DirLimit)
+		{
+			xAxis = -1;
+		} 
+		else
+		{
+			xAxis = 0;
+		}
+		
+		if(mouseY > y + height + dash4DirLimit)
+		{
+			yAxis = 1;
+		}
+		else if(mouseY < y - dash4DirLimit)
+		{
+			yAxis = -1;
+		} 
+		else
+		{
+			yAxis = 0;
+		}
+	}
+	
+	/**
+	 * Set the direction of the player depending on speed.
+	 */
+	private void setSpriteDirection()
+	{
+		if(hspd > 0 && !flippedRight)
+		{
+			setImage("Res/Indo.png", 8);
+			flippedRight = true;
+		}
+		else if(hspd < 0 && flippedRight)
+		{
+			setImage("Res/IndoFlipped.png", 8);
+			flippedRight = false;
+		}
+	}
+	
+	/**
+	 * Makes the player dash in a certain direction.
+	 */
+	private void dash()
+	{
+		dashable = false;
+		if(!dashing)
+		{
+			//Get direction to dash in
+			setAxesToMouse();
+			dashing = true;
+			
+			//Set speed
+			hspd = xAxis * speed*4;
+			vspd = yAxis * speed*4;
+			
+			//Switch sprite's direction depending on speed
+			setSpriteDirection();
+		}
+		else
+		{
+			if(dashAlarm.done())
+			{
+				state = State.move;
+				dashing = false;
+			}
+		}
+		move();
 	}
 }
