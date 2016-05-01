@@ -94,7 +94,7 @@ public class GameObject
 	 */
 	public Rectangle2D getBounds()
 	{
-		return new Rectangle2D(x, y, width, height);
+		return new Rectangle2D(x, y+height/2, width, height);
 	}
 	
 	/**
@@ -126,14 +126,15 @@ public class GameObject
 		this.y = y;
 		
 		//Calculate bounding boxes and modify to fit level array
-		int bBoxRight = (int)((this.x + this.width-1)/Game.CELL_WIDTH);
-		int bBoxLeft = (int)(this.x/Game.CELL_WIDTH);
-		int bBoxTop = (int)(this.y/Game.CELL_HEIGHT);
-		int bBoxDown =(int)((this.y + this.height-1)/Game.CELL_HEIGHT);
+		Rectangle2D bounds = getBounds();
+		int bBoxRight = (int)(bounds.getMaxX()/Game.CELL_WIDTH);
+		int bBoxLeft = (int)(bounds.getMinX()/Game.CELL_WIDTH);
+		int bBoxTop = (int)(bounds.getMinY()/Game.CELL_HEIGHT);
+		int bBoxDown =(int)(bounds.getMaxY()/Game.CELL_HEIGHT);
 		
 		//Modify center positions to fit level array
 		int centerCheckX = (int)(x/Game.CELL_WIDTH);
-		int centerCheckY = (int)(y/Game.CELL_HEIGHT);
+		int centerCheckY = (int)((y+3*height/4)/Game.CELL_HEIGHT);
 		
 		//Check if borders of object collides with wall.
 		boolean borderMeeting = 

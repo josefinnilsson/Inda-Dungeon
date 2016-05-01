@@ -55,6 +55,10 @@ public class Sprite extends Image
 	/**
 	 * Draw the current frame of the sprite using a graphics object.
 	 * @param gc The graphics object to use.
+	 * @param x The x-coordinate to draw it at.
+	 * @param y The y-coordinate to draw it at.
+	 * @param width The width of the frame.
+	 * @param height the height of the frame.
 	 */
 	public void draw(GraphicsContext gc, double x, double y, 
 										double width, double height)

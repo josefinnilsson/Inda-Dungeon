@@ -49,9 +49,9 @@ public class Player extends GameObject
 	 * @param y The player's y-coordinate.
 	 * @param image The player's sprite.
 	 */
-	public Player(double x, double y, String image, int subImages)
+	public Player(double x, double y)
 	{
-		super(x, y, image, subImages);
+		super(x, y, "Res/Indo.png", 8);
 		getInput();
 		xAxis = 0;
 		yAxis = 0;

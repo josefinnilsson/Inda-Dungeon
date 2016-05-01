@@ -90,7 +90,7 @@ public class Game extends Application
 		//Initialize the window.
 		primaryStage.setResizable(false);
 		primaryStage.setScene(scene);
-		primaryStage.setTitle("Random Generator");
+		primaryStage.setTitle("Generic Dungeon Crawler");
 		primaryStage.show();
 		
 		//Game loop
@@ -169,10 +169,6 @@ public class Game extends Application
 		setViewport();
 		//Draws everything onto the canvas.
 		drawLevel(gc, ROOM_WIDTH, ROOM_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
-		for(GameObject object : objects)
-		{
-			object.render(gc);
-		}
 	}
 	
 	/**
@@ -199,7 +195,7 @@ public class Game extends Application
 		level = RandomLevelGenerator.generateLevel(roomWidth, roomHeight,
 													cellWidth, cellHeight);
 	}
-	//TODO: Change so it draws images instead of squares!
+	
 	/**
 	 * Draws the level onto the canvas.
 	 * @param gc The object to draw with.
@@ -213,28 +209,198 @@ public class Game extends Application
 							int roomWidth, int roomHeight,
 							int cellWidth, int cellHeight)
 	{
-		//Draw a black background
-		gc.setFill(Color.BLACK);
+		//Draw the top of the walls
+		gc.setFill(new Color(.76863, .41569, .23922, 1));
 		gc.fillRect(0, 0, ROOM_WIDTH, ROOM_HEIGHT);
 		
-		//Go through every cell of the level
+		final int FLOOR = RandomLevelGenerator.FLOOR;
+		
+		//Draw the floor
 		for(int x = 0; x < roomWidth/cellWidth; x++)
 		{
 			for(int y = 0; y < roomHeight/cellHeight; y++)
 			{
-				//Draw the walls
-				if(level[x][y] == RandomLevelGenerator.WALL)
+				if(level[x][y] == FLOOR)
 				{
-					gc.setFill(Color.DARKGRAY);
+					gc.setFill(Color.BURLYWOOD);
 					gc.fillRect(x*cellWidth, y*cellHeight, 
 									cellWidth, cellHeight);
 				}
-				//Draw the floor
-				else if(level[x][y] == RandomLevelGenerator.FLOOR)
+			}
+		}
+		
+		//Walls
+		int tileWidth = cellWidth/2;
+		int tileHeight = cellHeight/2;
+		
+		TileSet tiles = new TileSet("Res/IndaWallTiles.png", 5, 3);
+		
+		//Draw every wall except those who should show up above game objects, to
+		//give a 2.5D effect.
+		
+		//The following might seem like magic but basically this code checks 
+		//where walls are in regards to floor tiles, and depending on how 
+		//they're positioned chooses what wall tile to draw.
+		for(int x = 0; x < roomWidth/cellWidth*2; x++)
+		{
+			for(int y = 0; y < roomHeight/cellHeight*2; y++)
+			{
+				if(level[x/2][y/2] == FLOOR)
 				{
-					gc.setFill(Color.FORESTGREEN);
-					gc.fillRect(x*cellWidth, y*cellHeight, 
-									cellWidth, cellHeight);
+					int tileX = x * tileWidth;
+					int tileY = y * tileHeight;
+					
+					//Checks to see what type of tile to add
+					boolean right = level[(x+1)/2][y/2] != FLOOR;
+					boolean left = level[(x-1)/2][y/2] != FLOOR;
+					boolean top = level[x/2][(y-1)/2] != FLOOR;
+					boolean bottom = level[x/2][(y+1)/2] != FLOOR;
+					
+					boolean topRight = level[(x+1)/2][(y-1)/2] != FLOOR;
+					boolean topLeft = level[(x-1)/2][(y-1)/2] != FLOOR;
+					
+					//Draw different tiles depending on the checks above
+					if(right)
+					{
+						if(bottom)
+						{
+							//Bottom right corner tile
+							tiles.draw(gc, tileX+tileWidth, 
+							tileY, tileWidth, tileHeight, 4, 1);
+						}
+						else if(top)
+						{
+							if(topRight)
+							{
+								//Top right corner tile
+								tiles.draw(gc, tileX+tileWidth, 
+								tileY-tileHeight, tileWidth, tileHeight, 4, 0);
+							}
+							else
+							{
+								//Top left corner tile
+								tiles.draw(gc, tileX, 
+								tileY-tileHeight, tileWidth, tileHeight, 3, 0);
+							}
+							//Right tile
+							tiles.draw(gc, tileX+tileWidth, 
+							tileY, tileWidth, tileHeight, 0, 1);
+						}
+						else
+						{
+							//Right tile
+							tiles.draw(gc, tileX+tileWidth, 
+							tileY, tileWidth, tileHeight, 0, 1);
+						}
+					}
+					if(left)
+					{
+						if(bottom)
+						{
+							//Bottom left corner tile
+							tiles.draw(gc, tileX-tileWidth, 
+							tileY, tileWidth, tileHeight, 3, 1);
+						}
+						else if(top)
+						{
+							if(topLeft)
+							{
+								//Top left corner tile
+								tiles.draw(gc, tileX-tileWidth, 
+								tileY-tileHeight, tileWidth, tileHeight, 3, 0);
+							}
+							else
+							{
+								//Top right corner tile
+								tiles.draw(gc, tileX, 
+								tileY-tileHeight, tileWidth, tileHeight, 4, 0);
+							}
+							//Left tile
+							tiles.draw(gc, tileX-tileWidth, 
+							tileY, tileWidth, tileHeight, 2, 1);
+						}
+						else
+						{
+							//Because of how these loops traverse the level,
+							//this if-statement must be checked to make sure
+							//that the wrong tile (left tile) is drawn where
+							//a top left tile should be.
+							if(!(level[(x-1)/2][(y+1)/2] == FLOOR))
+							{
+								//Left tile
+								tiles.draw(gc, tileX-tileWidth, 
+								tileY, tileWidth, tileHeight, 2, 1);
+							}
+						}
+					}
+					if(top)
+					{
+						if(!topRight)
+						{
+							//Top left tile
+							tiles.draw(gc, tileX, 
+							tileY-tileHeight, tileWidth, tileHeight, 2, 2);
+						}
+						else if(!topLeft)
+						{
+							//Top right tile
+							tiles.draw(gc, tileX, 
+							tileY-tileHeight, tileWidth, tileHeight, 0, 2);
+						}
+						else
+						{
+							//Top tile
+							tiles.draw(gc, tileX, 
+							tileY-tileHeight, tileWidth, tileHeight, 1, 2);
+						}
+					}
+				}
+			}
+		}
+		
+		//Draw all the game objects
+		for(GameObject object : objects)
+		{
+			object.render(gc);
+		}
+		
+		//Draw the remaining walls
+		for(int x = 0; x < roomWidth/cellWidth*2; x++)
+		{
+			for(int y = 0; y < roomHeight/cellHeight*2; y++)
+			{
+				if(level[x/2][y/2] == FLOOR)
+				{
+					int tileX = x * tileWidth;
+					int tileY = y * tileHeight;
+					
+					//Get checks to see what type of tile to add
+					boolean bottom = level[x/2][(y+1)/2] != FLOOR;
+					boolean bottomRight = level[(x+1)/2][(y+1)/2] != FLOOR;
+					boolean bottomLeft = level[(x-1)/2][(y+1)/2] != FLOOR;
+					
+					//Draw depending on the checks above
+					if(bottom)
+					{
+						if(!bottomRight)
+						{
+							//Bottom left tile
+							tiles.draw(gc, tileX, 
+							tileY+1, tileWidth, tileHeight, 2, 0);
+						}
+						else if(!bottomLeft)
+						{
+							//Bottom right tile
+							tiles.draw(gc, tileX, 
+							tileY+1, tileWidth, tileHeight, 0, 0);
+						}
+						else
+						{
+							//Bottom tile
+							tiles.draw(gc, tileX, 
+							tileY+1, tileWidth, tileHeight, 1, 0);
+						}
+					}
 				}
 			}
 		}
@@ -276,7 +442,7 @@ public class Game extends Application
 		}
 		double playerX = (double) x*CELL_WIDTH+4;
 		double playerY = (double) y*CELL_HEIGHT+4;
-		player = new Player(playerX, playerY, "Res/Indo.png", 8);
+		player = new Player(playerX, playerY);
 		objects.add(player);
 	}
 }
