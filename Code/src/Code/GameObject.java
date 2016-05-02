@@ -156,6 +156,24 @@ public class GameObject
 	}
 	
 	/**
+	 * Sets the x-coordinate to the given value.
+	 * @param x The x-coordinate to set the player at.
+	 */
+	public void setX(double x)
+	{
+		this.x = x;
+	}
+	
+	/**
+	 * Sets the y-coordinate to the given value.
+	 * @param y The y-coordinate to set the player at.
+	 */
+	public void setY(double y)
+	{
+		this.y = y;
+	}
+	
+	/**
 	 * Returns the object's x-coordinate.
 	 * @return the object's x-coordinate.
 	 */
