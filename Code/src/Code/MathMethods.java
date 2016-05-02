@@ -18,7 +18,10 @@ public class MathMethods
 	 */
 	public static double lengthDirX(double length, double direction)
 	{
-		return Math.cos(Math.toRadians(direction))*length;
+		if(length >= 0)
+			return Math.cos(Math.toRadians(direction))*length;
+		else
+			throw new ArithmeticException("Length must be larger than 0");
 	}
 	
 	/**
@@ -30,7 +33,10 @@ public class MathMethods
 	 */
 	public static double lengthDirY(double length, double direction)
 	{
-		return Math.sin(Math.toRadians(direction))*length;
+		if(length >= 0)
+			return Math.sin(Math.toRadians(direction))*length;
+		else
+			throw new ArithmeticException("Length must be larger than 0");
 	}
 	
 	/**
@@ -49,39 +55,6 @@ public class MathMethods
 		else if(var > upBound)
 		{
 			var = upBound;
-		}
-		return var;
-	}
-	
-	/**
-	 * Clamps a variable so it's between four bounds.
-	 * @param var The variable to clamp.
-	 * @param firstLowBound The first lower bound.
-	 * @param firstUpBound The first upper bound.
-	 * @param secondLowBound The second lower bound.
-	 * @param secondUpBound The second upper bound.
-	 * @return the clamped variable.
-	 */
-	public static double clamp(double var, double firstLowBound, 
-											double firstUpBound,
-											double secondLowBound, 
-											double secondUpBound)
-	{
-		if(var < firstLowBound)
-		{
-			var = firstLowBound;
-		}
-		else if(var > firstUpBound)
-		{
-			var = firstUpBound;
-		}
-		else if(var < secondLowBound)
-		{
-			var = secondLowBound;
-		}
-		else if(var > secondUpBound)
-		{
-			var = secondUpBound;
 		}
 		return var;
 	}
