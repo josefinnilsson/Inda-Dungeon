@@ -225,6 +225,7 @@ public class Game extends Application
 		final int FLOOR = RandomLevelGenerator.FLOOR;
 		
 		//Draw the floor
+		TileSet floor = new TileSet("Res/FloorTileInda.png", 1, 1);
 		for(int x = 0; x < roomWidth/cellWidth; x++)
 		{
 			for(int y = 0; y < roomHeight/cellHeight; y++)
@@ -232,8 +233,9 @@ public class Game extends Application
 				if(level[x][y] == FLOOR)
 				{
 					gc.setFill(Color.BURLYWOOD);
-					gc.fillRect(x*cellWidth, y*cellHeight, 
-									cellWidth, cellHeight);
+					floor.draw(gc, x*cellWidth, y*cellHeight, 
+								cellWidth, cellHeight, 0, 0);
+					
 				}
 			}
 		}

@@ -223,7 +223,6 @@ public class Player extends GameObject
 		double mX = Input.mouseX;
 		double mY = Input.mouseY;
 		double direction = MathMethods.getDirectionBetweenPoints(x, y, mX, mY);
-		int dash4DirLimit = 12;
 		
 		if(direction > -67.5 && direction <= 67.5)
 		{
