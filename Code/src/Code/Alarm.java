@@ -37,13 +37,15 @@ public class Alarm
 	
 	/**
 	 * Ticks the alarm clock once, simulating the countdown.
+	 * @return the time left on the alarm.
 	 */
-	public void tick()
+	public int tick()
 	{
 		if(time > 0)
 		{
 			time--;
 		}
+		return time;
 	}
 	
 	/**
@@ -52,6 +54,6 @@ public class Alarm
 	 */
 	public boolean done()
 	{
-		return time == 0;
+		return time <= 0;
 	}
 }
