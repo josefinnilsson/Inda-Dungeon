@@ -220,31 +220,32 @@ public class Player extends GameObject
 	 */
 	private void setAxesToMouse()
 	{
-		double mouseX = Input.mouseX;
-		double mouseY = Input.mouseY;
+		double mX = Input.mouseX;
+		double mY = Input.mouseY;
+		double direction = MathMethods.getDirectionBetweenPoints(x, y, mX, mY);
 		int dash4DirLimit = 12;
 		
-		if(mouseX > x + width + dash4DirLimit)
+		if(direction > -67.5 && direction <= 67.5)
 		{
 			xAxis = 1;
 		}
-		else if(mouseX < x - dash4DirLimit)
+		else if(direction < -112.5 || direction >= 112.5)
 		{
 			xAxis = -1;
-		} 
+		}
 		else
 		{
 			xAxis = 0;
 		}
 		
-		if(mouseY > y + height + dash4DirLimit)
+		if(direction > -157.5 && direction <= -22.5)
+		{
+			yAxis = -1;
+		}
+		else if(direction > 22.5 && direction <= 157.5)
 		{
 			yAxis = 1;
 		}
-		else if(mouseY < y - dash4DirLimit)
-		{
-			yAxis = -1;
-		} 
 		else
 		{
 			yAxis = 0;
