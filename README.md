@@ -19,5 +19,5 @@ The menu in the beginning features a play button, a high score button and a help
 _TODO._
 
 ## Testing
-_TODO._
+Some classes will be tested using JUnit test cases. However, this is hard to utilize with graphical objects an thus, everything related to that will be tested using the actual display (making sure it looks like it should).
 
