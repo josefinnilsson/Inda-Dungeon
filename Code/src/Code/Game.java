@@ -84,8 +84,8 @@ public class Game extends Application
 		scene.setOnKeyPressed(e -> Input.pressKey(e.getCode()));
 		scene.setOnKeyReleased(e -> Input.releaseKey(e.getCode()));
 		scene.setOnMousePressed(e -> Input.pressMouse(e.getButton(), 
-												e.getSceneX()/2-viewportX, 
-												e.getSceneY()/2-viewportY));
+											e.getSceneX()/SCALE_X-viewportX, 
+											e.getSceneY()/SCALE_Y-viewportY));
 		scene.setOnMouseReleased(e -> Input.releaseMouse(e.getButton()));
 		
 		//Initialize the window.
