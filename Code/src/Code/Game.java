@@ -57,6 +57,8 @@ public class Game extends Application
 	
 	private Player player;
 	private static boolean playerType = true;
+
+	private ArrayList<Enemy> enemies;
 	
 	public static int[][] level;
 	
