@@ -9,9 +9,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -46,21 +45,21 @@ public class Game extends Application
 	private static double viewportY;
 	
 	//The different parts of the game window
-	private VBox appRoot;
+	private StackPane appRoot;
 	private Pane gameRoot;
 	private Canvas canvas;
 	private GraphicsContext gc;
-	private HBox uiRoot;
+	private VBox uiRoot;
 	
 	//This list contains all objects within the game.
 	private ArrayList<GameObject> objects;
 	
 	private Player player;
-	private static boolean playerType = true;
 
 	private ArrayList<Enemy> enemies;
 	
 	public static int[][] level;
+	private int currentLevel;
 	
 	public static void main(String[] args)
 	{
@@ -72,12 +71,14 @@ public class Game extends Application
 	{
 		r = new Random();
 		
+		//TODO: Create intro and start with that
+		
 		//Create the different panes and initialize them.
-		appRoot = new VBox(2);
+		appRoot = new StackPane();
 		gameRoot = new Pane();
-		uiRoot = new HBox(3);
+		uiRoot = new VBox(3);
 		uiRoot.setAlignment(Pos.CENTER);
-		initiateContent();
+		initiateLevelContent();
 		
 		//Create the scene for the game.
 		Scene scene = new Scene(appRoot, ROOM_WIDTH/2, ROOM_HEIGHT/2);
@@ -112,9 +113,11 @@ public class Game extends Application
 	/**
 	 * Initializes the different panes by creating a level, player object, etc.
 	 */
-	private void initiateContent()
+	private void initiateLevelContent()
 	{
 		objects = new ArrayList<GameObject>();
+		currentLevel = 1;
+		
 		//Create a canvas to draw the level on.
 		canvas = new Canvas(ROOM_WIDTH, ROOM_HEIGHT);
 		gc = canvas.getGraphicsContext2D();
@@ -146,27 +149,50 @@ public class Game extends Application
 		render(gc);
 		gameRoot.getChildren().add(canvas);
 		
-		//Add a button to create new levels. Temporary!!!
-		Button newLevelButton = new Button("NEW LEVEL");
-		newLevelButton.setOnAction(e -> 
-		{
-			gameRoot.getChildren().clear();
-			uiRoot.getChildren().clear();
-			appRoot.getChildren().clear();
-			initiateContent();
-		});	
-		
-		//Add a button to change sex. Temporary!!!
-		Button characterButton = new Button("Change Character");
-		characterButton.setOnAction(e -> 
-		{
-			player.setPlayer(playerType);
-			playerType = !playerType;
-		});	
-		
 		//Add everything to the panes.
-		uiRoot.getChildren().addAll(newLevelButton, characterButton);
+		//uiRoot.getChildren().addAll(button);
 		appRoot.getChildren().addAll(gameRoot, uiRoot);
+	}
+	
+	/**
+	 * Creates the next level and puts the player and viewport correctly in it.
+	 */
+	public void nextLevel()
+	{
+		currentLevel++;
+		
+		//Create a new canvas to use for the next level
+		gameRoot.getChildren().clear();
+		canvas = new Canvas(ROOM_WIDTH, ROOM_HEIGHT);
+		gc = canvas.getGraphicsContext2D();
+		
+		//Create a new level
+		createLevel(ROOM_WIDTH, ROOM_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+		
+		//Put the player in the room
+		setPlayer();
+		
+		//Scale the view
+		gc.scale(SCALE_X, SCALE_Y);
+		
+		//Set the viewport's x and y coordinates. The player object should be
+		//in the middle of the view (except for when close to edges).
+		double viewX = -(player.getX() - ROOM_WIDTH/(4*SCALE_X));
+		double viewY = -(player.getY() - ROOM_HEIGHT/(4*SCALE_Y));
+		
+		//Make sure the view only shows the level.
+		viewX = MathMethods.clamp(viewX, 
+									-(4*SCALE_X-1)*ROOM_WIDTH/(4*SCALE_X), 0);
+		viewY = MathMethods.clamp(viewY, 
+									-(4*SCALE_Y-1)*ROOM_HEIGHT/(4*SCALE_Y), 0);
+		//Move viewport to player
+		gc.translate(viewX, viewY);
+		viewportX = viewX;
+		viewportY = viewY;
+		
+		//Draw everything to the screen.
+		render(gc);
+		gameRoot.getChildren().add(canvas);
 	}
 	
 	
@@ -442,7 +468,8 @@ public class Game extends Application
 	}
 	
 	/**
-	 * Finds a place to spawn the player object and puts it there.
+	 * Finds a place to spawn the player object for the first 
+	 * level and puts it there.
 	 */
 	private void addPlayer()
 	{
@@ -457,5 +484,29 @@ public class Game extends Application
 		double playerY = (double) y*CELL_HEIGHT+4;
 		player = new Player(playerX, playerY);
 		objects.add(player);
+	}
+	
+	/**
+	 * Finds a place to spawn the player object on the new level.
+	 */
+	private void setPlayer()
+	{
+		int x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
+		int y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);
+		while(level[x][y] != RandomLevelGenerator.FLOOR)
+		{
+			x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
+			y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);
+		}
+		double playerX = (double) x*CELL_WIDTH+4;
+		double playerY = (double) y*CELL_HEIGHT+4;
+		player.setX(playerX);
+		player.setY(playerY);
+	}
+	
+	private void levelCompleted()
+	{
+		//TODO: Add code for level completion
+		nextLevel();
 	}
 }

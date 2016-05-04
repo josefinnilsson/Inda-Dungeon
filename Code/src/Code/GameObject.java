@@ -162,6 +162,7 @@ public class GameObject
 	public void setX(double x)
 	{
 		this.x = x;
+		prevX = this.x;
 	}
 	
 	/**
@@ -171,6 +172,7 @@ public class GameObject
 	public void setY(double y)
 	{
 		this.y = y;
+		prevY = this.y;
 	}
 	
 	/**
