@@ -9,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -45,6 +46,7 @@ public class Game extends Application
 	private static double viewportY;
 	
 	//The different parts of the game window
+	private Pane introRoot;
 	private StackPane appRoot;
 	private Pane gameRoot;
 	private Canvas canvas;
@@ -71,25 +73,12 @@ public class Game extends Application
 	{
 		r = new Random();
 		
-		//TODO: Create intro and start with that
+		introRoot = new Pane();
 		
-		//Create the different panes and initialize them.
-		appRoot = new StackPane();
-		gameRoot = new Pane();
-		uiRoot = new VBox(3);
-		uiRoot.setAlignment(Pos.CENTER);
-		initiateLevelContent();
+		//TODO: Fix the intro (Choose character, story, etc.)
 		
-		//Create the scene for the game.
-		Scene scene = new Scene(appRoot, ROOM_WIDTH/2, ROOM_HEIGHT/2);
-		
-		//Add listeners for input.
-		scene.setOnKeyPressed(e -> Input.pressKey(e.getCode()));
-		scene.setOnKeyReleased(e -> Input.releaseKey(e.getCode()));
-		scene.setOnMousePressed(e -> Input.pressMouse(e.getButton(), 
-											e.getSceneX()/SCALE_X-viewportX, 
-											e.getSceneY()/SCALE_Y-viewportY));
-		scene.setOnMouseReleased(e -> Input.releaseMouse(e.getButton()));
+		//Create the scene for the intro.
+		Scene scene = new Scene(introRoot, ROOM_WIDTH/2, ROOM_HEIGHT/2);
 		
 		//Initialize the window.
 		primaryStage.setResizable(false);
@@ -97,23 +86,22 @@ public class Game extends Application
 		primaryStage.setTitle("Generic Dungeon Crawler");
 		primaryStage.show();
 		
-		//Game loop
-		AnimationTimer timer = new AnimationTimer() 
-		{
-			@Override
-			public void handle(long now)
-			{
-				update();
-				render(gc);
-			}
-		};
-		timer.start();
+		//Temporary(!!!) button to move from intro to game
+		Button button = new Button("START");
+		button.setOnAction(e -> initiateLevelContent(primaryStage));
+		introRoot.getChildren().add(button);
+		
+		//Create the different panes for the actual game and initialize them.
+		appRoot = new StackPane();
+		gameRoot = new Pane();
+		uiRoot = new VBox(3);
+		uiRoot.setAlignment(Pos.CENTER);
 	}
 	
 	/**
 	 * Initializes the different panes by creating a level, player object, etc.
 	 */
-	private void initiateLevelContent()
+	private void initiateLevelContent(Stage primaryStage)
 	{
 		objects = new ArrayList<GameObject>();
 		currentLevel = 1;
@@ -152,6 +140,32 @@ public class Game extends Application
 		//Add everything to the panes.
 		//uiRoot.getChildren().addAll(button);
 		appRoot.getChildren().addAll(gameRoot, uiRoot);
+		
+		//Create the scene for the levels.
+		Scene scene = new Scene(appRoot, ROOM_WIDTH/2, ROOM_HEIGHT/2);
+		
+		//Add listeners for input.
+		scene.setOnKeyPressed(e -> Input.pressKey(e.getCode()));
+		scene.setOnKeyReleased(e -> Input.releaseKey(e.getCode()));
+		scene.setOnMousePressed(e -> Input.pressMouse(e.getButton(), 
+											e.getSceneX()/SCALE_X-viewportX, 
+											e.getSceneY()/SCALE_Y-viewportY));
+		scene.setOnMouseReleased(e -> Input.releaseMouse(e.getButton()));
+		
+		//Initialize the game window.
+		primaryStage.setScene(scene);
+		
+		//Game loop
+		AnimationTimer timer = new AnimationTimer() 
+		{
+			@Override
+			public void handle(long now)
+			{
+				update();
+				render(gc);
+			}
+		};
+		timer.start();
 	}
 	
 	/**
@@ -171,6 +185,7 @@ public class Game extends Application
 		
 		//Put the player in the room
 		setPlayer();
+		//TODO: Add the other objects into the room
 		
 		//Scale the view
 		gc.scale(SCALE_X, SCALE_Y);
