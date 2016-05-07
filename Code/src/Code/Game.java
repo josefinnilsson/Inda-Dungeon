@@ -55,7 +55,7 @@ public class Game extends Application
 	private VBox uiRoot;
 	
 	//This list contains all objects within the game.
-	private ArrayList<GameObject> objects;
+	public static ArrayList<GameObject> objects;
 	
 	private Player player;
 

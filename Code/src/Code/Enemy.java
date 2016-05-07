@@ -5,14 +5,12 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * Created by Josefin on 2016-05-04.
  */
-public class Enemy extends GameObject {
+public class Enemy extends LifeForm {
 
 
     private int xAxis;
     private int yAxis;
-    private int health;
     protected boolean flippedRight;
-    protected int damage;
 
     /**
      * Initialize the object.
@@ -34,21 +32,6 @@ public class Enemy extends GameObject {
     }
 
     public void update() {}
-
-    public int getDamage() {
-        return damage;
-    }
-
-    public boolean isDead() {
-        return health <= 0;
-    }
-
-    public void hit (int damage) {
-        health -= damage;
-        if (damage < 0) {
-            health = 0;
-        }
-    }
 
     @Override
     public void render(GraphicsContext gc)
