@@ -58,7 +58,7 @@ public class Game extends Application
 	
 	private Player player;
 
-    private TrivialEnemy snail;
+    private Snail snail;
 	
 	public static int[][] level;
 	private int currentLevel;
@@ -182,8 +182,8 @@ public class Game extends Application
 		
 		//Create a new level
 		createLevel(ROOM_WIDTH, ROOM_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
-		
-<<<<<<< HEAD
+
+        setPlayer();
 		//TODO: Add other game objects
 		//Add the player to the room
 		addPlayer();
@@ -192,14 +192,11 @@ public class Game extends Application
             snail.update();
         }
 
-		//Set the correct scale of the view.
-=======
 		//Put the player in the room
-		setPlayer();
+
 		//TODO: Add the other objects into the room
 		
 		//Scale the view
->>>>>>> bcf15920670141ed81d4f3f1dd55407a9fb5ea1b
 		gc.scale(SCALE_X, SCALE_Y);
 		
 		//Set the viewport's x and y coordinates. The player object should be
@@ -512,16 +509,25 @@ public class Game extends Application
 		player = new Player(playerX, playerY);
 		objects.add(player);
 	}
-<<<<<<< HEAD
 
 	private void addSnail()
-=======
-	
+    {
+        int x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
+        int y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);
+        while(level[x][y] != RandomLevelGenerator.FLOOR)
+        {
+            x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
+            y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);
+        }
+        double snailX = (double) x*CELL_WIDTH+4;
+        double snailY = (double) y*CELL_HEIGHT+4;
+        snail = new Snail(snailX, snailY);
+        objects.add(snail);
+    }
 	/**
 	 * Finds a place to spawn the player object on the new level.
 	 */
 	private void setPlayer()
->>>>>>> bcf15920670141ed81d4f3f1dd55407a9fb5ea1b
 	{
 		int x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
 		int y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);
@@ -530,12 +536,6 @@ public class Game extends Application
 			x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
 			y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);
 		}
-<<<<<<< HEAD
-		double snailX = (double) x*CELL_WIDTH+4;
-		double snailY = (double) y*CELL_HEIGHT+4;
-		snail = new TrivialEnemy(snailX, snailY);
-		objects.add(snail);
-=======
 		double playerX = (double) x*CELL_WIDTH+4;
 		double playerY = (double) y*CELL_HEIGHT+4;
 		player.setX(playerX);
@@ -546,6 +546,5 @@ public class Game extends Application
 	{
 		//TODO: Add code for level completion
 		nextLevel();
->>>>>>> bcf15920670141ed81d4f3f1dd55407a9fb5ea1b
 	}
 }
