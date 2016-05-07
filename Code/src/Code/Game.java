@@ -130,9 +130,9 @@ public class Game extends Application
 		
 		//Make sure the view only shows the level.
 		viewX = MathMethods.clamp(viewX, 
-									-(4*SCALE_X-1)*ROOM_WIDTH/(4*SCALE_X), 0);
+									-(4*SCALE_X-2)*ROOM_WIDTH/(4*SCALE_X), 0);
 		viewY = MathMethods.clamp(viewY, 
-									-(4*SCALE_Y-1)*ROOM_HEIGHT/(4*SCALE_Y), 0);
+									-(4*SCALE_Y-2)*ROOM_HEIGHT/(4*SCALE_Y), 0);
 		//Move viewport to player
 		gc.translate(viewX, viewY);
 		viewportX = viewX;
@@ -206,9 +206,9 @@ public class Game extends Application
 		
 		//Make sure the view only shows the level.
 		viewX = MathMethods.clamp(viewX, 
-									-(4*SCALE_X-1)*ROOM_WIDTH/(4*SCALE_X), 0);
+									-(4*SCALE_X-2)*ROOM_WIDTH/(4*SCALE_X), 0);
 		viewY = MathMethods.clamp(viewY, 
-									-(4*SCALE_Y-1)*ROOM_HEIGHT/(4*SCALE_Y), 0);
+									-(4*SCALE_Y-2)*ROOM_HEIGHT/(4*SCALE_Y), 0);
 		//Move viewport to player
 		gc.translate(viewX, viewY);
 		viewportX = viewX;
