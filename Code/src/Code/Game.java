@@ -1,6 +1,7 @@
 package Code;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 import javafx.animation.AnimationTimer;
@@ -187,10 +188,9 @@ public class Game extends Application
 		//Create a new level
 		createLevel(ROOM_WIDTH, ROOM_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
 
+		//Add the player to the room
         setPlayer();
 		//TODO: Add other game objects
-		//Add the player to the room
-		addPlayer();
         for (int i = 0; i < 50; i++) {
             addSnail();
             snail.update();
@@ -225,7 +225,7 @@ public class Game extends Application
 	 */
 	private void render(GraphicsContext gc)
 	{
-		
+		Collections.sort(objects);
 		//Show only part of the canvas that is within the viewport.
 		setViewport();
 		//Draws everything onto the canvas.
