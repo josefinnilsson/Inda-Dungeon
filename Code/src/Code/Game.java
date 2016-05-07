@@ -114,6 +114,10 @@ public class Game extends Application
 		//TODO: Add other game objects
 		//Add the player to the room
 		addPlayer();
+
+        for (int i = 0; i < 30; i++) {
+            addSnail();
+        }
 		
 		//Set the correct scale of the view.
 		gc.scale(SCALE_X, SCALE_Y);
@@ -192,10 +196,6 @@ public class Game extends Application
             snail.update();
         }
 
-		//Put the player in the room
-
-		//TODO: Add the other objects into the room
-		
 		//Scale the view
 		gc.scale(SCALE_X, SCALE_Y);
 		

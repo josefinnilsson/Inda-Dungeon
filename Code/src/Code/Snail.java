@@ -14,7 +14,7 @@ public class Snail extends Enemy {
      * @param y         The object's y-coordinate.
      */
     public Snail(double x, double y) {
-        super(x, y, "Res/indaSnail.png", 8);
+        super(x, y, "Res/indaSnail.png", 2);
         speed = 0.4;
         imageSpeed = 0.2;
         damage =  1;
@@ -46,28 +46,14 @@ public class Snail extends Enemy {
         //Check for horizontal collision
         if(wallCollision(Game.level, x+hspd, y))
         {
-            while(!wallCollision(Game.level, x+Math.signum(hspd), y))
-            {
-                x += Math.signum(hspd);
-            }
-            hspd = 0;
+            //TODO
         }
-
-        //Move horizontally
-        x += hspd;
 
         //Check for vertical collision
-        if(wallCollision(Game.level, x, y+vspd))
-        {
-            while(!wallCollision(Game.level, x, y+Math.signum(vspd)))
-            {
-                y += Math.signum(vspd);
-            }
-            vspd = 0;
+        if(wallCollision(Game.level, x, y+vspd)) {
+            //TODO
         }
 
-        //Move vertically
-        y += vspd;
     }
 
     public void setEnemy(boolean type)
