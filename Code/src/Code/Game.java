@@ -225,6 +225,7 @@ public class Game extends Application
 	 */
 	private void render(GraphicsContext gc)
 	{
+		//Sort the objects so they're drawn in the correct order.
 		Collections.sort(objects);
 		//Show only part of the canvas that is within the viewport.
 		setViewport();

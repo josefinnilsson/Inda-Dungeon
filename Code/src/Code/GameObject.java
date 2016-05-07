@@ -272,6 +272,6 @@ public class GameObject implements Comparable<GameObject>
 	@Override
 	public int compareTo(GameObject o)
 	{
-		return (int) -((o.getY() + o.getHeight()/2) - (y + height/2));
+		return (int) -((o.getY() + o.getHeight()) - (y + height));
 	}
 }
