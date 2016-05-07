@@ -58,7 +58,7 @@ public class Game extends Application
 	private Player player;
 	private static boolean playerType = true;
 
-	private ArrayList<Enemy> enemies;
+    private TrivialEnemy snail;
 	
 	public static int[][] level;
 	
@@ -123,7 +123,11 @@ public class Game extends Application
 		//TODO: Add other game objects
 		//Add the player to the room
 		addPlayer();
-		
+        for (int i = 0; i < 50; i++) {
+            addSnail();
+            snail.update();
+        }
+
 		//Set the correct scale of the view.
 		gc.scale(SCALE_X, SCALE_Y);
 		
@@ -457,5 +461,20 @@ public class Game extends Application
 		double playerY = (double) y*CELL_HEIGHT+4;
 		player = new Player(playerX, playerY);
 		objects.add(player);
+	}
+
+	private void addSnail()
+	{
+		int x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
+		int y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);
+		while(level[x][y] != RandomLevelGenerator.FLOOR)
+		{
+			x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
+			y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);
+		}
+		double snailX = (double) x*CELL_WIDTH+4;
+		double snailY = (double) y*CELL_HEIGHT+4;
+		snail = new TrivialEnemy(snailX, snailY);
+		objects.add(snail);
 	}
 }

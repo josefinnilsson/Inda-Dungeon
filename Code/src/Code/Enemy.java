@@ -6,12 +6,13 @@ import javafx.scene.canvas.GraphicsContext;
  * Created by Josefin on 2016-05-04.
  */
 public class Enemy extends GameObject {
+
+
     private int xAxis;
     private int yAxis;
     private int health;
-    private boolean flippedRight;
-    public int damage;
-
+    protected boolean flippedRight;
+    protected int damage;
 
     /**
      * Initialize the object.
@@ -23,11 +24,16 @@ public class Enemy extends GameObject {
      */
     public Enemy(double x, double y, String image, int subImages) {
         super(x, y, image, subImages);
-        xAxis = 0;
-        yAxis = 0;
+        damage = 0;
         flippedRight = true;
         health = 100;
+        xAxis = 0;
+        yAxis = 0;
+        speed = 1;
+        imageSpeed = .2;
     }
+
+    public void update() {}
 
     public int getDamage() {
         return damage;
@@ -70,6 +76,9 @@ public class Enemy extends GameObject {
             imageIndex = 0;
         }
     }
+
+
+
 
 
 
