@@ -10,7 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class LifeForm extends GameObject
 {
-    protected int health;
+    protected double health;
     protected int damage;
 	
 	/**
@@ -35,7 +35,10 @@ public class LifeForm extends GameObject
         return damage;
     }
 
-    public int getHealth() {return health;}
+    public double getHealth()
+    {
+    	return health;
+    }
 
     /**
      * Returns whether the object is dead or not.

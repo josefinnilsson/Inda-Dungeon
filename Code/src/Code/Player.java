@@ -44,6 +44,8 @@ public class Player extends LifeForm
 	
 	private Alarm dashAlarm;
 	
+	private double stamina;
+	
 	/**
 	 * Initialize the player object.
 	 * @param x The player's x-coordinate.
@@ -66,6 +68,8 @@ public class Player extends LifeForm
 		dashAlarm = new Alarm();
 		
 		malePlayer = true;
+		health = 100;
+		stamina = 100;
 
 	}
 	
@@ -317,5 +321,12 @@ public class Player extends LifeForm
 		}
 	}
 
-
+	/**
+	 * Returns the player's stamina.
+	 * @return the stamina of the player.
+	 */
+	public double getStamina()
+	{
+		return stamina;
+	}
 }

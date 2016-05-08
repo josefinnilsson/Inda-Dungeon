@@ -49,10 +49,15 @@ public class Game extends Application
 	//The different parts of the game window
 	private Pane introRoot;
 	private StackPane appRoot;
+	
 	private Pane gameRoot;
 	private Canvas canvas;
 	private GraphicsContext gc;
-	private VBox uiRoot;
+	
+	private Pane uiRoot;
+	private Canvas uiCanvas;
+	private GraphicsContext uiGc;
+	private Sprite uiBar;
 	
 	//This list contains all objects within the game.
 	public static ArrayList<GameObject> objects;
@@ -95,8 +100,7 @@ public class Game extends Application
 		//Create the different panes for the actual game and initialize them.
 		appRoot = new StackPane();
 		gameRoot = new Pane();
-		uiRoot = new VBox(3);
-		uiRoot.setAlignment(Pos.CENTER);
+		uiRoot = new Pane();
 	}
 	
 	/**
@@ -138,12 +142,17 @@ public class Game extends Application
 		viewportX = viewX;
 		viewportY = viewY;
 		
+		//Set up the UI
+		uiCanvas = new Canvas(ROOM_WIDTH, ROOM_HEIGHT);
+		uiGc = uiCanvas.getGraphicsContext2D();
+		uiBar = new Sprite("Res/indaUIBar.png", 1);
+		
 		//Draw everything to the screen.
-		render(gc);
+		render(gc, uiGc);
 		gameRoot.getChildren().add(canvas);
 		
 		//Add everything to the panes.
-		//uiRoot.getChildren().addAll(button);
+		uiRoot.getChildren().add(uiCanvas);
 		appRoot.getChildren().addAll(gameRoot, uiRoot);
 		
 		//Create the scene for the levels.
@@ -167,7 +176,7 @@ public class Game extends Application
 			public void handle(long now)
 			{
 				update();
-				render(gc);
+				render(gc, uiGc);
 			}
 		};
 		timer.start();
@@ -215,7 +224,7 @@ public class Game extends Application
 		viewportY = viewY;
 		
 		//Draw everything to the screen.
-		render(gc);
+		render(gc, uiGc);
 		gameRoot.getChildren().add(canvas);
 	}
 	
@@ -223,7 +232,7 @@ public class Game extends Application
 	/**
 	 * This renders everything to the game pane.
 	 */
-	private void render(GraphicsContext gc)
+	private void render(GraphicsContext gc, GraphicsContext uiGc)
 	{
 		//Sort the objects so they're drawn in the correct order.
 		Collections.sort(objects);
@@ -231,6 +240,7 @@ public class Game extends Application
 		setViewport();
 		//Draws everything onto the canvas.
 		drawLevel(gc, ROOM_WIDTH, ROOM_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+		drawUI(uiGc);
 	}
 	
 	/**
@@ -547,5 +557,23 @@ public class Game extends Application
 	{
 		//TODO: Add code for level completion
 		nextLevel();
+	}
+	
+	/**
+	 * Draws the UI to the screen.
+	 * @param uiGc The graphics object to draw with.
+	 */
+	private void drawUI(GraphicsContext uiGc)
+	{
+		//Player health
+		uiGc.setFill(Color.RED);
+		uiGc.fillRect(16, 16, (player.getHealth()*128)/100, 32);
+		uiBar.draw(uiGc, 16, 16, uiBar.getCellWidth(), 
+								uiBar.getCellHeight());
+		//Player stamina
+		uiGc.setFill(Color.FORESTGREEN);
+		uiGc.fillRect(16, 64, (player.getStamina()*128)/100, 32);
+		uiBar.draw(uiGc, 16, 64, uiBar.getCellWidth(), 
+								uiBar.getCellHeight());
 	}
 }
