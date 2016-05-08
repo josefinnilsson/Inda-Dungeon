@@ -1,5 +1,7 @@
 package Code;
 
+import javafx.scene.canvas.GraphicsContext;
+
 /**
  * This class represents a living object within the room.
  * 
@@ -21,6 +23,7 @@ public class LifeForm extends GameObject
 	public LifeForm(double x, double y, String image, int subImages)
 	{
 		super(x, y, image, subImages);
+        health = 100;
 	}
 	
 	/**
@@ -31,6 +34,8 @@ public class LifeForm extends GameObject
 	{
         return damage;
     }
+
+    public int getHealth() {return health;}
 
     /**
      * Returns whether the object is dead or not.
@@ -51,6 +56,33 @@ public class LifeForm extends GameObject
         if (health < 0) 
         {
             health = 0;
+        }
+    }
+
+    @Override
+    public void render(GraphicsContext gc)
+    {
+        //Draw the image
+        image.draw(gc, x, y, width, height);
+
+        //Only animate if moving
+        if(Math.abs(hspd) > 0 || Math.abs(vspd) > 0)
+        {
+            if(incrementImage >= 1)
+            {
+                imageIndex = (imageIndex + 1) % imageNumber;
+                image.animate(imageIndex);
+                incrementImage--;
+            }
+            else
+            {
+                incrementImage += imageSpeed;
+            }
+        }
+        else
+        {
+            image.animate(imageIndex);
+            imageIndex = 0;
         }
     }
 }
