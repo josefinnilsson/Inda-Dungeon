@@ -565,14 +565,20 @@ public class Game extends Application
 	 */
 	private void drawUI(GraphicsContext uiGc)
 	{
+		//Clear previously drawn stuff
+		uiGc.clearRect(16, 16, 128, 32);
+		uiGc.clearRect(16, 64, 128, 32);
+		
 		//Player health
 		uiGc.setFill(Color.RED);
-		uiGc.fillRect(16, 16, (player.getHealth()*128)/100, 32);
+		uiGc.fillRect(16, 16, 
+						(player.getHealth()*128)/player.getMaxHealth(), 32);
 		uiBar.draw(uiGc, 16, 16, uiBar.getCellWidth(), 
 								uiBar.getCellHeight());
 		//Player stamina
 		uiGc.setFill(Color.FORESTGREEN);
-		uiGc.fillRect(16, 64, (player.getStamina()*128)/100, 32);
+		uiGc.fillRect(16, 64, 
+						(player.getStamina()*128)/player.getMaxStamina(), 32);
 		uiBar.draw(uiGc, 16, 64, uiBar.getCellWidth(), 
 								uiBar.getCellHeight());
 	}

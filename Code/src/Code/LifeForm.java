@@ -11,6 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
 public class LifeForm extends GameObject
 {
     protected double health;
+    protected double maxHealth;
     protected int damage;
 	
 	/**
@@ -24,6 +25,7 @@ public class LifeForm extends GameObject
 	{
 		super(x, y, image, subImages);
         health = 100;
+        maxHealth = 100;
 	}
 	
 	/**
@@ -35,9 +37,22 @@ public class LifeForm extends GameObject
         return damage;
     }
 
+    /**
+     * Returns the health of this object.
+     * @return the life form's health.
+     */
     public double getHealth()
     {
     	return health;
+    }
+    
+    /**
+     * Returns the maximum health of the object.
+     * @return the life form's maximum health.
+     */
+    public double getMaxHealth()
+    {
+    	return maxHealth;
     }
 
     /**
