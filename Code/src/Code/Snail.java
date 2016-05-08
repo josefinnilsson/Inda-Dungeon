@@ -6,6 +6,7 @@ package Code;
 public class Snail extends Enemy {
     private boolean right;
     private boolean left;
+    private Snail snail;
 
     /**
      * Initialize the object.
@@ -22,51 +23,48 @@ public class Snail extends Enemy {
         right = true;
     }
 
-    private void nextPosition() {
-        if(left) {
-            x -= speed;
-        } else if (right) {
-            x += speed;
-        }
-    }
-
     @Override
     public void update()
     {
         nextPosition();
     }
 
-    /**
-     * Moves the player according to walls and speed.
-     */
-    private void move()
-    {
-        prevX = x;
-        prevY = y;
-        //Check for horizontal collision
-        if(wallCollision(Game.level, x+hspd, y))
-        {
-            //TODO
-        }
+    private void nextPosition() {
+        if(left) {
+            if (wallCollision(Game.level, x, y))
+            {
+                speed = -speed;
+                right = true;
+                left = false;
+                flippedRight=true;
+                setEnemy();
 
-        //Check for vertical collision
-        if(wallCollision(Game.level, x, y+vspd)) {
-            //TODO
+            }
+        } else if (right) {
+            if (wallCollision(Game.level, x, y))
+            {
+                speed = -speed;
+                right = false;
+                left = true;
+                flippedRight=false;
+                setEnemy();
+            }
         }
-
+        x += speed;
     }
 
-    public void setEnemy(boolean type)
+    private void setEnemy()
     {
 
         if(flippedRight)
         {
-            setImage("Res/indaSnail.png", 8);
+            setImage("Res/indaSnail.png", 2);
         }
         else
         {
-            setImage("Res/indaSnailFlipped.png", 8);
+            setImage("Res/indaSnailFlipped.png", 2);
         }
 
     }
+
 }
