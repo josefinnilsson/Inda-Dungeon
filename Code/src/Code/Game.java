@@ -1,6 +1,7 @@
 package Code;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 import javafx.animation.AnimationTimer;
@@ -54,7 +55,7 @@ public class Game extends Application
 	private VBox uiRoot;
 	
 	//This list contains all objects within the game.
-	private ArrayList<GameObject> objects;
+	public static ArrayList<GameObject> objects;
 	
 	private Player player;
 
@@ -129,9 +130,9 @@ public class Game extends Application
 		
 		//Make sure the view only shows the level.
 		viewX = MathMethods.clamp(viewX, 
-									-(4*SCALE_X-1)*ROOM_WIDTH/(4*SCALE_X), 0);
+									-(4*SCALE_X-2)*ROOM_WIDTH/(4*SCALE_X), 0);
 		viewY = MathMethods.clamp(viewY, 
-									-(4*SCALE_Y-1)*ROOM_HEIGHT/(4*SCALE_Y), 0);
+									-(4*SCALE_Y-2)*ROOM_HEIGHT/(4*SCALE_Y), 0);
 		//Move viewport to player
 		gc.translate(viewX, viewY);
 		viewportX = viewX;
@@ -187,10 +188,9 @@ public class Game extends Application
 		//Create a new level
 		createLevel(ROOM_WIDTH, ROOM_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
 
+		//Add the player to the room
         setPlayer();
 		//TODO: Add other game objects
-		//Add the player to the room
-		addPlayer();
         for (int i = 0; i < 50; i++) {
             addSnail();
             snail.update();
@@ -206,9 +206,9 @@ public class Game extends Application
 		
 		//Make sure the view only shows the level.
 		viewX = MathMethods.clamp(viewX, 
-									-(4*SCALE_X-1)*ROOM_WIDTH/(4*SCALE_X), 0);
+									-(4*SCALE_X-2)*ROOM_WIDTH/(4*SCALE_X), 0);
 		viewY = MathMethods.clamp(viewY, 
-									-(4*SCALE_Y-1)*ROOM_HEIGHT/(4*SCALE_Y), 0);
+									-(4*SCALE_Y-2)*ROOM_HEIGHT/(4*SCALE_Y), 0);
 		//Move viewport to player
 		gc.translate(viewX, viewY);
 		viewportX = viewX;
@@ -225,7 +225,8 @@ public class Game extends Application
 	 */
 	private void render(GraphicsContext gc)
 	{
-		
+		//Sort the objects so they're drawn in the correct order.
+		Collections.sort(objects);
 		//Show only part of the canvas that is within the viewport.
 		setViewport();
 		//Draws everything onto the canvas.

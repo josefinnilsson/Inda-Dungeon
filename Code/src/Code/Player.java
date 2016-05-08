@@ -11,7 +11,7 @@ import javafx.scene.input.MouseButton;
  * @author Fredrik Omstedt
  * @version 1.0.0
  */
-public class Player extends GameObject
+public class Player extends LifeForm
 {
 	//These states control in which way the player object updates, and are
 	//switched between depending on input and in-game events.

@@ -9,7 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
  * @author Fredrik Omstedt
  * @version 1.0.0
  */
-public class GameObject
+public class GameObject implements Comparable<GameObject>
 {
 	//Coordinates
 	protected double x;
@@ -230,6 +230,24 @@ public class GameObject
 	}
 	
 	/**
+	 * Returns the object's width.
+	 * @return the object's width.
+	 */
+	public double getWidth()
+	{
+		return width;
+	}
+	
+	/**
+	 * Returns the object's height.
+	 * @return the object's height.
+	 */
+	public double getHeight()
+	{
+		return height;
+	}
+	
+	/**
 	 * Set the object's image to a new one.
 	 * @param image The image to change to.
 	 * @param subImages The number of sub-images for the sprite.
@@ -249,5 +267,11 @@ public class GameObject
 	public Sprite getImage()
 	{
 		return image;
+	}
+
+	@Override
+	public int compareTo(GameObject o)
+	{
+		return (int) -((o.getY() + o.getHeight()) - (y + height));
 	}
 }
