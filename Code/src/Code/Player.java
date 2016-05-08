@@ -1,6 +1,5 @@
 package Code;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
@@ -67,6 +66,7 @@ public class Player extends LifeForm
 		dashAlarm = new Alarm();
 		
 		malePlayer = true;
+
 	}
 	
 	/**
@@ -127,33 +127,6 @@ public class Player extends LifeForm
 				break;
 			default:
 				break;
-		}
-	}
-	
-	@Override
-	public void render(GraphicsContext gc)
-	{
-		//Draw the image
-		image.draw(gc, x, y, width, height);
-		
-		//Only animate if moving
-		if(Math.abs(hspd) > 0 || Math.abs(vspd) > 0)
-		{
-			if(incrementImage >= 1)
-			{
-				imageIndex = (imageIndex + 1) % imageNumber;
-				image.animate(imageIndex);
-				incrementImage--;
-			}
-			else
-			{
-				incrementImage += imageSpeed;
-			}
-		}
-		else
-		{
-			image.animate(imageIndex);
-			imageIndex = 0;
 		}
 	}
 	
@@ -343,4 +316,6 @@ public class Player extends LifeForm
 			}
 		}
 	}
+
+
 }
