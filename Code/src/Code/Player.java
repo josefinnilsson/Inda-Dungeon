@@ -43,6 +43,10 @@ public class Player extends LifeForm
 	private boolean malePlayer;
 	
 	private Alarm dashAlarm;
+	private Alarm staminaRegenAlarm;
+	
+	private double stamina;
+	private double maxStamina;
 	
 	/**
 	 * Initialize the player object.
@@ -66,6 +70,10 @@ public class Player extends LifeForm
 		dashAlarm = new Alarm();
 		
 		malePlayer = true;
+		health = 100;
+		stamina = 100;
+		maxStamina = 100;
+		staminaRegenAlarm = new Alarm();
 
 	}
 	
@@ -95,16 +103,19 @@ public class Player extends LifeForm
 	{
 		//Count down alarms
 		dashAlarm.tick();
+		staminaRegenAlarm.tick();
 		
 		//Choose what to do depending on which state the player is in.
 		switch(state)
 		{
 			case move:
 				//Check if time to dash
-				if(rightMouse && dashable)
+				if(rightMouse && dashable && stamina >= 25)
 				{
+					stamina -= 25;
 					state = State.dash;
 					dashAlarm.setTime(10);
+					staminaRegenAlarm.setTime(60);
 				}
 				
 				//Control movement
@@ -128,6 +139,8 @@ public class Player extends LifeForm
 			default:
 				break;
 		}
+		
+		regenerateStamina();
 	}
 	
 	/**
@@ -317,5 +330,39 @@ public class Player extends LifeForm
 		}
 	}
 
-
+	/**
+	 * Returns the player's stamina.
+	 * @return the stamina of the player.
+	 */
+	public double getStamina()
+	{
+		return stamina;
+	}
+	
+	/**
+	 * Returns the player's maximum stamina.
+	 * @return the maximum stamina of the player.
+	 */
+	public double getMaxStamina()
+	{
+		return maxStamina;
+	}
+	
+	/**
+	 * Regenerates stamina over time.
+	 */
+	private void regenerateStamina()
+	{
+		if(staminaRegenAlarm.done())
+		{
+			if(stamina < maxStamina)
+			{
+				stamina += 1;
+			}
+			if(stamina > maxStamina)
+			{
+				stamina = maxStamina;
+			}
+		}
+	}
 }
