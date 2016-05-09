@@ -241,6 +241,9 @@ public class Game extends Application
 		for(GameObject object : objects)
 		{
 			object.update();
+			if (player.getHealth() != 100) {
+				System.out.println("Health: " + player.getHealth());
+			}
 		}
 	}
 	
