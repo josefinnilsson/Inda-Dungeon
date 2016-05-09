@@ -39,11 +39,14 @@ public class Player extends LifeForm
 	private boolean flippedRight;
 	private boolean dashing;
 	private boolean dashable;
+	private boolean attacking;
+	private boolean attackable;
 
 	private boolean malePlayer;
 	
 	private Alarm dashAlarm;
 	private Alarm staminaRegenAlarm;
+	private Alarm attackAlarm;
 	
 	private double stamina;
 	private double maxStamina;
@@ -68,6 +71,11 @@ public class Player extends LifeForm
 		dashable = true;
 		state = State.move;
 		dashAlarm = new Alarm();
+		
+		damage = 25;
+		attackable = true;
+		attacking = false;
+		attackAlarm = new Alarm();
 		
 		malePlayer = true;
 		health = 100;
@@ -103,6 +111,7 @@ public class Player extends LifeForm
 	{
 		//Count down alarms
 		dashAlarm.tick();
+		attackAlarm.tick();
 		staminaRegenAlarm.tick();
 		
 		//Choose what to do depending on which state the player is in.
@@ -115,7 +124,21 @@ public class Player extends LifeForm
 					stamina -= 25;
 					state = State.dash;
 					dashAlarm.setTime(10);
-					staminaRegenAlarm.setTime(60);
+					if(staminaRegenAlarm.currentTime() < 60)
+					{
+						staminaRegenAlarm.setTime(60);
+					}
+				}
+				//Check if time to attack
+				else if(leftMouse && attackable && stamina >= 10)
+				{
+					stamina -= 10;
+					state = State.attack;
+					attackAlarm.setTime(20);
+					if(staminaRegenAlarm.currentTime() < 30)
+					{
+						staminaRegenAlarm.setTime(30);
+					}
 				}
 				
 				//Control movement
@@ -129,6 +152,7 @@ public class Player extends LifeForm
 				dash();
 				break;
 			case attack:
+				attack();
 				break;
 			case shoot:
 				break;
@@ -199,6 +223,8 @@ public class Player extends LifeForm
 		
 		//Check if it's possible to dash
 		if(!rightMouse) dashable = true;
+		//Check if it's possible to attack
+		if(!leftMouse) attackable = true;
 	}
 	
 	/**
@@ -296,6 +322,37 @@ public class Player extends LifeForm
 			}
 		}
 		move();
+	}
+	
+	/**
+	 * Makes the player attack in a certain direction.
+	 */
+	private void attack()
+	{
+		attackable = false;
+		if(!attacking)
+		{
+			//Make sure no viewport movement is done.
+			prevX = x;
+			prevY = y;
+			//Get direction to attack in
+			setAxesToMouse();
+			attacking = true;
+			
+			//Set attack coordinates
+			double damageX = x + width/2 + xAxis * 16;
+			double damageY = y + height/2 + yAxis * 16;
+			Damage dmg = new Damage(damageX-8, damageY-8, this, damage);
+			Game.objectWaitingRoom.add(dmg);
+		}
+		else
+		{
+			if(attackAlarm.done())
+			{
+				state = State.move;
+				attacking = false;
+			}
+		}
 	}
 	
 	/**

@@ -1,5 +1,6 @@
 package Code;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -38,6 +39,12 @@ public class Damage extends GameObject
 	}
 	
 	@Override
+	public Rectangle2D getBounds()
+	{
+		return new Rectangle2D(x, y, width, height);
+	}
+	
+	@Override
 	public void update()
 	{
 		//Only damage once
@@ -55,10 +62,15 @@ public class Damage extends GameObject
 				}
 			}
 			dealtDamage = true;
-		} 
-		else
-		{
-			Game.objects.remove(this);
 		}
+	}
+	
+	/**
+	 * Returns whether this object has dealt damage yet.
+	 * @return true if it has dealt damage, false otherwise.
+	 */
+	public boolean hasDamaged()
+	{
+		return dealtDamage;
 	}
 }

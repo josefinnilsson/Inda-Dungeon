@@ -2,19 +2,18 @@ package Code;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Objects;
+import java.util.Iterator;
+import java.util.Queue;
 import java.util.Random;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -63,6 +62,13 @@ public class Game extends Application
 	//This list contains all objects within the game.
 	public static ArrayList<GameObject> objects;
 	
+	//This list contains objects that need to be added to the objects list but
+	//are created during iteration of the objects list.
+	public static ArrayList<GameObject> objectWaitingRoom;
+	
+	//This variable is used to declare the id of every object within the game.
+	public static long objectsID;
+	
 	private Player player;
 
     private Snail snail;
@@ -78,6 +84,7 @@ public class Game extends Application
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{
+		objectsID = 0;
 		r = new Random();
 		
 		introRoot = new Pane();
@@ -110,6 +117,7 @@ public class Game extends Application
 	private void initiateLevelContent(Stage primaryStage)
 	{
 		objects = new ArrayList<GameObject>();
+		objectWaitingRoom = new ArrayList<GameObject>();
 		currentLevel = 1;
 		
 		//Create a canvas to draw the level on.
@@ -249,12 +257,35 @@ public class Game extends Application
 	 */
 	private void update()
 	{
-		for(GameObject object : objects)
+		//Add the objects made during previous iteration and empty waiting room.
+		objects.addAll(objectWaitingRoom);
+		objectWaitingRoom.clear();
+		
+		Iterator<GameObject> it = objects.iterator();
+		while(it.hasNext())
 		{
+			GameObject object = it.next();
 			object.update();
 			checkEnemyCollision();
+			
+			//Remove objects that are no more
+			if(object instanceof Damage)
+			{
+				if(((Damage) object).hasDamaged())
+				{
+					it.remove();
+				}
+			}
+			else if(object instanceof LifeForm)
+			{
+				if(((LifeForm) object).isDead())
+				{
+					it.remove();
+				}
+			}
+			
 			//Code down below is temporary
-			if (player.getHealth() != 100) {
+			if (object instanceof Player && player.getHealth() != 100) {
 				System.out.println("Health: " + player.getHealth());
 			}
 		}
@@ -599,7 +630,7 @@ public class Game extends Application
 		{
 			if(player.collidesWith(go) && go instanceof Snail)
 			{
-				player.hit(snail.getDamage());
+				player.hit(((Snail) go).getDamage());
 				//TODO: make the player immortal for a few seconds
 			}
 		}

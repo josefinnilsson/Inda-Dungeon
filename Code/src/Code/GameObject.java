@@ -31,6 +31,9 @@ public class GameObject implements Comparable<GameObject>
 	protected double imageSpeed;
 	protected double incrementImage;
 	
+	//This is the object's id and it defines a way to refer to the object.
+	private long objectID;
+	
 	/**
 	 * Initialize the object.
 	 * @param x The object's x-coordinate.
@@ -39,6 +42,10 @@ public class GameObject implements Comparable<GameObject>
 	 */
 	public GameObject(double x, double y, String image, int subImages)
 	{
+		//Set the ID of the object.
+		objectID = Game.objectsID;
+		Game.objectsID++;
+		
 		this.x = x;
 		this.y = y;
 		prevX = this.x;
@@ -94,7 +101,7 @@ public class GameObject implements Comparable<GameObject>
 	 */
 	public Rectangle2D getBounds()
 	{
-		return new Rectangle2D(x, y+height/2, width, height);
+		return new Rectangle2D(x, y+height/2, width, height/2);
 	}
 	
 	/**
@@ -268,10 +275,26 @@ public class GameObject implements Comparable<GameObject>
 	{
 		return image;
 	}
+	
+	/**
+	 * Returns the object's ID.
+	 * @return the object's ID.
+	 */
+	public long getObjectID()
+	{
+		return objectID;
+	}
 
 	@Override
 	public int compareTo(GameObject o)
 	{
 		return (int) -((o.getY() + o.getHeight()) - (y + height));
+	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		return objectID == ((GameObject) o).getObjectID();
+		
 	}
 }

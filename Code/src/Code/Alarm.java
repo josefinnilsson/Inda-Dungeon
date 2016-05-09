@@ -56,4 +56,13 @@ public class Alarm
 	{
 		return time <= 0;
 	}
+	
+	/**
+	 * Return the current time for the alarm.
+	 * @return what index the alarm is currently at.
+	 */
+	public int currentTime()
+	{
+		return time;
+	}
 }
