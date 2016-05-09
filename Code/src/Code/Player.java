@@ -340,9 +340,9 @@ public class Player extends LifeForm
 			attacking = true;
 			
 			//Set attack coordinates
-			double damageX = x + width/2 + xAxis * 16;
-			double damageY = y + height/2 + yAxis * 16;
-			Damage dmg = new Damage(damageX-8, damageY-8, this, damage);
+			double damageX = x + width/2 + xAxis * 24;
+			double damageY = y + height/2 + yAxis * 24;
+			Damage dmg = new Damage(damageX-16, damageY-16, this, damage);
 			Game.objectWaitingRoom.add(dmg);
 		}
 		else

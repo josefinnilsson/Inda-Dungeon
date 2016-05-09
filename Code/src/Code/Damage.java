@@ -26,7 +26,7 @@ public class Damage extends GameObject
 	 */
 	public Damage(double x, double y, GameObject creator, int damage)
 	{
-		super(x, y, "Res/Indadamage.png", 1);
+		super(x, y, "Res/indadamage.png", 1);
 		this.creator = creator;
 		this.damage = damage;
 		dealtDamage = false;
