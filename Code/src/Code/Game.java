@@ -2,6 +2,7 @@ package Code;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Random;
 
 import javafx.animation.AnimationTimer;
@@ -251,6 +252,8 @@ public class Game extends Application
 		for(GameObject object : objects)
 		{
 			object.update();
+			checkEnemyCollision();
+			//Code down below is temporary
 			if (player.getHealth() != 100) {
 				System.out.println("Health: " + player.getHealth());
 			}
@@ -584,5 +587,21 @@ public class Game extends Application
 						(player.getStamina()*128)/player.getMaxStamina(), 32);
 		uiBar.draw(uiGc, 16, 64, uiBar.getCellWidth(), 
 								uiBar.getCellHeight());
+	}
+
+	/**
+	 * Checks if the player collides with an enemy which attack by collision,
+	 * if so, the player gets hit
+	 */
+	private void checkEnemyCollision()
+	{
+		for(GameObject go : objects)
+		{
+			if(player.collidesWith(go) && go instanceof Snail)
+			{
+				player.hit(snail.getDamage());
+				//TODO: make the player immortal for a few seconds
+			}
+		}
 	}
 }
