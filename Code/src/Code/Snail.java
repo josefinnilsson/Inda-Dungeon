@@ -6,7 +6,6 @@ package Code;
 public class Snail extends Enemy {
     private boolean right;
     private boolean left;
-    private Snail snail;
 
     /**
      * Initialize the object.
@@ -66,5 +65,7 @@ public class Snail extends Enemy {
         }
 
     }
+
+    //TODO: create GameObject Damage for when a Snail collides with player
 
 }
