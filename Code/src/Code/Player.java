@@ -1,5 +1,6 @@
 package Code;
 
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
@@ -134,7 +135,7 @@ public class Player extends LifeForm
 				{
 					stamina -= 10;
 					state = State.attack;
-					attackAlarm.setTime(20);
+					attackAlarm.setTime(40);
 					if(staminaRegenAlarm.currentTime() < 30)
 					{
 						staminaRegenAlarm.setTime(30);
@@ -339,18 +340,54 @@ public class Player extends LifeForm
 			setAxesToMouse();
 			attacking = true;
 			
-			//Set attack coordinates
-			double damageX = x + width/2 + xAxis * 24;
-			double damageY = y + height/2 + yAxis * 24;
-			Damage dmg = new Damage(damageX-16, damageY-16, this, damage);
-			Game.objectWaitingRoom.add(dmg);
+			//Change sprite to attacking sprite
+			if(malePlayer)
+			{
+				if(flippedRight)
+				{
+					setImage("Res/IndoAttack.png", 10);
+				}
+				else
+				{
+					setImage("Res/IndoAttackFlipped.png", 10);
+				}
+			}
+			else
+			{
+				if(flippedRight)
+				{
+					setImage("Res/IndaAttack.png", 10);
+				}
+				else
+				{
+					setImage("Res/IndaAttackFlipped.png", 10);
+				}
+			}
+			
+			//Modify image speed so one attack animates throughout the time
+			//of the attack.
+			imageSpeed = ((double) 10) / ((double) attackAlarm.currentTime());
+			imageIndex = 0;
 		}
 		else
 		{
+			//Time to move again
 			if(attackAlarm.done())
 			{
 				state = State.move;
 				attacking = false;
+				imageSpeed = .2;
+				imageIndex = 0;
+				setPlayer(malePlayer);
+			}
+			//This is when the attack is committed
+			else if(imageIndex == 6)
+			{
+				//Set attack coordinates
+				double damageX = x + width/2 + xAxis * 24;
+				double damageY = y + height/2 + yAxis * 24;
+				Damage dmg = new Damage(damageX-16, damageY-16, this, damage);
+				Game.objectWaitingRoom.add(dmg);
 			}
 		}
 	}
