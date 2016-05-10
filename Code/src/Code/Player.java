@@ -1,6 +1,5 @@
 package Code;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
@@ -42,6 +41,7 @@ public class Player extends LifeForm
 	private boolean dashable;
 	private boolean attacking;
 	private boolean attackable;
+	private boolean attacked;
 
 	private boolean malePlayer;
 	
@@ -76,6 +76,7 @@ public class Player extends LifeForm
 		damage = 25;
 		attackable = true;
 		attacking = false;
+		attacked = false;
 		attackAlarm = new Alarm();
 		
 		malePlayer = true;
@@ -136,9 +137,9 @@ public class Player extends LifeForm
 					stamina -= 10;
 					state = State.attack;
 					attackAlarm.setTime(40);
-					if(staminaRegenAlarm.currentTime() < 30)
+					if(staminaRegenAlarm.currentTime() < 60)
 					{
-						staminaRegenAlarm.setTime(30);
+						staminaRegenAlarm.setTime(60);
 					}
 				}
 				
@@ -376,18 +377,20 @@ public class Player extends LifeForm
 			{
 				state = State.move;
 				attacking = false;
+				attacked = false;
 				imageSpeed = .2;
 				imageIndex = 0;
 				setPlayer(malePlayer);
 			}
 			//This is when the attack is committed
-			else if(imageIndex == 6)
+			else if(imageIndex == 6 && !attacked)
 			{
 				//Set attack coordinates
 				double damageX = x + width/2 + xAxis * 24;
 				double damageY = y + height/2 + yAxis * 24;
 				Damage dmg = new Damage(damageX-16, damageY-16, this, damage);
 				Game.objectWaitingRoom.add(dmg);
+				attacked = true;
 			}
 		}
 	}
@@ -458,5 +461,29 @@ public class Player extends LifeForm
 				stamina = maxStamina;
 			}
 		}
+	} 
+	
+	@Override
+	public void animate()
+	{
+		//Only animate if moving or if attacking
+        if(Math.abs(hspd) > 0 || Math.abs(vspd) > 0 || state == State.attack)
+        {
+            if(incrementImage >= 1)
+            {
+                imageIndex = (imageIndex + 1) % imageNumber;
+                image.animate(imageIndex);
+                incrementImage--;
+            }
+            else
+            {
+                incrementImage += imageSpeed;
+            }
+        }
+        else
+        {
+            image.animate(imageIndex);
+            imageIndex = 0;
+        }
 	}
 }

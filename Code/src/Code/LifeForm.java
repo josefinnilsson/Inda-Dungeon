@@ -83,7 +83,15 @@ public class LifeForm extends GameObject
         //Draw the image
         image.draw(gc, x, y, width, height);
 
-        //Only animate if moving
+        animate();
+    }
+    
+    /**
+     * Animates the life form.
+     */
+    public void animate()
+    {
+    	//Only animate if moving
         if(Math.abs(hspd) > 0 || Math.abs(vspd) > 0)
         {
             if(incrementImage >= 1)
