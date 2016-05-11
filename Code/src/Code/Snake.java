@@ -7,7 +7,8 @@ import java.util.Random;
  * Created by Josefin on 2016-05-04.
  */
 public class Snake extends Enemy {
-    Random random = new Random();
+    Random random;
+    Alarm alarm;
     private double direction;
 
     /**
@@ -18,15 +19,16 @@ public class Snake extends Enemy {
      */
     public Snake(double x, double y) {
         super(x, y, "Res/indaSnake.png", 2);
-        speed = 1;
+        speed = 0.5;
         imageSpeed = 0.2;
         damage =  1;
+        alarm = new Alarm(40); //change this condition?
+        random = new Random();
     }
 
     public void update()
     {
         nextPosition();
-        //TODO: make snake move random until player gets close
     }
 
     private void nextPosition()
@@ -35,29 +37,24 @@ public class Snake extends Enemy {
         double playerY = Game.player.getY();
         double diffX = playerX-x;
         double diffY = playerY-y;
-
-        if (diffX < 5 || diffY < 5) { //this condition needs to change
+        if(diffX < 1 || diffY < 1) { //change this condition?
             direction = MathMethods.getDirectionBetweenPoints(0, 0, diffX, diffY);
-
-        } else {
-            direction = Math.abs(random.nextInt() % 360) + 1;
-            //direction cannot change for every frame, FIX 
-        }
-        x += MathMethods.lengthDirX(speed, direction);
-        y += MathMethods.lengthDirY(speed, direction);
-
-        if (wallCollision(Game.level, x, y))
+        } else if (alarm.currentTime() <= 0)
         {
-            speed = 0;
-            //TODO: make snake go along the wall
+            direction = Math.abs(random.nextInt() % 360) + 1;
+            alarm.setTime(40); //change this condition?
+
         }
+        hspd = MathMethods.lengthDirX(speed, direction);
+        vspd = MathMethods.lengthDirY(speed, direction);
+        move();
         setEnemy();
+        alarm.tick();
     }
 
 
     private void setEnemy()
     {
-
         if(flippedRight)
         {
             setImage("Res/indaSnake.png", 2);
