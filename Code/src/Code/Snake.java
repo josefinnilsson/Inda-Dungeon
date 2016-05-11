@@ -1,9 +1,14 @@
 package Code;
 
+
+import java.util.Random;
+
 /**
  * Created by Josefin on 2016-05-04.
  */
 public class Snake extends Enemy {
+    Random random = new Random();
+    private double direction;
 
     /**
      * Initialize the object.
@@ -30,9 +35,17 @@ public class Snake extends Enemy {
         double playerY = Game.player.getY();
         double diffX = playerX-x;
         double diffY = playerY-y;
-        double direction = MathMethods.getDirectionBetweenPoints(0, 0, diffX, diffY);
+
+        if (diffX < 5 || diffY < 5) { //this condition needs to change
+            direction = MathMethods.getDirectionBetweenPoints(0, 0, diffX, diffY);
+
+        } else {
+            direction = Math.abs(random.nextInt() % 360) + 1;
+            //direction cannot change for every frame, FIX 
+        }
         x += MathMethods.lengthDirX(speed, direction);
         y += MathMethods.lengthDirY(speed, direction);
+
         if (wallCollision(Game.level, x, y))
         {
             speed = 0;
