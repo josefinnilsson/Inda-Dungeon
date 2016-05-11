@@ -141,6 +141,8 @@ public class Game extends Application
 			addSnake();
 		}
 		
+		//Temporary
+		//TODO: Make stairs spawn after enough enemies are dead!!!
 		createStairs();
 
 		//Set the correct scale of the view.
@@ -264,6 +266,7 @@ public class Game extends Application
 	 */
 	private void update()
 	{
+		
 		//Add the objects made during previous iteration and empty waiting room.
 		objects.addAll(objectWaitingRoom);
 		objectWaitingRoom.clear();
@@ -296,6 +299,9 @@ public class Game extends Application
 				System.out.println("Health: " + player.getHealth());
 			}
 		}
+		
+		//Check if it's time to go to next level
+		isPlayerAtStairs();
 	}
 	
 	/**
@@ -613,9 +619,29 @@ public class Game extends Application
 		player.setY(playerY);
 	}
 	
+	private void isPlayerAtStairs()
+	{
+		if(player.collidesWith(stairs))
+		{
+			levelCompleted();
+		}
+	}
+	
 	private void levelCompleted()
 	{
 		//TODO: Add code for level completion
+		
+		//Remove all remaining objects that aren't the player
+		Iterator<GameObject> it = objects.iterator();
+		while(it.hasNext())
+		{
+			GameObject object = it.next();
+			if(!(object instanceof Player))
+			{
+				it.remove();
+			}
+		}
+		//Goto next level
 		nextLevel();
 	}
 	
