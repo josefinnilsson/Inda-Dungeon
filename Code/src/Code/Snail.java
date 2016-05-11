@@ -6,6 +6,8 @@ package Code;
 public class Snail extends Enemy {
     private boolean right;
     private boolean left;
+    private boolean up;
+    private boolean down;
 
     /**
      * Initialize the object.
@@ -15,11 +17,15 @@ public class Snail extends Enemy {
      */
     public Snail(double x, double y) {
         super(x, y, "Res/indaSnail.png", 2);
+        hspd = 0.4;
+        vspd = 0.4;
         speed = 0.4;
         imageSpeed = 0.2;
         damage =  1;
         left = false;
         right = true;
+        up = true;
+        down = false;
     }
 
     @Override
@@ -29,27 +35,33 @@ public class Snail extends Enemy {
     }
 
     private void nextPosition() {
-        if(left) {
-            if (wallCollision(Game.level, x, y))
+        if(left)
+        {
+            if (wallCollision(Game.level, x+hspd, y))
             {
-                speed = -speed;
+                hspd = -hspd;
                 right = true;
                 left = false;
                 flippedRight=true;
                 setEnemy();
 
             }
-        } else if (right) {
-            if (wallCollision(Game.level, x, y))
+        } else if (right)
+        {
+            if (wallCollision(Game.level, x+hspd, y))
             {
-                speed = -speed;
+                hspd = -hspd;
                 right = false;
                 left = true;
                 flippedRight=false;
                 setEnemy();
             }
+
         }
-        x += speed;
+        x += hspd;
+
+        //TODO: Make snail able to move upwards and downwards as well
+
     }
 
     private void setEnemy()
@@ -65,7 +77,5 @@ public class Snail extends Enemy {
         }
 
     }
-
-    //TODO: create GameObject Damage for when a Snail collides with player
 
 }
