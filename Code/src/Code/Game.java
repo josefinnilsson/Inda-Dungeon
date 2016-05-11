@@ -68,9 +68,11 @@ public class Game extends Application
 	//This variable is used to declare the id of every object within the game.
 	public static long objectsID;
 	
-	private Player player;
+	public static Player player;
 
     private Snail snail;
+
+	private Snake snake;
 	
 	public static int[][] level;
 	private int currentLevel;
@@ -131,7 +133,13 @@ public class Game extends Application
         for (int i = 0; i < 30; i++) {
             addSnail();
         }
-		
+
+
+		for (int i = 0; i < 10; i++)
+		{
+			addSnake();
+		}
+
 		//Set the correct scale of the view.
 		gc.scale(SCALE_X, SCALE_Y);
 		
@@ -571,6 +579,22 @@ public class Game extends Application
         snail = new Snail(snailX, snailY);
         objects.add(snail);
     }
+
+	private void addSnake()
+	{
+		int x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
+		int y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);
+		while(level[x][y] != RandomLevelGenerator.FLOOR)
+		{
+			x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
+			y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);
+		}
+		double snakeX = (double) x*CELL_WIDTH+4;
+		double snakeY = (double) y*CELL_HEIGHT+4;
+		snake = new Snake(snakeX, snakeY);
+		objects.add(snake);
+	}
+
 	/**
 	 * Finds a place to spawn the player object on the new level.
 	 */
