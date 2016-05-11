@@ -216,10 +216,7 @@ public class Game extends Application
 		//Add the player to the room
         setPlayer();
 		//TODO: Add other game objects
-        for (int i = 0; i < 50; i++) {
-            addSnail();
-            snail.update();
-        }
+
 
 		//Scale the view
 		gc.scale(SCALE_X, SCALE_Y);
