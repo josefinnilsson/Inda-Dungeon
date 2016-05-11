@@ -72,7 +72,6 @@ public class Game extends Application
 	public static Stairs stairs;
 
     private Snail snail;
-
 	private Snake snake;
 	
 	public static int[][] level;
