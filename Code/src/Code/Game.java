@@ -69,6 +69,7 @@ public class Game extends Application
 	public static long objectsID;
 	
 	public static Player player;
+	public static Stairs stairs;
 
     private Snail snail;
 
@@ -139,6 +140,8 @@ public class Game extends Application
 		{
 			addSnake();
 		}
+		
+		createStairs();
 
 		//Set the correct scale of the view.
 		gc.scale(SCALE_X, SCALE_Y);
@@ -654,5 +657,28 @@ public class Game extends Application
 				//TODO: make the player immortal for a few seconds
 			}
 		}
+	}
+	
+	/**
+	 * Creates a stair object at the location generated in the method.
+	 */
+	private void createStairs()
+	{
+		int x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
+		int y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);
+		while(!(level[x][y] == RandomLevelGenerator.FLOOR && 
+				(
+					level[x-1][y] == RandomLevelGenerator.WALL ||
+					level[x+1][y] == RandomLevelGenerator.WALL ||
+					level[x][y-1] == RandomLevelGenerator.WALL 
+				)))
+		{
+			x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
+			y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);
+		}
+		double stairX = (double) x*CELL_WIDTH;
+		double stairY = (double) y*CELL_HEIGHT;
+		stairs = new Stairs(stairX, stairY);
+		objects.add(stairs);
 	}
 }
