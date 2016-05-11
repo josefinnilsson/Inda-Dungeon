@@ -168,40 +168,7 @@ public class Player extends LifeForm
 		
 		regenerateStamina();
 	}
-	
-	/**
-	 * Moves the player according to walls and speed.
-	 */
-	public void move()
-	{
-		prevX = x;
-		prevY = y;
-		//Check for horizontal collision
-		if(wallCollision(Game.level, x+hspd, y))
-		{
-			while(!wallCollision(Game.level, x+Math.signum(hspd), y))
-			{
-				x += Math.signum(hspd);
-			}
-			hspd = 0;
-		}
-		
-		//Move horizontally
-		x += hspd;
-		
-		//Check for vertical collision
-		if(wallCollision(Game.level, x, y+vspd))
-		{
-			while(!wallCollision(Game.level, x, y+Math.signum(vspd)))
-			{
-				y += Math.signum(vspd);
-			}
-			vspd = 0;
-		}
-		
-		//Move vertically
-		y += vspd;
-	}
+
 	
 	/**
 	 * Returns whether different mouse buttons or keys are currently being
