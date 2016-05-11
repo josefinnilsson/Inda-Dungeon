@@ -172,7 +172,7 @@ public class Player extends LifeForm
 	/**
 	 * Moves the player according to walls and speed.
 	 */
-	private void move()
+	public void move()
 	{
 		prevX = x;
 		prevY = y;

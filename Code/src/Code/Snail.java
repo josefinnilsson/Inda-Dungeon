@@ -20,7 +20,7 @@ public class Snail extends Enemy {
         hspd = 0.4;
         vspd = 0.4;
         speed = 0.4;
-        imageSpeed = 0.2;
+        imageSpeed = 0.05;
         damage =  1;
         left = false;
         right = true;
