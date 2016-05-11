@@ -13,7 +13,7 @@ public class Snake extends Enemy {
      */
     public Snake(double x, double y) {
         super(x, y, "Res/indaSnake.png", 2);
-        speed = 0.4;
+        speed = 1;
         imageSpeed = 0.2;
         damage =  1;
     }
@@ -21,21 +21,26 @@ public class Snake extends Enemy {
     public void update()
     {
         nextPosition();
+        //TODO: make snake move random until player gets close
     }
 
-    public void nextPosition()
+    private void nextPosition()
     {
         double playerX = Game.player.getX();
         double playerY = Game.player.getY();
         double diffX = playerX-x;
         double diffY = playerY-y;
-        float direction = (float)Math.atan2(diffY,diffX);
-        x += speed * Math.cos(direction);
-        y += speed * Math.sin(direction);
+        double direction = MathMethods.getDirectionBetweenPoints(0, 0, diffX, diffY);
+        x += MathMethods.lengthDirX(speed, direction);
+        y += MathMethods.lengthDirY(speed, direction);
+        if (wallCollision(Game.level, x, y))
+        {
+            speed = 0;
+            //TODO: make snake go along the wall
+        }
         setEnemy();
-
-        //TODO: Check wall collision
     }
+
 
     private void setEnemy()
     {
