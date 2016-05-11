@@ -6,8 +6,6 @@ package Code;
 public class Snail extends Enemy {
     private boolean right;
     private boolean left;
-    private boolean up;
-    private boolean down;
 
     /**
      * Initialize the object.
@@ -24,8 +22,6 @@ public class Snail extends Enemy {
         damage =  1;
         left = false;
         right = true;
-        up = true;
-        down = false;
     }
 
     @Override
@@ -34,7 +30,8 @@ public class Snail extends Enemy {
         nextPosition();
     }
 
-    private void nextPosition() {
+    private void nextPosition()
+    {
         if(left)
         {
             if (wallCollision(Game.level, x+hspd, y))
@@ -53,20 +50,18 @@ public class Snail extends Enemy {
                 hspd = -hspd;
                 right = false;
                 left = true;
-                flippedRight=false;
+                flippedRight = false;
                 setEnemy();
             }
 
         }
         x += hspd;
-
         //TODO: Make snail able to move upwards and downwards as well
 
     }
 
     private void setEnemy()
     {
-
         if(flippedRight)
         {
             setImage("Res/indaSnail.png", 2);
