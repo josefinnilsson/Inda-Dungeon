@@ -21,7 +21,7 @@ public class Snake extends Enemy {
     public Snake(double x, double y) {
         super(x, y, "Res/indaSnake.png", 2);
         speed = 0.5;
-        imageSpeed = 0.2;
+        imageSpeed = 0.05;
         damage =  1;
         alarm = new Alarm(40); //change this condition?
         random = new Random();
