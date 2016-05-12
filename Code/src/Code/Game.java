@@ -73,6 +73,9 @@ public class Game extends Application
 
     private Snail snail;
 	private Snake snake;
+	private Spider spider;
+
+	private Alarm immortalTimer;
 	
 	public static int[][] level;
 	private int currentLevel;
@@ -134,11 +137,17 @@ public class Game extends Application
             addSnail();
         }
 
-
 		for (int i = 0; i < 10; i++)
 		{
 			addSnake();
 		}
+
+		for (int i = 0; i < 10; i++)
+		{
+			addSpider();
+		}
+
+		immortalTimer = new Alarm(30);
 		
 		//Temporary
 		//TODO: Make stairs spawn after enough enemies are dead!!!
@@ -292,15 +301,12 @@ public class Game extends Application
 					it.remove();
 				}
 			}
-			
-			//Code down below is temporary
-			if (object instanceof Player && player.getHealth() != 100) {
-				System.out.println("Health: " + player.getHealth());
-			}
 		}
 		
 		//Check if it's time to go to next level
 		isPlayerAtStairs();
+
+		immortalTimer.tick();
 	}
 	
 	/**
@@ -600,6 +606,21 @@ public class Game extends Application
 		objects.add(snake);
 	}
 
+	private void addSpider()
+	{
+		int x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
+		int y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);
+		while(level[x][y] != RandomLevelGenerator.FLOOR)
+		{
+			x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
+			y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);
+		}
+		double spiderX = (double) x*CELL_WIDTH+4;
+		double spiderY = (double) y*CELL_HEIGHT+4;
+		spider = new Spider(spiderX, spiderY);
+		objects.add(spider);
+	}
+
 	/**
 	 * Finds a place to spawn the player object on the new level.
 	 */
@@ -678,12 +699,17 @@ public class Game extends Application
 		{
 			if(player.collidesWith(go) && go instanceof Snail)
 			{
-				player.hit(((Snail) go).getDamage());
-				//TODO: make the player immortal for a few seconds
+				if(immortalTimer.done()) {
+					player.hit(((Snail) go).getDamage());
+					immortalTimer.setTime(30);
+				}
 			}
 			if(player.collidesWith(go) && go instanceof Snake)
 			{
-				player.hit(((Snake) go).getDamage());
+				if(immortalTimer.done()) {
+					player.hit(((Snake) go).getDamage());
+					immortalTimer.setTime(30);
+				}
 			}
 		}
 	}
