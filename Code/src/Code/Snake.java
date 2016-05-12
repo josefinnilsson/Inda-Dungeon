@@ -11,6 +11,7 @@ public class Snake extends Enemy {
     Alarm alarm;
     private double direction;
 
+
     /**
      * Initialize the object.
      *
@@ -24,6 +25,9 @@ public class Snake extends Enemy {
         damage =  1;
         alarm = new Alarm(40); //change this condition?
         random = new Random();
+        damage = 3;
+        hspd = 0.5;
+        vspd = 0.5;
     }
 
     public void update()
@@ -42,6 +46,11 @@ public class Snake extends Enemy {
         } else if (alarm.done())
         {
             direction = Math.abs(random.nextInt() % 360) + 1;
+            if (direction >= 90 && direction <= 270) {
+                flippedRight = false;
+            } else {
+                flippedRight = true;
+            }
             alarm.setTime(40); //change this condition?
 
         }
