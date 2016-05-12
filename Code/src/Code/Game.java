@@ -696,7 +696,7 @@ public class Game extends Application
 					level[x-1][y] == RandomLevelGenerator.WALL ||
 					level[x+1][y] == RandomLevelGenerator.WALL ||
 					level[x][y-1] == RandomLevelGenerator.WALL 
-				)))
+				) && level[x][y+1] != RandomLevelGenerator.WALL))
 		{
 			x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
 			y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);

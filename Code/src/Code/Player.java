@@ -136,7 +136,7 @@ public class Player extends LifeForm
 				{
 					stamina -= 10;
 					state = State.attack;
-					attackAlarm.setTime(40);
+					attackAlarm.setTime(20);
 					if(staminaRegenAlarm.currentTime() < 60)
 					{
 						staminaRegenAlarm.setTime(60);
