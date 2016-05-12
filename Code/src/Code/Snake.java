@@ -39,7 +39,7 @@ public class Snake extends Enemy {
         double diffY = playerY-y;
         if(diffX < 1 || diffY < 1) { //change this condition?
             direction = MathMethods.getDirectionBetweenPoints(0, 0, diffX, diffY);
-        } else if (alarm.currentTime() <= 0)
+        } else if (alarm.done())
         {
             direction = Math.abs(random.nextInt() % 360) + 1;
             alarm.setTime(40); //change this condition?
