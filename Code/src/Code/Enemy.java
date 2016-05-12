@@ -30,4 +30,5 @@ public class Enemy extends LifeForm {
 
     public void update() {}
 
+
 }
