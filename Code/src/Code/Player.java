@@ -360,6 +360,9 @@ public class Player extends LifeForm
 				attacked = true;
 			}
 		}
+		
+		setSpeed();
+		move();
 	}
 	
 	/**
