@@ -51,13 +51,14 @@ public class Snake extends Enemy {
             } else {
                 flippedRight = true;
             }
+            setEnemy();
             alarm.setTime(40); //change this condition?
 
         }
         hspd = MathMethods.lengthDirX(speed, direction);
         vspd = MathMethods.lengthDirY(speed, direction);
         move();
-        setEnemy();
+
         alarm.tick();
     }
 
