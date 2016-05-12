@@ -20,14 +20,14 @@ public class Snake extends Enemy {
      */
     public Snake(double x, double y) {
         super(x, y, "Res/indaSnake.png", 2);
-        speed = 0.5;
+        speed = 0.4;
         imageSpeed = 0.05;
         damage =  1;
-        alarm = new Alarm(40); //change this condition?
+        alarm = new Alarm(40);
         random = new Random();
         damage = 3;
-        hspd = 0.5;
-        vspd = 0.5;
+        hspd = 0.4;
+        vspd = 0.4;
     }
 
     public void update()
