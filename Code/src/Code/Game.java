@@ -681,6 +681,10 @@ public class Game extends Application
 				player.hit(((Snail) go).getDamage());
 				//TODO: make the player immortal for a few seconds
 			}
+			if(player.collidesWith(go) && go instanceof Snake)
+			{
+				player.hit(((Snake) go).getDamage());
+			}
 		}
 	}
 	
