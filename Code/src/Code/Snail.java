@@ -15,11 +15,11 @@ public class Snail extends Enemy {
      */
     public Snail(double x, double y) {
         super(x, y, "Res/indaSnail.png", 2);
-        hspd = 0.4;
-        vspd = 0.4;
-        speed = 0.4;
+        hspd = 0.25;
+        vspd = 0.25;
+        speed = 0.25;
         imageSpeed = 0.05;
-        damage =  1;
+        damage =  3;
         left = false;
         right = true;
     }
@@ -56,7 +56,6 @@ public class Snail extends Enemy {
 
         }
         x += hspd;
-        //TODO: Make snail able to move upwards and downwards as well
 
     }
 
