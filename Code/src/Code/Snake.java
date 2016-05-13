@@ -10,6 +10,7 @@ public class Snake extends Enemy {
     Random random;
     Alarm alarm;
     private double direction;
+    private boolean close;
 
 
     /**
@@ -23,11 +24,12 @@ public class Snake extends Enemy {
         speed = 0.4;
         imageSpeed = 0.05;
         damage =  1;
-        alarm = new Alarm(40);
+        alarm = new Alarm(20);
         random = new Random();
         damage = 3;
         hspd = 0.4;
         vspd = 0.4;
+        close = false;
     }
 
     public void update()
@@ -41,7 +43,14 @@ public class Snake extends Enemy {
         double playerY = Game.player.getY();
         double diffX = playerX-x;
         double diffY = playerY-y;
-        if(diffX < 1 || diffY < 1) { //change this condition?
+        if(diffX < 3 || diffY < 3 )
+        {
+            close = true;
+        } else
+        {
+            close = false;
+        }
+        if(close) {
             direction = MathMethods.getDirectionBetweenPoints(0, 0, diffX, diffY);
         } else if (alarm.done())
         {
@@ -52,13 +61,12 @@ public class Snake extends Enemy {
                 flippedRight = true;
             }
             setEnemy();
-            alarm.setTime(40); //change this condition?
+            alarm.setTime(20);
 
         }
         hspd = MathMethods.lengthDirX(speed, direction);
         vspd = MathMethods.lengthDirY(speed, direction);
         move();
-
         alarm.tick();
     }
 
