@@ -48,6 +48,7 @@ public class Player extends LifeForm
 	private Alarm dashAlarm;
 	private Alarm staminaRegenAlarm;
 	private Alarm attackAlarm;
+	private Alarm immortalTimer;
 	
 	private double stamina;
 	private double maxStamina;
@@ -84,6 +85,8 @@ public class Player extends LifeForm
 		stamina = 100;
 		maxStamina = 100;
 		staminaRegenAlarm = new Alarm();
+		
+		immortalTimer = new Alarm(30);
 
 	}
 	
@@ -115,6 +118,7 @@ public class Player extends LifeForm
 		dashAlarm.tick();
 		attackAlarm.tick();
 		staminaRegenAlarm.tick();
+		immortalTimer.tick();
 		
 		//Choose what to do depending on which state the player is in.
 		switch(state)
@@ -166,6 +170,7 @@ public class Player extends LifeForm
 				break;
 		}
 		
+		checkEnemyCollision();
 		regenerateStamina();
 	}
 
@@ -455,5 +460,23 @@ public class Player extends LifeForm
             image.animate(imageIndex);
             imageIndex = 0;
         }
+	}
+	
+	/**
+	 * Checks if the player collides with an enemy which attack by collision,
+	 * if so, the player gets hit
+	 */
+	private void checkEnemyCollision()
+	{
+		for(GameObject go : Game.objects)
+		{
+			if(collidesWith(go) && go instanceof Enemy)
+			{
+				if(immortalTimer.done()) {
+					hit(((Enemy) go).getDamage());
+					immortalTimer.setTime(30);
+				}
+			}
+		}
 	}
 }

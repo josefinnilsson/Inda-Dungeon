@@ -74,8 +74,6 @@ public class Game extends Application
     private Snail snail;
 	private Snake snake;
 	private Spider spider;
-
-	private Alarm immortalTimer;
 	
 	public static int[][] level;
 	private int currentLevel;
@@ -146,8 +144,6 @@ public class Game extends Application
 		{
 			addSpider();
 		}
-
-		immortalTimer = new Alarm(30);
 		
 		//Temporary
 		//TODO: Make stairs spawn after enough enemies are dead!!!
@@ -284,7 +280,6 @@ public class Game extends Application
 		{
 			GameObject object = it.next();
 			object.update();
-			checkEnemyCollision();
 			
 			//Remove objects that are no more
 			if(object instanceof Damage)
@@ -305,8 +300,6 @@ public class Game extends Application
 		
 		//Check if it's time to go to next level
 		isPlayerAtStairs();
-
-		immortalTimer.tick();
 	}
 	
 	/**
@@ -687,31 +680,6 @@ public class Game extends Application
 						(player.getStamina()*128)/player.getMaxStamina(), 32);
 		uiBar.draw(uiGc, 16, 64, uiBar.getCellWidth(), 
 								uiBar.getCellHeight());
-	}
-
-	/**
-	 * Checks if the player collides with an enemy which attack by collision,
-	 * if so, the player gets hit
-	 */
-	private void checkEnemyCollision()
-	{
-		for(GameObject go : objects)
-		{
-			if(player.collidesWith(go) && go instanceof Snail)
-			{
-				if(immortalTimer.done()) {
-					player.hit(((Snail) go).getDamage());
-					immortalTimer.setTime(30);
-				}
-			}
-			if(player.collidesWith(go) && go instanceof Snake)
-			{
-				if(immortalTimer.done()) {
-					player.hit(((Snake) go).getDamage());
-					immortalTimer.setTime(30);
-				}
-			}
-		}
 	}
 	
 	/**
