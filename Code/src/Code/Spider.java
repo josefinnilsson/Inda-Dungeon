@@ -7,8 +7,10 @@ import java.util.Random;
  */
 public class Spider extends Enemy {
     private double direction;
+    private boolean close;
     Random random;
     Alarm alarm;
+    Alarm shootTimer;
     /**
      * Initialize the object.
      *
@@ -23,7 +25,9 @@ public class Spider extends Enemy {
         imageSpeed = 0.05;
         damage =  1;
         alarm = new Alarm(50);
+        shootTimer = new Alarm(20);
         random = new Random();
+        close = false;
     }
 
     public void update() {
@@ -36,7 +40,14 @@ public class Spider extends Enemy {
         double playerY = Game.player.getY();
         double diffX = playerX-x;
         double diffY = playerY-y;
-        if (diffX < 4 || diffY < 4)
+        if(diffX < 3 || diffY < 3 )
+        {
+            close = true;
+        } else
+        {
+            close = false;
+        }
+        if(close)
         {
             attackPlayer();
         }
@@ -53,12 +64,19 @@ public class Spider extends Enemy {
         hspd = MathMethods.lengthDirX(speed, direction);
         vspd = MathMethods.lengthDirY(speed, direction);
         move();
+        //TODO: Fix bug so that the spider doesn't get stuck at collision 
         alarm.tick();
+        shootTimer.tick();
     }
 
     private void attackPlayer()
     {
-
+        if(alarm.done())
+        {
+            SpiderWeb spiderWeb = new SpiderWeb(x, y);
+           // spiderWeb.shoot();
+            shootTimer.setTime(30);
+        }
     }
 
     private void setEnemy()
