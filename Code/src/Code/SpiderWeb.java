@@ -1,38 +1,44 @@
 package Code;
 
-import Code.GameObject;
-
 /**
  * Created by Josefin on 2016-05-12.
  */
 public class SpiderWeb extends GameObject {
+    Player player;
+    double direction;
+    int damage;
+
     /**
      * Initialize the object.
      *
      * @param x         The object's x-coordinate.
      * @param y         The object's y-coordinate.
-     * @param image     The object's sprite.
-     * @param subImages
      */
-    public SpiderWeb(double x, double y, String image, int subImages) {
-        super(x, y, image, subImages);
+    public SpiderWeb(double x, double y) {
+        super(x, y, "Res/indaSpider.png", 1);
+        hspd = 1.5;
+        vspd = 1.5;
+        speed = 1.5;
+        imageSpeed = 0.05;
+        damage = 3;
     }
 
     public void update()
     {
-        nextPosition();
+        shoot();
     }
 
-    private void nextPosition()
+    public void shoot()
     {
-        setWeb();
-        //TODO
+        double playerX = player.getX();
+        double playerY = player.getY();
+        double diffX = playerX-x;
+        double diffY = playerY-y;
+        direction = MathMethods.getDirectionBetweenPoints(0, 0, diffX, diffY);
+        hspd = MathMethods.lengthDirX(speed, direction);
+        vspd = MathMethods.lengthDirY(speed, direction);
     }
 
-    private void setWeb()
-    {
-        setImage("Res/IndaSpiderWeb.png", 1);
-    }
 
 
 }
