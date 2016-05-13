@@ -102,4 +102,80 @@ public class RandomLevelGenerator
 		
 		return level;
 	}
+	
+	/**
+	 * Generates a fixed 2D-level for a boss fight and stores 
+	 * it inside an array.
+	 * @param sizeX The width of the level in pixels.
+	 * @param sizeY The height of the level in pixels.
+	 * @param cellWidth The width of each cell in the level (tile size).
+	 * @param cellHeight The height of each cell in the level (tile size).
+	 * @return the level generated.
+	 */
+	public static int[][] generateBossLevel(int sizeX, int sizeY, 
+											int cellWidth, int cellHeight)
+	{
+		int columns = sizeX/cellWidth;
+		int rows = sizeY/cellHeight;
+		int[][] level = new int[columns][rows];
+		Random r = new Random();
+		
+		//Start off by creating a void.
+		for(int x = 0; x < columns; x++)
+		{
+			for(int y = 0; y < rows; y++)
+			{
+				level[x][y] = VOID;
+			}
+		}
+		
+		//Add flooring
+		int dir = 0;
+		for(int x = columns/3; x < 2*columns/3; x++)
+		{
+			for(int y = rows/3; y < 2*rows/3; y++)
+			{
+				level[x][y] = FLOOR;
+			}
+			if(Math.abs(x-columns/2+1) < 3)
+			{
+				for(int y = 2*rows/3; y < rows - 2; y++)
+				{
+					level[x][y] = FLOOR;
+				}
+			}
+		}
+		
+		//Add walls
+		for(int x = 2; x < columns-2; x++)
+		{
+			for(int y = 2; y < rows-2; y++)
+			{
+				if(level[x][y] == FLOOR)
+				{
+					if(level[x+1][y] != FLOOR) level[x+1][y] = WALL;
+					if(level[x-1][y] != FLOOR) level[x-1][y] = WALL;
+					if(level[x][y+1] != FLOOR) level[x][y+1] = WALL;
+					if(level[x][y-1] != FLOOR) level[x][y-1] = WALL;
+				}
+			}
+		}
+		
+		//Remove single wall objects
+		for(int x = 2; x < columns-2; x++)
+		{
+			for(int y = 2; y < rows-2; y++)
+			{
+				if(level[x][y] == WALL && level[x+1][y] == FLOOR &&
+											level[x-1][y] == FLOOR &&
+											level[x][y-1] == FLOOR &&
+											level[x][y+1] == FLOOR)
+				{
+					level[x][y] = FLOOR;
+				}
+			}
+		}
+		
+		return level;
+	}
 }
