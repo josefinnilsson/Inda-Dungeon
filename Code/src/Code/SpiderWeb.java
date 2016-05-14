@@ -15,7 +15,7 @@ public class SpiderWeb extends GameObject {
      * @param y         The object's y-coordinate.
      */
     public SpiderWeb(double x, double y) {
-        super(x, y, "Res/indaSpider.png", 1);
+        super(x, y, "Res/IndaSpiderWeb.png", 2);
         hspd = 1.5;
         vspd = 1.5;
         speed = 1.5;

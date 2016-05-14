@@ -71,10 +71,9 @@ public class Spider extends Enemy {
 
     private void attackPlayer()
     {
-        if(alarm.done())
+        if(shootTimer.done())
         {
             SpiderWeb spiderWeb = new SpiderWeb(x, y);
-            spiderWeb.shoot();
             Game.objectWaitingRoom.add(spiderWeb);
             shootTimer.setTime(30);
         }
