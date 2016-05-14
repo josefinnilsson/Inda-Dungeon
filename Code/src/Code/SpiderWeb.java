@@ -7,6 +7,7 @@ public class SpiderWeb extends GameObject {
     Player player;
     double direction;
     int damage;
+    boolean active;
 
     /**
      * Initialize the object.
@@ -21,6 +22,7 @@ public class SpiderWeb extends GameObject {
         speed = 1.5;
         imageSpeed = 0.05;
         damage = 3;
+        active = false;
     }
 
     public void update()
@@ -35,8 +37,22 @@ public class SpiderWeb extends GameObject {
         double diffX = playerX-x;
         double diffY = playerY-y;
         direction = MathMethods.getDirectionBetweenPoints(0, 0, diffX, diffY);
-        hspd = MathMethods.lengthDirX(speed, direction);
-        vspd = MathMethods.lengthDirY(speed, direction);
+        active = true;
+        if(x < 0 || x > Game.ROOM_WIDTH)
+        {
+            active = false;
+        }
+        if(y < 0 || y > Game.ROOM_HEIGHT)
+        {
+            active = false;
+        }
+        if(active)
+        {
+            hspd = MathMethods.lengthDirX(speed, direction);
+            vspd = MathMethods.lengthDirY(speed, direction);
+            x += hspd;
+            y += vspd;
+        }
     }
 
 

@@ -64,7 +64,7 @@ public class Spider extends Enemy {
         hspd = MathMethods.lengthDirX(speed, direction);
         vspd = MathMethods.lengthDirY(speed, direction);
         move();
-        //TODO: Fix bug so that the spider doesn't get stuck at collision 
+        //TODO: Fix bug so that the spider doesn't get stuck at collision
         alarm.tick();
         shootTimer.tick();
     }
@@ -74,7 +74,8 @@ public class Spider extends Enemy {
         if(alarm.done())
         {
             SpiderWeb spiderWeb = new SpiderWeb(x, y);
-           // spiderWeb.shoot();
+            spiderWeb.shoot();
+            Game.objectWaitingRoom.add(spiderWeb);
             shootTimer.setTime(30);
         }
     }
