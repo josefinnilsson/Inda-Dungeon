@@ -4,7 +4,6 @@ package Code;
  * Created by Josefin on 2016-05-12.
  */
 public class SpiderWeb extends GameObject {
-    Player player;
     double direction;
     int damage;
     boolean active;
@@ -32,8 +31,8 @@ public class SpiderWeb extends GameObject {
 
     public void shoot()
     {
-        double playerX = player.getX();
-        double playerY = player.getY();
+        double playerX = Game.player.getX();
+        double playerY = Game.player.getY();
         double diffX = playerX-x;
         double diffY = playerY-y;
         direction = MathMethods.getDirectionBetweenPoints(0, 0, diffX, diffY);
