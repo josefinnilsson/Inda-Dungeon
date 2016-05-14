@@ -220,12 +220,25 @@ public class Game extends Application
 		gc = canvas.getGraphicsContext2D();
 		
 		//Create a new level
-		createLevel(ROOM_WIDTH, ROOM_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+		if(currentLevel < 10)
+		{
+			createLevel(ROOM_WIDTH, ROOM_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+		}
+		else
+		{
+			createBossLevel(ROOM_WIDTH, ROOM_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+		}
 
 		//Add the player to the room
         setPlayer();
 		//TODO: Add other game objects
 
+        //Temporary
+  		//TODO: Make stairs spawn after enough enemies are dead!!!
+        if(currentLevel < 10)
+        {
+        	createStairs();
+        }
 
 		//Scale the view
 		gc.scale(SCALE_X, SCALE_Y);
@@ -314,6 +327,20 @@ public class Game extends Application
 	{
 		level = RandomLevelGenerator.generateLevel(roomWidth, roomHeight,
 													cellWidth, cellHeight);
+	}
+	
+	/**
+	 * Creates the boss level.
+	 * @param roomWidth The width of the level.
+	 * @param roomHeight The height of the level.
+	 * @param cellWidth The width of a cell within the level.
+	 * @param cellHeight The height of a cell within the level.
+	 */
+	private void createBossLevel(int roomWidth, int roomHeight,
+							int cellWidth, int cellHeight)
+	{
+		level = RandomLevelGenerator.generateBossLevel(roomWidth, roomHeight, 
+														cellWidth, cellHeight);
 	}
 	
 	/**
@@ -619,17 +646,25 @@ public class Game extends Application
 	 */
 	private void setPlayer()
 	{
-		int x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
-		int y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);
-		while(level[x][y] != RandomLevelGenerator.FLOOR)
+		if(currentLevel < 10)
 		{
-			x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
-			y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);
+			int x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
+			int y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);
+			while(level[x][y] != RandomLevelGenerator.FLOOR)
+			{
+				x = r.nextInt(ROOM_WIDTH/CELL_WIDTH);
+				y = r.nextInt(ROOM_HEIGHT/CELL_HEIGHT);
+			}
+			double playerX = (double) x*CELL_WIDTH+4;
+			double playerY = (double) y*CELL_HEIGHT+4;
+			player.setX(playerX);
+			player.setY(playerY);
 		}
-		double playerX = (double) x*CELL_WIDTH+4;
-		double playerY = (double) y*CELL_HEIGHT+4;
-		player.setX(playerX);
-		player.setY(playerY);
+		else
+		{
+			player.setX(ROOM_WIDTH/2);
+			player.setY(4*ROOM_HEIGHT/5);
+		}
 	}
 	
 	private void isPlayerAtStairs()
