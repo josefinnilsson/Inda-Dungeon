@@ -18,9 +18,10 @@ public class SpiderWeb extends GameObject {
         super(x, y, "Res/IndaSpiderWeb.png", 2);
         hspd = 0.5;
         vspd = 0.5;
-        speed = 0.5;
+        speed = 1;
         imageSpeed = 0;
         imageIndex = 1;
+        image.animate(imageIndex);
         damage = 10;
         remove = false;
     }
@@ -30,7 +31,6 @@ public class SpiderWeb extends GameObject {
         x += hspd;
         y += vspd;
         checkCollision();
-        imageIndex = 1;
     }
 
     public int getDamage() {
@@ -80,5 +80,4 @@ public class SpiderWeb extends GameObject {
             y += vspd;
         }
     }
-
 }

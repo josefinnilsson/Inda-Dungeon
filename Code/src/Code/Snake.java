@@ -24,7 +24,7 @@ public class Snake extends Enemy {
         speed = 0.4;
         imageSpeed = 0.05;
         damage =  1;
-        alarm = new Alarm(20);
+        alarm = new Alarm(200);
         random = new Random();
         damage = 3;
         hspd = 0.4;
@@ -61,7 +61,7 @@ public class Snake extends Enemy {
                 flippedRight = true;
             }
             setEnemy();
-            alarm.setTime(20);
+            alarm.setTime(200);
 
         }
         hspd = MathMethods.lengthDirX(speed, direction);

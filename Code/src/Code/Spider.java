@@ -8,10 +8,6 @@ import java.util.Random;
 public class Spider extends Enemy {
     private double direction;
     private boolean close;
-    private double playerX;
-    private double playerY;
-    private double diffX;
-    private double diffY;
     Random random;
     Alarm alarm;
     Alarm shootTimer;
