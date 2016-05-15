@@ -40,11 +40,11 @@ public class Spider extends Enemy {
 
     private void nextPosition()
     {
-        playerX = Game.player.getX();
-        playerY = Game.player.getY();
-        diffX = playerX-x;
-        diffY = playerY-y;
-        if(Math.abs(diffX) < 100 && Math.abs(diffY) < 100 )
+        double playerX = Game.player.getX();
+        double playerY = Game.player.getY();
+        double diffX = playerX-x;
+        double diffY = playerY-y;
+        if(Math.abs(diffX) < 64 && Math.abs(diffY) < 64)
         {
             close = true;
         } else

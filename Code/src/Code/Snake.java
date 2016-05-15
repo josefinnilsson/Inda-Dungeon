@@ -43,7 +43,7 @@ public class Snake extends Enemy {
         double playerY = Game.player.getY();
         double diffX = playerX-x;
         double diffY = playerY-y;
-        if(Math.abs(diffX) < 50 && Math.abs(diffY) < 50)
+        if(Math.abs(diffX) < 64 && Math.abs(diffY) < 64)
         {
             close = true;
         } else
