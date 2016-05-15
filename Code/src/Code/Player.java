@@ -18,10 +18,7 @@ public class Player extends LifeForm
 	{
 		move,
 		dash,
-		attack,
-		shoot,
-		hurt,
-		dead
+		attack
 	}
 	
 	private int xAxis;
@@ -159,12 +156,6 @@ public class Player extends LifeForm
 				break;
 			case attack:
 				attack();
-				break;
-			case shoot:
-				break;
-			case dead:
-				break;
-			case hurt:
 				break;
 			default:
 				break;
