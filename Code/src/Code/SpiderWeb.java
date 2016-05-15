@@ -7,6 +7,8 @@ public class SpiderWeb extends GameObject {
     private int damage;
     private boolean remove;
     private double webDirection;
+    private Alarm killSwitch;
+    private boolean collided;
 
     /**
      * Initialize the object.
@@ -24,13 +26,23 @@ public class SpiderWeb extends GameObject {
         image.animate(imageIndex);
         damage = 10;
         remove = false;
+        collided = false;
+        killSwitch = new Alarm();
     }
 
     public void update()
     {
+    	killSwitch.tick();
         x += hspd;
         y += vspd;
-        checkCollision();
+        if(killSwitch.done() && collided)
+        {
+        	remove = true;
+        }
+        else if(!collided)
+        {
+        	checkCollision();
+        }
     }
 
     public int getDamage() {
@@ -41,22 +53,44 @@ public class SpiderWeb extends GameObject {
     {
         if(wallCollision(Game.level, x+hspd, y))
         {
-            remove = true;
+        	unfold();
         }
         if(wallCollision(Game.level, x, y+vspd))
         {
-            remove = true;
+        	unfold();
         }
-        if(x < 0 || x> Game.ROOM_WIDTH)
+        if(x < 0 || x > Game.ROOM_WIDTH)
         {
-            remove = true;
+        	remove = true;
         }
-        if(y < 0 || y> Game.ROOM_HEIGHT)
+        if(y < 0 || y > Game.ROOM_HEIGHT)
         {
-            remove = true;
+        	remove = true;
         }
     }
 
+    /**
+     * Unfolds the spider web, encapsulating its target.
+     */
+    public void unfold()
+    {
+    	killSwitch.setTime(60);
+    	imageIndex = 0;
+        image.animate(imageIndex);
+        hspd = 0;
+        vspd = 0;
+        collided = true;
+    }
+    
+    /**
+     * Returns whether spider web has collided with something or not.
+     * @return true if it has collided, false otherwise.
+     */
+    public boolean getCollided()
+    {
+    	return collided;
+    }
+    
     public boolean shouldRemove()
     {
         return remove;

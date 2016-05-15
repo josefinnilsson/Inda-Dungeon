@@ -75,7 +75,6 @@ public class Spider extends Enemy {
             SpiderWeb spiderWeb = new SpiderWeb(x, y);
             Game.objectWaitingRoom.add(spiderWeb);
             spiderWeb.shoot();
-            spiderWeb.checkCollision();
             shootTimer.setTime(200);
         }
     }

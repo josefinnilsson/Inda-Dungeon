@@ -480,7 +480,10 @@ public class Player extends LifeForm
 				if(immortalTimer.done()) {
 					hit(((SpiderWeb) go).getDamage());
 					immortalTimer.setTime(30);
-					((SpiderWeb) go).setRemove();
+					if(!((SpiderWeb) go).getCollided())
+					{
+						((SpiderWeb) go).unfold();
+					}
 				}
 			}
 		}

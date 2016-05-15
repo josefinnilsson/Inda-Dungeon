@@ -41,10 +41,10 @@ public class Monster extends Enemy {
 
     private void nextPosition()
     {
-        double playerX = Game.player.getX();
-        double playerY = Game.player.getY();
-        double diffX = playerX-x;
-        double diffY = playerY-y;
+    	double playerX = Game.player.getX() + Game.player.getWidth()/2;
+        double playerY = Game.player.getY() + 3*Game.player.getHeight()/4;
+        double diffX = playerX-(x+width/2);
+        double diffY = playerY-(y+3*height/4);
         if(Math.abs(diffX) < 64 && Math.abs(diffY) < 64)
         {
             close = true;
