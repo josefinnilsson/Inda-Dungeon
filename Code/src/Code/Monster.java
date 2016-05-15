@@ -56,6 +56,7 @@ public class Monster extends Enemy
 		dashing = false;
 	}
 
+	@Override
 	public void update()
 	{
 		//Count down the alarms.
@@ -76,6 +77,7 @@ public class Monster extends Enemy
 					state = State.shoot;
 				}
 				
+				//Move in random directions
 				if(directionAlarm.done())
 				{
 					direction = Math.abs(r.nextInt() % 360) + 1;
@@ -99,6 +101,7 @@ public class Monster extends Enemy
 				
 				if(!dashing)
 				{
+					//Find out where the player is and charge in that direction.
 					double playerX = Game.player.getX() + 
 													Game.player.getWidth()/2;
 			        double playerY = Game.player.getY() + 
@@ -119,6 +122,8 @@ public class Monster extends Enemy
 			        setEnemy();
 			        dashing = true;
 				}
+				
+				//Stop charging when collliding with a wall
 				if(wallCollision(Game.level, x, y + vspd) || 
 					wallCollision(Game.level, x + hspd, y))
 				{
@@ -129,6 +134,7 @@ public class Monster extends Enemy
 				move();
 				break;
 			case shoot:
+				//Find where player is to shoot in that direction
 				double playerX = Game.player.getX() + 
 								Game.player.getWidth()/2;
 				double playerY = Game.player.getY() + 
@@ -138,7 +144,18 @@ public class Monster extends Enemy
 				direction = MathMethods.getDirectionBetweenPoints(0, 0, 
 											diffX, diffY);
 				
-				
+				//Fire fire in five directions towards the player.
+				for(int i = 0; i < 5; i++)
+				{
+					MonsterFire mf = new MonsterFire(x+width/2, y+height/2);
+					Game.objectWaitingRoom.add(mf);
+					double mfDir = direction - 30 + i*15;
+					double mfHspd = 
+							MathMethods.lengthDirX(mf.getSpeed(), mfDir);
+					double mfVspd = 
+							MathMethods.lengthDirY(mf.getSpeed(), mfDir);
+					mf.shoot(mfHspd, mfVspd);
+				}
 				
 				shootAlarm.setTime(r.nextInt(3240));
 				state = State.move;
@@ -149,6 +166,9 @@ public class Monster extends Enemy
 		}
 	}
 
+	/**
+	 * Set the sprite depending on direction. 
+	 */
 	private void setEnemy()
 	{
 		if(flippedRight)

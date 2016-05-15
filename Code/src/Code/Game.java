@@ -320,7 +320,10 @@ public class Game extends Application
 		}
 		
 		//Check if it's time to go to next level
-		isPlayerAtStairs();
+		if(currentLevel < 10)
+		{
+			isPlayerAtStairs();
+		}
 	}
 	
 	/**

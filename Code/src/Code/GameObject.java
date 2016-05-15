@@ -255,6 +255,15 @@ public class GameObject implements Comparable<GameObject>
 	}
 	
 	/**
+	 * Returns the object's speed.
+	 * @return the object's speed.
+	 */
+	public double getSpeed()
+	{
+		return speed;
+	}
+	
+	/**
 	 * Set the object's image to a new one.
 	 * @param image The image to change to.
 	 * @param subImages The number of sub-images for the sprite.

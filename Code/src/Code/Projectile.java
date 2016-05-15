@@ -84,8 +84,16 @@ public class Projectile extends GameObject {
         {
             hspd = MathMethods.lengthDirX(speed, direction);
             vspd = MathMethods.lengthDirY(speed, direction);
-            x += hspd;
-            y += vspd;
+        }
+    }
+    
+    public void shoot(double hspd, double vspd)
+    {
+        if(!remove)
+        {
+        	direction = MathMethods.getDirectionBetweenPoints(0, 0, hspd, vspd);
+            this.hspd = hspd;
+            this.vspd = vspd;
         }
     }
 }
