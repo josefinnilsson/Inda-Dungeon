@@ -118,7 +118,6 @@ public class RandomLevelGenerator
 		int columns = sizeX/cellWidth;
 		int rows = sizeY/cellHeight;
 		int[][] level = new int[columns][rows];
-		Random r = new Random();
 		
 		//Start off by creating a void.
 		for(int x = 0; x < columns; x++)
@@ -130,7 +129,6 @@ public class RandomLevelGenerator
 		}
 		
 		//Add flooring
-		int dir = 0;
 		for(int x = columns/3; x < 2*columns/3; x++)
 		{
 			for(int y = rows/3; y < 2*rows/3; y++)

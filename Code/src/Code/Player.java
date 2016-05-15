@@ -306,11 +306,6 @@ public class Player extends LifeForm
 		attackable = false;
 		if(!attacking)
 		{
-			//Make sure no viewport movement is done.
-			prevX = x;
-			prevY = y;
-			//Get direction to attack in
-			setAxesToMouse();
 			attacking = true;
 			
 			//Change sprite to attacking sprite
@@ -357,6 +352,9 @@ public class Player extends LifeForm
 			//This is when the attack is committed
 			else if(imageIndex == 6 && !attacked)
 			{
+				//Get direction to attack in
+				setAxesToMouse();
+				
 				//Set attack coordinates
 				double damageX = x + width/2 + xAxis * 24;
 				double damageY = y + height/2 + yAxis * 24;

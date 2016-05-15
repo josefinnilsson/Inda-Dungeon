@@ -120,7 +120,7 @@ public class Game extends Application
 	{
 		objects = new ArrayList<GameObject>();
 		objectWaitingRoom = new ArrayList<GameObject>();
-		currentLevel = 1;
+		currentLevel = 9;
 		
 		//Create a canvas to draw the level on.
 		canvas = new Canvas(ROOM_WIDTH, ROOM_HEIGHT);
