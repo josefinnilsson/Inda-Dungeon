@@ -17,20 +17,20 @@ public class Monster extends Enemy
 	{
 		move,
 		dash,
-		shoot
+		shoot,
+		summon
 	}
 	
 	private Random r;
 	private Alarm directionAlarm;
 	private Alarm dashAlarm;
 	private Alarm shootAlarm;
+	private Alarm summonAlarm;
 	
 	private double direction;
 	private State state;
 	
 	private boolean dashing;
-
-	// TODO: FIX MONSTER AI!!!
 
 	/**
 	 * Initialize the monster.
@@ -49,6 +49,7 @@ public class Monster extends Enemy
 		directionAlarm = new Alarm(120);
 		dashAlarm = new Alarm(r.nextInt(1080));
 		shootAlarm = new Alarm(r.nextInt(1440));
+		summonAlarm = new Alarm(r.nextInt(3600));
 		
 		health = 500;
 		damage = 25;
@@ -63,6 +64,7 @@ public class Monster extends Enemy
 		directionAlarm.tick();
 		dashAlarm.tick();
 		shootAlarm.tick();
+		summonAlarm.tick();
 		
 		switch(state)
 		{
@@ -75,6 +77,10 @@ public class Monster extends Enemy
 				else if(shootAlarm.done())
 				{
 					state = State.shoot;
+				}
+				else if(summonAlarm.done())
+				{
+					state = State.summon;
 				}
 				
 				//Move in random directions
@@ -159,6 +165,39 @@ public class Monster extends Enemy
 				
 				shootAlarm.setTime(r.nextInt(3240));
 				state = State.move;
+				break;
+			case summon:
+				//Check if minions won't spawn inside walls.
+				int xx = (int) ((x+width/2)/Game.CELL_WIDTH);
+				int yy = (int) ((y+height/2)/Game.CELL_HEIGHT);
+				if(Game.level[xx+1][yy] == RandomLevelGenerator.FLOOR &&
+						Game.level[xx+2][yy] == RandomLevelGenerator.FLOOR &&
+						Game.level[xx-1][yy] == RandomLevelGenerator.FLOOR &&
+						Game.level[xx-2][yy] == RandomLevelGenerator.FLOOR &&
+						Game.level[xx][yy+1] == RandomLevelGenerator.FLOOR &&
+						Game.level[xx][yy+2] == RandomLevelGenerator.FLOOR)
+				{
+					//Add 2 snails, 2 snakes and 1 spider
+					Snail snail = new Snail(x - 32, y);
+					Game.objectWaitingRoom.add(snail);
+					snail = new Snail(x + width + 24, y);
+					Game.objectWaitingRoom.add(snail);
+					Snake snake = new Snake(x - 32, y + 32);
+					Game.objectWaitingRoom.add(snake);
+					snake = new Snake(x + width + 24, y + 32);
+					Game.objectWaitingRoom.add(snake);
+					Spider spider = new Spider(x + width/2, y + height + 32);
+					Game.objectWaitingRoom.add(spider);
+					
+					state = State.move;
+					summonAlarm.setTime(3960);
+				}
+				else
+				{
+					//If not possible, try again in 1 second.
+					state = State.move;
+					summonAlarm.setTime(60);
+				}
 				break;
 			default:
 				break;
