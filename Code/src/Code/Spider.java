@@ -40,7 +40,7 @@ public class Spider extends Enemy {
         double playerY = Game.player.getY();
         double diffX = playerX-x;
         double diffY = playerY-y;
-        if(diffX < 3 || diffY < 3 )
+        if(Math.abs(diffX) < 64 && Math.abs(diffY) < 64)
         {
             close = true;
         } else
