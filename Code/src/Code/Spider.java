@@ -8,6 +8,10 @@ import java.util.Random;
 public class Spider extends Enemy {
     private double direction;
     private boolean close;
+    private double playerX;
+    private double playerY;
+    private double diffX;
+    private double diffY;
     Random random;
     Alarm alarm;
     Alarm shootTimer;
@@ -25,7 +29,7 @@ public class Spider extends Enemy {
         imageSpeed = 0.05;
         damage =  1;
         alarm = new Alarm(50);
-        shootTimer = new Alarm(20);
+        shootTimer = new Alarm(200);
         random = new Random();
         close = false;
     }
@@ -36,11 +40,11 @@ public class Spider extends Enemy {
 
     private void nextPosition()
     {
-        double playerX = Game.player.getX();
-        double playerY = Game.player.getY();
-        double diffX = playerX-x;
-        double diffY = playerY-y;
-        if(diffX < 3 || diffY < 3 )
+        playerX = Game.player.getX();
+        playerY = Game.player.getY();
+        diffX = playerX-x;
+        diffY = playerY-y;
+        if(Math.abs(diffX) < 100 && Math.abs(diffY) < 100 )
         {
             close = true;
         } else
@@ -64,7 +68,6 @@ public class Spider extends Enemy {
         hspd = MathMethods.lengthDirX(speed, direction);
         vspd = MathMethods.lengthDirY(speed, direction);
         move();
-        //TODO: Fix bug so that the spider doesn't get stuck at collision
         alarm.tick();
         shootTimer.tick();
     }
@@ -75,7 +78,9 @@ public class Spider extends Enemy {
         {
             SpiderWeb spiderWeb = new SpiderWeb(x, y);
             Game.objectWaitingRoom.add(spiderWeb);
-            shootTimer.setTime(30);
+            spiderWeb.shoot();
+            spiderWeb.checkCollision();
+            shootTimer.setTime(200);
         }
     }
 
@@ -90,4 +95,6 @@ public class Spider extends Enemy {
             setImage("Res/indaSpiderFlipped.png", 2);
         }
     }
+
+
 }

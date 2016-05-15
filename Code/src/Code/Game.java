@@ -310,6 +310,11 @@ public class Game extends Application
 					it.remove();
 				}
 			}
+			else if(object instanceof SpiderWeb)
+				if(((SpiderWeb) object).shouldRemove())
+				{
+					it.remove();
+				}
 		}
 		
 		//Check if it's time to go to next level

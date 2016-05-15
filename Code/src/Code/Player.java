@@ -475,6 +475,14 @@ public class Player extends LifeForm
 					immortalTimer.setTime(30);
 				}
 			}
+			if(collidesWith(go) && go instanceof SpiderWeb)
+			{
+				if(immortalTimer.done()) {
+					hit(((SpiderWeb) go).getDamage());
+					immortalTimer.setTime(30);
+					((SpiderWeb) go).setRemove();
+				}
+			}
 		}
 	}
 }
