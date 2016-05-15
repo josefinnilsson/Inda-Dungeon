@@ -227,6 +227,7 @@ public class Game extends Application
 		else
 		{
 			createBossLevel(ROOM_WIDTH, ROOM_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+			objects.add(new Monster(ROOM_WIDTH/2-32, 2*ROOM_HEIGHT/5));
 		}
 
 		//Add the player to the room
@@ -662,7 +663,7 @@ public class Game extends Application
 		}
 		else
 		{
-			player.setX(ROOM_WIDTH/2);
+			player.setX(ROOM_WIDTH/2-8);
 			player.setY(4*ROOM_HEIGHT/5);
 		}
 	}
