@@ -477,6 +477,14 @@ public class Player extends LifeForm
 					}
 				}
 			}
+			if(collidesWith(go) && go instanceof MonsterFire)
+			{
+				if(immortalTimer.done()) {
+					hit(((MonsterFire) go).getDamage());
+					immortalTimer.setTime(30);
+					((MonsterFire) go).setRemove();
+				}
+			}
 		}
 	}
 }

@@ -3,12 +3,9 @@ package Code;
 /**
  * Created by Josefin on 2016-05-12.
  */
-public class SpiderWeb extends GameObject {
-    private int damage;
-    private boolean remove;
-    private double webDirection;
-    private Alarm killSwitch;
-    private boolean collided;
+public class SpiderWeb extends Projectile 
+{
+	private Alarm killSwitch;
 
     /**
      * Initialize the object.
@@ -25,11 +22,11 @@ public class SpiderWeb extends GameObject {
         imageIndex = 1;
         image.animate(imageIndex);
         damage = 10;
-        remove = false;
-        collided = false;
+        
         killSwitch = new Alarm();
     }
 
+    @Override
     public void update()
     {
     	killSwitch.tick();
@@ -45,10 +42,7 @@ public class SpiderWeb extends GameObject {
         }
     }
 
-    public int getDamage() {
-        return damage;
-    }
-
+    @Override
     public void checkCollision()
     {
         if(wallCollision(Game.level, x+hspd, y))
@@ -80,38 +74,5 @@ public class SpiderWeb extends GameObject {
         hspd = 0;
         vspd = 0;
         collided = true;
-    }
-    
-    /**
-     * Returns whether spider web has collided with something or not.
-     * @return true if it has collided, false otherwise.
-     */
-    public boolean getCollided()
-    {
-    	return collided;
-    }
-    
-    public boolean shouldRemove()
-    {
-        return remove;
-    }
-
-    public void setRemove()
-    {
-        remove = true;
-    }
-
-    public void shoot()
-    {
-        double pX = Game.player.getX();
-        double pY = Game.player.getY();
-        webDirection = MathMethods.getDirectionBetweenPoints(x, y, pX, pY);
-        if(!remove)
-        {
-            hspd = MathMethods.lengthDirX(speed, webDirection);
-            vspd = MathMethods.lengthDirY(speed, webDirection);
-            x += hspd;
-            y += vspd;
-        }
     }
 }

@@ -123,12 +123,24 @@ public class Monster extends Enemy
 					wallCollision(Game.level, x + hspd, y))
 				{
 					state = State.move;
-					dashAlarm.setTime(2160);
+					dashAlarm.setTime(r.nextInt(2160));
 					dashing = false;
 				}
 				move();
 				break;
 			case shoot:
+				double playerX = Game.player.getX() + 
+								Game.player.getWidth()/2;
+				double playerY = Game.player.getY() + 
+								3*Game.player.getHeight()/4;
+				double diffX = playerX-(x+width/2);
+				double diffY = playerY-(y+3*height/4);
+				direction = MathMethods.getDirectionBetweenPoints(0, 0, 
+											diffX, diffY);
+				
+				
+				
+				shootAlarm.setTime(r.nextInt(3240));
 				state = State.move;
 				break;
 			default:

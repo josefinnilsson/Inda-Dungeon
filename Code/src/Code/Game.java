@@ -310,9 +310,9 @@ public class Game extends Application
 					it.remove();
 				}
 			}
-			else if(object instanceof SpiderWeb)
+			else if(object instanceof Projectile)
 			{
-				if(((SpiderWeb) object).shouldRemove())
+				if(((Projectile) object).shouldRemove())
 				{
 					it.remove();
 				}
