@@ -4,14 +4,14 @@ import java.util.Random;
 
 /**
  * This class is a representation of the boss in the game. It takes much more
- * strength to beat this creature.
+ * strength to beat this creature than the regular puny minions.
  * 
  * @author Fredrik Omstedt
  * @version 1.0.0
  */
 public class Monster extends Enemy
 {
-	//These states control in which way the player object updates, and are
+	//These states control in which way the monster object updates, and are
 	//switched between depending on input and in-game events.
 	private enum State
 	{
