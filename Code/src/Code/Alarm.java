@@ -8,7 +8,7 @@ package Code;
 public class Alarm
 {
 	private int time;
-	
+
 	/**
 	 * Initializes the alarm without any starting value.
 	 */
@@ -16,7 +16,7 @@ public class Alarm
 	{
 		time = 0;
 	}
-	
+
 	/**
 	 * Initializes the alarm with a starting value.
 	 * @param time The starting value.
@@ -25,7 +25,7 @@ public class Alarm
 	{
 		this.time = time;
 	}
-	
+
 	/**
 	 * Sets the alarm to the given time.
 	 * @param time The given time.
@@ -34,7 +34,7 @@ public class Alarm
 	{
 		this.time = time;
 	}
-	
+
 	/**
 	 * Ticks the alarm clock once, simulating the countdown.
 	 * @return the time left on the alarm.
@@ -47,7 +47,7 @@ public class Alarm
 		}
 		return time;
 	}
-	
+
 	/**
 	 * Return whether the alarm has finished ticking.
 	 * @return true if alarm is done, false otherwise.
@@ -56,7 +56,7 @@ public class Alarm
 	{
 		return time <= 0;
 	}
-	
+
 	/**
 	 * Return the current time for the alarm.
 	 * @return what index the alarm is currently at.

@@ -1,8 +1,8 @@
 package Code;
 
 /**
- * This class contains a handful of useful mathematical methods for 
- * calculating various things, such as positions or directions.
+ * This class contains a handful of useful mathematical methods for calculating
+ * various things, such as positions or directions.
  * 
  * @author Fredrik Omstedt
  * @version 1.0.0
@@ -10,7 +10,7 @@ package Code;
 public class MathMethods
 {
 	/**
-	 * Calculates the cathetus in the x-direction from a hypotenuse and a 
+	 * Calculates the cathetus in the x-direction from a hypotenuse and a
 	 * direction.
 	 * @param length The length of the hypotenuse.
 	 * @param direction The angle (based on unit circle) in degrees.
@@ -19,13 +19,13 @@ public class MathMethods
 	public static double lengthDirX(double length, double direction)
 	{
 		if(length >= 0)
-			return Math.cos(Math.toRadians(direction))*length;
+			return Math.cos(Math.toRadians(direction)) * length;
 		else
 			throw new ArithmeticException("Length must be larger than 0");
 	}
-	
+
 	/**
-	 * Calculates the cathetus in the y-direction from a hypotenuse and a 
+	 * Calculates the cathetus in the y-direction from a hypotenuse and a
 	 * direction.
 	 * @param length The length of the hypotenuse.
 	 * @param direction The angle (based on unit circle) in degrees.
@@ -34,11 +34,11 @@ public class MathMethods
 	public static double lengthDirY(double length, double direction)
 	{
 		if(length >= 0)
-			return Math.sin(Math.toRadians(direction))*length;
+			return Math.sin(Math.toRadians(direction)) * length;
 		else
 			throw new ArithmeticException("Length must be larger than 0");
 	}
-	
+
 	/**
 	 * Clamps a variable so it's between two bounds.
 	 * @param var The variable to clamp.
@@ -51,14 +51,14 @@ public class MathMethods
 		if(var < lowBound)
 		{
 			var = lowBound;
-		}
+		} 
 		else if(var > upBound)
 		{
 			var = upBound;
 		}
 		return var;
 	}
-	
+
 	/**
 	 * Gets the direction, in degrees, between two points.
 	 * 
@@ -69,7 +69,7 @@ public class MathMethods
 	 * @return the direction between the two points.
 	 */
 	public static double getDirectionBetweenPoints(double x1, double y1, 
-										double x2, double y2)
+													double x2, double y2)
 	{
 		double dx = x2 - x1;
 		double dy = y2 - y1;
