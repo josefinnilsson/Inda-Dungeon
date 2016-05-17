@@ -84,20 +84,21 @@ public class Monster extends Enemy
 				if(directionAlarm.done())
 				{
 					direction = Math.abs(r.nextInt() % 360) + 1;
-					if(direction >= 90 && direction <= 270)
-					{
-						flippedRight = false;
-					} 
-					else
-					{
-						flippedRight = true;
-					}
-					setEnemy();
 					directionAlarm.setTime(120);
 
 				}
 				hspd = MathMethods.lengthDirX(speed, direction);
 				vspd = MathMethods.lengthDirY(speed, direction);
+				if(hspd > 0 && !flippedRight)
+				{
+					flippedRight = true;
+					setEnemy();
+				} 
+				else if(hspd < 0 && flippedRight)
+				{
+					flippedRight = false;
+					setEnemy();
+				}
 				move();
 				break;
 			case dash:

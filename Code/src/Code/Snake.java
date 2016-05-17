@@ -55,40 +55,25 @@ public class Snake extends Enemy
 		{
 			direction = MathMethods.getDirectionBetweenPoints(0, 0, 
 															diffX, diffY);
-			if((direction >= 90 || direction <= -90))
-			{
-				if(flippedRight)
-				{
-					flippedRight = false;
-					setEnemy();	
-				}
-			} 
-			else
-			{
-				if(!flippedRight)
-				{
-					flippedRight = true;
-					setEnemy();
-				}
-			}
 		} 
 		else if(alarm.done())
 		{
 			direction = Math.abs(random.nextInt() % 360) + 1;
-			if(direction >= 90 || direction <= -90)
-			{
-				flippedRight = false;
-			} 
-			else
-			{
-				flippedRight = true;
-			}
-			setEnemy();
 			alarm.setTime(200);
 
 		}
 		hspd = MathMethods.lengthDirX(speed, direction);
 		vspd = MathMethods.lengthDirY(speed, direction);
+		if(hspd > 0 && !flippedRight)
+		{
+			flippedRight = true;
+			setEnemy();
+		} 
+		else if(hspd < 0 && flippedRight)
+		{
+			flippedRight = false;
+			setEnemy();
+		}
 		move();
 		alarm.tick();
 	}

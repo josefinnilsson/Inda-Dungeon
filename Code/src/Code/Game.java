@@ -120,31 +120,18 @@ public class Game extends Application
 	{
 		objects = new ArrayList<GameObject>();
 		objectWaitingRoom = new ArrayList<GameObject>();
-		currentLevel = 9;
+		currentLevel = 1;
 
 		// Create a canvas to draw the level on.
 		canvas = new Canvas(ROOM_WIDTH, ROOM_HEIGHT);
 		gc = canvas.getGraphicsContext2D();
 		createLevel(ROOM_WIDTH, ROOM_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
 
-		// TODO: Add other game objects
 		// Add the player to the room
 		addPlayer();
 
-		for(int i = 0; i < 15; i++)
-		{
-			addSnail();
-		}
-
-		for(int i = 0; i < 10; i++)
-		{
-			addSnake();
-		}
-
-		for(int i = 0; i < 5; i++)
-		{
-			addSpider();
-		}
+		// Add enemies to the room
+		addEnemies();
 
 		// Temporary
 		// TODO: Make stairs spawn after enough enemies are dead!!!
@@ -233,7 +220,9 @@ public class Game extends Application
 
 		// Add the player to the room
 		setPlayer();
-		// TODO: Add other game objects
+		
+		// Add the enemies to the room
+		addEnemies();
 
 		// Temporary
 		// TODO: Make stairs spawn after enough enemies are dead!!!
@@ -746,5 +735,33 @@ public class Game extends Application
 		double stairY = (double) y * CELL_HEIGHT;
 		stairs = new Stairs(stairX, stairY);
 		objects.add(stairs);
+	}
+	
+	/**
+	 * Creates the enemies based on the current level.
+	 */
+	private void addEnemies()
+	{
+		int cr = currentLevel;
+		
+		//These functions were created using polynomial interpolation
+		double amountOfSnails = 1.161 * cr * cr + 11.518 * cr + 2.321;
+		double amountOfSnakes = 0.1786 * cr * cr + 9.464 * cr + 0.3571;
+		double amountOfSpiders = 0.625 * cr * cr + 3.125 * cr + 1.25;
+		
+		for(int i = 0; i < (int) amountOfSnails; i++)
+		{
+			addSnail();
+		}
+
+		for(int i = 0; i < (int) amountOfSnakes; i++)
+		{
+			addSnake();
+		}
+
+		for(int i = 0; i < (int) amountOfSpiders; i++)
+		{
+			addSpider();
+		}
 	}
 }
