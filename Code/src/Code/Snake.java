@@ -64,15 +64,18 @@ public class Snake extends Enemy
 		}
 		hspd = MathMethods.lengthDirX(speed, direction);
 		vspd = MathMethods.lengthDirY(speed, direction);
-		if(hspd > 0 && !flippedRight)
+		if(Math.abs(diffX) > 1 || Math.abs(diffY) > 1)
 		{
-			flippedRight = true;
-			setEnemy();
-		} 
-		else if(hspd < 0 && flippedRight)
-		{
-			flippedRight = false;
-			setEnemy();
+			if(hspd > 0 && !flippedRight)
+			{
+				flippedRight = true;
+				setEnemy();
+			} 
+			else if(hspd < 0 && flippedRight)
+			{
+				flippedRight = false;
+				setEnemy();
+			}
 		}
 		move();
 		alarm.tick();
