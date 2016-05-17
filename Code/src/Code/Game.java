@@ -124,7 +124,7 @@ public class Game extends Application
 	{
 		objects = new ArrayList<GameObject>();
 		objectWaitingRoom = new ArrayList<GameObject>();
-		currentLevel = 1;
+		currentLevel = 9;
 		enemiesKilled = 0;
 		stairsCreated = false;
 
@@ -226,7 +226,10 @@ public class Game extends Application
 		setPlayer();
 		
 		// Add the enemies to the room
-		amountOfEnemies = addEnemies();
+		if(currentLevel < 10)
+		{
+			amountOfEnemies = addEnemies();
+		}
 
 		// Scale the view
 		gc.scale(SCALE_X, SCALE_Y);
