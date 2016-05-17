@@ -744,11 +744,12 @@ public class Game extends Application
 	{
 		int cr = currentLevel;
 		
-		//These functions were created using polynomial interpolation
+		// These functions were created using polynomial interpolation
 		double amountOfSnails = 1.161 * cr * cr + 11.518 * cr + 2.321;
 		double amountOfSnakes = 0.1786 * cr * cr + 9.464 * cr + 0.3571;
 		double amountOfSpiders = 0.625 * cr * cr + 3.125 * cr + 1.25;
 		
+		// Add the enemies depending on the above functions.
 		for(int i = 0; i < (int) amountOfSnails; i++)
 		{
 			addSnail();
