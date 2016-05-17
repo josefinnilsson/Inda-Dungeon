@@ -83,11 +83,9 @@ public class LifeForm extends GameObject
 
 	@Override
 	public void render(GraphicsContext gc)
-	{
-		hitAlarm.tick();
-		
+	{	
 		// Draw the image
-		if(hitAlarm.currentTime() % 2 == 0)
+		if(hitAlarm.tick() % 2 == 0)
 		{
 			image.draw(gc, x, y, width, height);
 		}
