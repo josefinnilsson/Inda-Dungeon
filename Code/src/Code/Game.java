@@ -76,7 +76,11 @@ public class Game extends Application
 	private Spider spider;
 
 	public static int[][] level;
+	
 	private int currentLevel;
+	private int enemiesKilled;
+	private int amountOfEnemies;
+	private boolean stairsCreated;
 
 	public static void main(String[] args)
 	{
@@ -121,6 +125,8 @@ public class Game extends Application
 		objects = new ArrayList<GameObject>();
 		objectWaitingRoom = new ArrayList<GameObject>();
 		currentLevel = 1;
+		enemiesKilled = 0;
+		stairsCreated = false;
 
 		// Create a canvas to draw the level on.
 		canvas = new Canvas(ROOM_WIDTH, ROOM_HEIGHT);
@@ -131,11 +137,7 @@ public class Game extends Application
 		addPlayer();
 
 		// Add enemies to the room
-		addEnemies();
-
-		// Temporary
-		// TODO: Make stairs spawn after enough enemies are dead!!!
-		createStairs();
+		amountOfEnemies = addEnemies();
 
 		// Set the correct scale of the view.
 		gc.scale(SCALE_X, SCALE_Y);
@@ -201,6 +203,8 @@ public class Game extends Application
 	public void nextLevel()
 	{
 		currentLevel++;
+		enemiesKilled = 0;
+		stairsCreated = false;
 
 		// Create a new canvas to use for the next level
 		gameRoot.getChildren().clear();
@@ -222,14 +226,7 @@ public class Game extends Application
 		setPlayer();
 		
 		// Add the enemies to the room
-		addEnemies();
-
-		// Temporary
-		// TODO: Make stairs spawn after enough enemies are dead!!!
-		if(currentLevel < 10)
-		{
-			createStairs();
-		}
+		amountOfEnemies = addEnemies();
 
 		// Scale the view
 		gc.scale(SCALE_X, SCALE_Y);
@@ -297,6 +294,10 @@ public class Game extends Application
 			{
 				if(((LifeForm) object).isDead())
 				{
+					if(object instanceof Enemy)
+					{
+						enemiesKilled++;
+					}
 					it.remove();
 				}
 			} 
@@ -307,6 +308,15 @@ public class Game extends Application
 					it.remove();
 				}
 			}
+		}
+		
+		//Create stairs if enough enemies are killed
+		if(((double)enemiesKilled)/((double)amountOfEnemies) > 0.8 &&
+				!stairsCreated)
+		{
+			stairsCreated = true;
+			System.out.println("Stairs created");
+			createStairs();
 		}
 
 		// Check if it's time to go to next level
@@ -669,7 +679,7 @@ public class Game extends Application
 
 	private void isPlayerAtStairs()
 	{
-		if(player.collidesWith(stairs))
+		if(stairs != null && player.collidesWith(stairs))
 		{
 			levelCompleted();
 		}
@@ -677,7 +687,7 @@ public class Game extends Application
 
 	private void levelCompleted()
 	{
-		// TODO: Add code for level completion
+		stairs = null;
 
 		// Remove all remaining objects that aren't the player
 		Iterator<GameObject> it = objects.iterator();
@@ -739,8 +749,9 @@ public class Game extends Application
 	
 	/**
 	 * Creates the enemies based on the current level.
+	 * @return the amount of enemies created
 	 */
-	private void addEnemies()
+	private int addEnemies()
 	{
 		int cr = currentLevel;
 		
@@ -764,5 +775,9 @@ public class Game extends Application
 		{
 			addSpider();
 		}
+		
+		return (int) amountOfSnails + 
+				(int) amountOfSnakes + 
+				(int) amountOfSpiders;
 	}
 }
