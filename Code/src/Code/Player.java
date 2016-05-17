@@ -38,7 +38,7 @@ public class Player extends LifeForm
 	private boolean attackable;
 	private boolean attacked;
 
-	private boolean malePlayer;
+	public boolean malePlayer;
 
 	private Alarm dashAlarm;
 	private Alarm staminaRegenAlarm;
@@ -491,4 +491,6 @@ public class Player extends LifeForm
 			}
 		}
 	}
+
+
 }
