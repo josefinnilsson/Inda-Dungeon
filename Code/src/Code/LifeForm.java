@@ -13,6 +13,8 @@ public class LifeForm extends GameObject
 	protected double health;
 	protected double maxHealth;
 	protected int damage;
+	
+	private Alarm hitAlarm;
 
 	/**
 	 * Initializes the life form.
@@ -26,6 +28,7 @@ public class LifeForm extends GameObject
 		super(x, y, image, subImages);
 		health = 100;
 		maxHealth = 100;
+		hitAlarm = new Alarm();
 	}
 
 	/**
@@ -75,13 +78,19 @@ public class LifeForm extends GameObject
 		{
 			health = 0;
 		}
+		hitAlarm.setTime(30);
 	}
 
 	@Override
 	public void render(GraphicsContext gc)
 	{
+		hitAlarm.tick();
+		
 		// Draw the image
-		image.draw(gc, x, y, width, height);
+		if(hitAlarm.currentTime() % 2 == 0)
+		{
+			image.draw(gc, x, y, width, height);
+		}
 
 		animate();
 	}
