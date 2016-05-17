@@ -131,7 +131,7 @@ public class Game extends Application
 		// Add the player to the room
 		addPlayer();
 
-		for(int i = 0; i < 30; i++)
+		for(int i = 0; i < 15; i++)
 		{
 			addSnail();
 		}
@@ -141,7 +141,7 @@ public class Game extends Application
 			addSnake();
 		}
 
-		for(int i = 0; i < 10; i++)
+		for(int i = 0; i < 5; i++)
 		{
 			addSpider();
 		}
