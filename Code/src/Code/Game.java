@@ -325,7 +325,6 @@ public class Game extends Application
 				!stairsCreated)
 		{
 			stairsCreated = true;
-			System.out.println("Stairs created");
 			createStairs();
 		}
 
@@ -733,6 +732,14 @@ public class Game extends Application
 		uiGc.fillRect(16, 64, 
 				(player.getStamina() * 128) / player.getMaxStamina(), 32);
 		uiBar.draw(uiGc, 16, 64, uiBar.getCellWidth(), uiBar.getCellHeight());
+		
+		//Draw text showing stairs have spawned
+		Sprite spawnedStairs = new Sprite("Res/indaStairsSpawned.png", 1);
+		if(stairsCreated)
+		{
+			spawnedStairs.draw(uiGc, 16, 104, spawnedStairs.getCellWidth(), 
+											spawnedStairs.getCellHeight());
+		}
 	}
 
 	/**
