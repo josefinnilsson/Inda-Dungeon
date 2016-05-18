@@ -124,7 +124,7 @@ public class Game extends Application
 	{
 		objects = new ArrayList<GameObject>();
 		objectWaitingRoom = new ArrayList<GameObject>();
-		currentLevel = 9;
+		currentLevel = 1;
 		enemiesKilled = 0;
 		stairsCreated = false;
 

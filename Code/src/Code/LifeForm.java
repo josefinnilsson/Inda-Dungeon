@@ -80,6 +80,19 @@ public class LifeForm extends GameObject
 		}
 		hitAlarm.setTime(30);
 	}
+	
+	/**
+	 * Heals the life form, increasing its health by the given hp.
+	 * @param hp The amount of health to heal.
+	 */
+	public void heal(double hp)
+	{
+		health += hp;
+		if(health > maxHealth)
+		{
+			health = maxHealth;
+		}
+	}
 
 	@Override
 	public void render(GraphicsContext gc)
