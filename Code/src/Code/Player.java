@@ -500,9 +500,21 @@ public class Player extends LifeForm
 		}
 	}
 	
+	/**
+	 * Gives the player a speed boost for a while.
+	 * @param speed The new speed.
+	 */
 	public void speedBoost(double speed)
 	{
 		this.speed = speed;
 		speedAlarm.setTime(180);
+	}
+	
+	/**
+	 * Makes the player invincible for 10 seconds.
+	 */
+	public void setTemporaryInvincible()
+	{
+		immortalTimer.setTime(600);
 	}
 }
