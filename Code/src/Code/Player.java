@@ -44,6 +44,8 @@ public class Player extends LifeForm
 	private Alarm staminaRegenAlarm;
 	private Alarm attackAlarm;
 	private Alarm immortalTimer;
+	private Alarm speedAlarm;
+	private Alarm damageAlarm;
 
 	private double stamina;
 	private double maxStamina;
@@ -82,6 +84,8 @@ public class Player extends LifeForm
 		staminaRegenAlarm = new Alarm();
 
 		immortalTimer = new Alarm(30);
+		speedAlarm = new Alarm();
+		damageAlarm = new Alarm();
 
 	}
 
@@ -115,6 +119,8 @@ public class Player extends LifeForm
 		attackAlarm.tick();
 		staminaRegenAlarm.tick();
 		immortalTimer.tick();
+		speedAlarm.tick();
+		damageAlarm.tick();
 
 		// Choose what to do depending on which state the player is in.
 		switch(state)
@@ -160,6 +166,15 @@ public class Player extends LifeForm
 				break;
 		}
 
+		if(speedAlarm.done())
+		{
+			speed = 1;
+		}
+		if(damageAlarm.done())
+		{
+			damage = 25;
+		}
+		
 		checkEnemyCollision();
 		regenerateStamina();
 	}
@@ -490,5 +505,33 @@ public class Player extends LifeForm
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Gives the player a speed boost for a while.
+	 * @param speed The new speed.
+	 */
+	public void speedBoost(double speed)
+	{
+		this.speed = speed;
+		speedAlarm.setTime(180);
+	}
+	
+	/**
+	 * Gives the player a damage boost for a while.
+	 * @param damage The new damage.
+	 */
+	public void damageBoost(int damage)
+	{
+		this.damage = damage;
+		damageAlarm.setTime(360);
+	}
+	
+	/**
+	 * Makes the player invincible for 10 seconds.
+	 */
+	public void setTemporaryInvincible()
+	{
+		immortalTimer.setTime(600);
 	}
 }
