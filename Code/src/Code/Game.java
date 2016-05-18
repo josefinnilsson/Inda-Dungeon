@@ -311,6 +311,13 @@ public class Game extends Application
 					it.remove();
 				}
 			}
+			else if(object instanceof Pickable)
+			{
+				if(((Pickable) object).isPicked())
+				{
+					it.remove();
+				}
+			}
 		}
 		
 		//Create stairs if enough enemies are killed
