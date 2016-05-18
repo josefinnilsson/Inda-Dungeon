@@ -1,5 +1,7 @@
 package Code;
 
+import java.util.Random;
+
 /**
  * This class represents objects within the game that can be picked up by the
  * Player.
@@ -10,6 +12,8 @@ package Code;
 public class Pickable extends GameObject
 {
 	private boolean isPicked;
+	private Random r;
+	private Alarm moveAlarm;
 
 	/**
 	 * Initializes the pickable object.
@@ -22,11 +26,29 @@ public class Pickable extends GameObject
 	{
 		super(x, y, image, subImages);
 		isPicked = false;
+		r = new Random();
+		
+		hspd = r.nextInt(3) - 1;
+		vspd = r.nextInt(3) - 1;
+		moveAlarm = new Alarm(15);
 	}
 
 	@Override
 	public void update()
 	{
+		moveAlarm.tick();
+		
+		//Move the object according to its speed.
+		if(!moveAlarm.done())
+		{
+			move();
+			
+			//Apply friction
+			hspd -= 0.01 * Math.signum(hspd);
+			vspd -= 0.01 * Math.signum(hspd);
+		}
+		
+		
 		if(collidesWith(Game.player))
 		{
 			isPicked = true;

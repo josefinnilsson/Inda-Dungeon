@@ -1,5 +1,7 @@
 package Code;
 
+import java.util.Random;
+
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -15,6 +17,7 @@ public class LifeForm extends GameObject
 	protected int damage;
 	
 	private Alarm hitAlarm;
+	private Random spawnR;
 
 	/**
 	 * Initializes the life form.
@@ -29,6 +32,7 @@ public class LifeForm extends GameObject
 		health = 100;
 		maxHealth = 100;
 		hitAlarm = new Alarm();
+		spawnR = new Random();
 	}
 
 	/**
@@ -73,6 +77,13 @@ public class LifeForm extends GameObject
 	 */
 	public void hit(int damage)
 	{
+		//If dying, give chance to spawn powerups
+		if(health - damage <= 0)
+		{
+			createPowerups();
+		}
+		
+		//Damage the life form
 		health -= damage;
 		if(health < 0)
 		{
@@ -131,38 +142,46 @@ public class LifeForm extends GameObject
 			imageIndex = 0;
 		}
 	}
-
+	
 	/**
-	 * Moves the player or enemy according to walls and speed.
+	 * Spawns powerups if the odds are in your favor.
 	 */
-	public void move()
+	private void createPowerups()
 	{
-		prevX = x;
-		prevY = y;
-		// Check for horizontal collision
-		if(wallCollision(Game.level, x + hspd, y))
+		double hp = 0.82;
+		double spd = 0.9;
+		double inv = 0.92;
+		double dmg = 0.92;
+		
+		int choose = spawnR.nextInt(3);
+		
+		//Spawn health pack
+		if(spawnR.nextDouble() >= hp)
 		{
-			while(!wallCollision(Game.level, x + Math.signum(hspd), y))
-			{
-				x += Math.signum(hspd);
-			}
-			hspd = 0;
+			Game.objectWaitingRoom.add(new HealthPack(x, y));
 		}
-
-		// Move horizontally
-		x += hspd;
-
-		// Check for vertical collision
-		if(wallCollision(Game.level, x, y + vspd))
+		
+		//Spawn powerup
+		switch(choose)
 		{
-			while(!wallCollision(Game.level, x, y + Math.signum(vspd)))
-			{
-				y += Math.signum(vspd);
-			}
-			vspd = 0;
+			case 0:
+				if(spawnR.nextDouble() >= spd)
+				{
+					Game.objectWaitingRoom.add(new SpeedPowerup(x, y));
+				}
+				break;
+			case 1:
+				if(spawnR.nextDouble() >= inv)
+				{
+					Game.objectWaitingRoom.add(new InvincibilityPowerup(x, y));
+				}
+				break;
+			case 2:
+				if(spawnR.nextDouble() >= dmg)
+				{
+					Game.objectWaitingRoom.add(new DamagePowerup(x, y));
+				}
+				break;
 		}
-
-		// Move vertically
-		y += vspd;
 	}
 }

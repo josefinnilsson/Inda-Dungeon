@@ -304,6 +304,39 @@ public class GameObject implements Comparable<GameObject>
 	public boolean equals(Object o)
 	{
 		return objectID == ((GameObject) o).getObjectID();
+	}
+	
+	/**
+	 * Moves the object according to walls and speed.
+	 */
+	public void move()
+	{
+		prevX = x;
+		prevY = y;
+		// Check for horizontal collision
+		if(wallCollision(Game.level, x + hspd, y))
+		{
+			while(!wallCollision(Game.level, x + Math.signum(hspd), y))
+			{
+				x += Math.signum(hspd);
+			}
+			hspd = 0;
+		}
 
+		// Move horizontally
+		x += hspd;
+
+		// Check for vertical collision
+		if(wallCollision(Game.level, x, y + vspd))
+		{
+			while(!wallCollision(Game.level, x, y + Math.signum(vspd)))
+			{
+				y += Math.signum(vspd);
+			}
+			vspd = 0;
+		}
+
+		// Move vertically
+		y += vspd;
 	}
 }
