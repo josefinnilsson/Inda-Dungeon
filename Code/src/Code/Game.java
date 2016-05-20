@@ -96,6 +96,7 @@ public class Game extends Application
 		introRoot = new Pane();
 
 		// TODO: Fix the intro (Choose character, story, etc.)
+		Intro intro = new Intro();
 
 		// Create the scene for the intro.
 		Scene scene = new Scene(introRoot, ROOM_WIDTH / 2, ROOM_HEIGHT / 2);
@@ -109,7 +110,23 @@ public class Game extends Application
 		// Temporary(!!!) button to move from intro to game
 		Button button = new Button("START");
 		button.setOnAction(e -> initiateLevelContent(primaryStage));
-		introRoot.getChildren().add(button);
+		introRoot.getChildren().addAll(intro.getCanvas(), button);
+		
+		// Intro loop
+		AnimationTimer timer = new AnimationTimer()
+		{
+			@Override
+			public void handle(long now)
+			{
+				if(intro.finished())
+				{
+					stop();
+					initiateLevelContent(primaryStage);
+				}
+				intro.render();
+			}
+		};
+		timer.start();
 
 		// Create the different panes for the actual game and initialize them.
 		appRoot = new StackPane();
