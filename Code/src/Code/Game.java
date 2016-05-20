@@ -721,6 +721,7 @@ public class Game extends Application
 		// Clear previously drawn stuff
 		uiGc.clearRect(16, 16, 128, 32);
 		uiGc.clearRect(16, 64, 128, 32);
+		uiGc.clearRect(16, 104, 128, 32);
 
 		// Player health
 		uiGc.setFill(Color.RED);
