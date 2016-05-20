@@ -38,8 +38,8 @@ public class Game extends Application
 	public static final int CELL_HEIGHT = 32;
 
 	// Zoom in for a better view
-	private static final int SCALE_X = 2;
-	private static final int SCALE_Y = 2;
+	public static final int SCALE_X = 2;
+	public static final int SCALE_Y = 2;
 
 	// Viewport coordinates
 	private static double viewportX;
