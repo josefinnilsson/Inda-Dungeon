@@ -10,7 +10,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -95,7 +94,7 @@ public class Game extends Application
 
 		introRoot = new Pane();
 
-		// TODO: Fix the intro (Choose character, story, etc.)
+		//Create an intro for the game.
 		Intro intro = new Intro();
 
 		// Create the scene for the intro.
@@ -107,10 +106,8 @@ public class Game extends Application
 		primaryStage.setTitle("Generic Dungeon Crawler");
 		primaryStage.show();
 
-		// Temporary(!!!) button to move from intro to game
-		Button button = new Button("START");
-		button.setOnAction(e -> initiateLevelContent(primaryStage));
-		introRoot.getChildren().addAll(intro.getCanvas(), button);
+		//Add the intro to the window
+		introRoot.getChildren().addAll(intro.getCanvas());
 		
 		// Intro loop
 		AnimationTimer timer = new AnimationTimer()
@@ -121,6 +118,7 @@ public class Game extends Application
 				if(intro.finished())
 				{
 					stop();
+					//Start the game
 					initiateLevelContent(primaryStage);
 				}
 				intro.render();
