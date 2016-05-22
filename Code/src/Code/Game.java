@@ -293,6 +293,13 @@ public class Game extends Application
 					it.remove();
 				}
 			} 
+			else if(object instanceof PlayerAttackSlash)
+			{
+				if(((PlayerAttackSlash) object).isFinished())
+				{
+					it.remove();
+				}
+			}
 			else if(object instanceof LifeForm)
 			{
 				if(((LifeForm) object).isDead())
