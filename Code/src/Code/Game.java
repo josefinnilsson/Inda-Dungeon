@@ -1,6 +1,5 @@
 package Code;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -12,10 +11,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -84,6 +82,7 @@ public class Game extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
+
 	}
 
 	@Override
@@ -93,7 +92,6 @@ public class Game extends Application {
 
 		introRoot = new Pane();
 
-		// TODO: Fix the intro (Choose character, story, etc.)
 
 		// Create the scene for the intro.
 		Scene scene = new Scene(introRoot, ROOM_WIDTH / 2, ROOM_HEIGHT / 2);
@@ -104,32 +102,53 @@ public class Game extends Application {
 		primaryStage.setTitle("Inda Dungeon");
 		primaryStage.show();
 
-		// Temporary(!!!) button to move from intro to game
-		Button girlButton = new Button("GIRL");
-		girlButton.setOnAction(e -> playerGender = false);
-		girlButton.setOnAction(e -> initiateLevelContent(primaryStage));
-		introRoot.getChildren().add(girlButton);
-		girlButton.setLayoutX(320);
-		girlButton.setLayoutY(220);
-		girlButton.setScaleX(3);
-		girlButton.setScaleY(3);
-		girlButton.setStyle("-fx-font: 16 impact");
+		introRoot.setStyle("-fx-background-image: url(/Code/indaBackground.png)");
 
-		Button boyButton = new Button("BOY");
-		boyButton.setOnAction(e -> playerGender = true);
-		boyButton.setOnAction(e -> initiateLevelContent(primaryStage));
+		Button boyButton = new Button("Boy");
+		boyButton.setOnAction(e ->{
+			playerGender = true;
+			initiateLevelContent(primaryStage);
+		});
 		introRoot.getChildren().add(boyButton);
-		boyButton.setLayoutX(120);
+		boyButton.setLayoutX(160);
 		boyButton.setLayoutY(220);
-		boyButton.setScaleX(3);
-		boyButton.setScaleY(3);
-		boyButton.setStyle("-fx-font: 16 impact");
-		//TODO: Center buttons
+		boyButton.setScaleX(2);
+		boyButton.setScaleY(2);
+		boyButton.setStyle("-fx-font: 16 kefa; -fx-base: #522b25;-fx-text-fill: #000000");
+
+		Button girlButton = new Button("Girl");
+		girlButton.setOnAction(e -> {
+			playerGender = false;
+			initiateLevelContent(primaryStage);
+		});
+		introRoot.getChildren().add(girlButton);
+		girlButton.setLayoutX(310);
+		girlButton.setLayoutY(220);
+		girlButton.setScaleX(2);
+		girlButton.setScaleY(2);
+		girlButton.setStyle("-fx-font: 16 kefa; -fx-base: #522b25;" +
+				"-fx-text-fill: #000000;");
+
+		Text welcome = new Text("Welcome to the Dungeon");
+		welcome.setStyle("-fx-font: 45 kefa");
+		introRoot.getChildren().add(welcome);
+		welcome.setLayoutX(6);
+		welcome.setLayoutY(120);
+		Text welcome2 = new Text("Choose your character to start your journey");
+		welcome2.setStyle("-fx-font: 25 kefa");
+		introRoot.getChildren().add(welcome2);
+		welcome2.setLayoutX(11);
+		welcome2.setLayoutY(150);
 
 		// Create the different panes for the actual game and initialize them.
 		appRoot = new StackPane();
 		gameRoot = new Pane();
 		uiRoot = new Pane();
+
+		Sound sound = new Sound("bitsong.wav");
+		sound.play();
+		sound.loop();
+
 	}
 
 	/**
