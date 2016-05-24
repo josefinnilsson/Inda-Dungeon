@@ -219,6 +219,22 @@ public class GameObject implements Comparable<GameObject>
 	}
 
 	/**
+	 * Set the object's horizontal speed.
+	 */
+	public void setHSpd(double spd)
+	{
+		hspd = spd;
+	}
+
+	/**
+	 * Set the object's vertical speed.
+	 */
+	public void setVSpd(double spd)
+	{
+		vspd = spd;
+	}
+	
+	/**
 	 * Returns the object's hspd.
 	 * @return the object's hspd.
 	 */
