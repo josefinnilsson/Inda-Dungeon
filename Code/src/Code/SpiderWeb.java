@@ -1,6 +1,7 @@
 package Code;
 
 /**
+ * This class represent a spider web which the spiders can shoot at the player.
  * Created by Josefin on 2016-05-12.
  */
 public class SpiderWeb extends Projectile
@@ -8,7 +9,7 @@ public class SpiderWeb extends Projectile
 	private Alarm killSwitch;
 
 	/**
-	 * Initialize the object.
+	 * Initialize the spider web object.
 	 *
 	 * @param x The object's x-coordinate.
 	 * @param y The object's y-coordinate.

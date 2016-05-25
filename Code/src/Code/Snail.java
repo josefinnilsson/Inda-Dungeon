@@ -1,6 +1,7 @@
 package Code;
 
 /**
+ * This class represents a snail object. It controls the movement of the snail.
  * Created by Josefin on 2016-05-04.
  */
 public class Snail extends Enemy
@@ -9,7 +10,7 @@ public class Snail extends Enemy
 	private boolean left;
 
 	/**
-	 * Initialize the object.
+	 * Initialize the snail object.
 	 *
 	 * @param x The object's x-coordinate.
 	 * @param y The object's y-coordinate.
@@ -32,6 +33,10 @@ public class Snail extends Enemy
 		nextPosition();
 	}
 
+	/**
+	 * This method decides the next position for the snail. The snail can only
+	 * move horizontally but changes direction if it collides with a wall.
+	 */
 	private void nextPosition()
 	{
 		if(left)

@@ -3,6 +3,7 @@ package Code;
 import java.util.Random;
 
 /**
+ * This class represents a spider object. It controls the movement of the spider.
  * Created by Josefin on 2016-05-04.
  */
 public class Spider extends Enemy
@@ -14,7 +15,7 @@ public class Spider extends Enemy
 	Alarm shootTimer;
 
 	/**
-	 * Initialize the object.
+	 * Initialize the spider object.
 	 *
 	 * @param x The object's x-coordinate.
 	 * @param y The object's y-coordinate.
@@ -38,6 +39,10 @@ public class Spider extends Enemy
 		nextPosition();
 	}
 
+	/**
+	 * This method decides the next position for the spider. It moves at random
+	 * and checks if the player is close enough for attack.
+	 */
 	private void nextPosition()
 	{
 		double playerX = Game.player.getX();
@@ -78,6 +83,9 @@ public class Spider extends Enemy
 		shootTimer.tick();
 	}
 
+	/**
+	 * Fires a spiderweb towards the player if the shoot timer is done.
+	 */
 	private void attackPlayer()
 	{
 		if(shootTimer.done())

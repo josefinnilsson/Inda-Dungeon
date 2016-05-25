@@ -1,6 +1,8 @@
 package Code;
 
 /**
+ * This class represents a projectile that an enemy (a spider or the boss)
+ * can shoot at the player.
  * Created by Josefin on 2016-05-12.
  */
 public class Projectile extends GameObject
@@ -11,7 +13,7 @@ public class Projectile extends GameObject
 	protected boolean collided;
 
 	/**
-	 * Initialize the object.
+	 * Initialize the projectile object.
 	 *
 	 * @param x The object's x-coordinate.
 	 * @param y The object's y-coordinate.
@@ -27,6 +29,9 @@ public class Projectile extends GameObject
 		collided = false;
 	}
 
+	/**
+	 * Update the projectiles posititon
+	 */
 	public void update()
 	{
 		x += hspd;
@@ -39,6 +44,9 @@ public class Projectile extends GameObject
 		return damage;
 	}
 
+	/**
+	 * Checks if the projectile collides with a wall.
+	 */
 	public void checkCollision()
 	{
 		if(wallCollision(Game.level, x + hspd, y))
@@ -78,6 +86,9 @@ public class Projectile extends GameObject
 		remove = true;
 	}
 
+	/**
+	 * Shoots the projectile towards the players current direction.
+	 */
 	public void shoot()
 	{
 		double pX = Game.player.getX();
