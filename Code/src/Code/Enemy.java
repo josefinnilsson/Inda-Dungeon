@@ -1,6 +1,7 @@
 package Code;
 
 /**
+ * This class represents an Enemy
  * Created by Josefin on 2016-05-04.
  */
 public class Enemy extends LifeForm
@@ -11,7 +12,7 @@ public class Enemy extends LifeForm
 	protected boolean flippedRight;
 
 	/**
-	 * Initialize the object.
+	 * Initialize the Enemy object.
 	 *
 	 * @param x The object's x-coordinate.
 	 * @param y The object's y-coordinate.
