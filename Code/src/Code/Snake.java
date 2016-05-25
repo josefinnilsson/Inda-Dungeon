@@ -3,6 +3,7 @@ package Code;
 import java.util.Random;
 
 /**
+ * This class represents an snake object. It controls the movement of the snake.
  * Created by Josefin on 2016-05-04.
  */
 public class Snake extends Enemy
@@ -13,7 +14,7 @@ public class Snake extends Enemy
 	private boolean close;
 
 	/**
-	 * Initialize the object.
+	 * Initialize the snake object.
 	 *
 	 * @param x The object's x-coordinate.
 	 * @param y The object's y-coordinate.
@@ -37,6 +38,11 @@ public class Snake extends Enemy
 		nextPosition();
 	}
 
+	/**
+	 * This method decides the next position for the snake. If the snake
+	 * is close enough to the player, it follows the player and if it isn't, it
+	 * moves randomly.
+	 */
 	private void nextPosition()
 	{
 		double playerX = Game.player.getX() + Game.player.getWidth() / 2;
@@ -81,6 +87,9 @@ public class Snake extends Enemy
 		alarm.tick();
 	}
 
+	/**
+	 * Sets the snake to either left or right depending on direction. 
+	 */
 	private void setEnemy()
 	{
 		if(flippedRight)

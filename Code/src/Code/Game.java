@@ -10,9 +10,11 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -75,15 +77,18 @@ public class Game extends Application
 	private Spider spider;
 
 	public static int[][] level;
-	
+
 	private int currentLevel;
 	private int enemiesKilled;
 	private int amountOfEnemies;
 	private boolean stairsCreated;
 
+	private boolean playerGender;
+
 	public static void main(String[] args)
 	{
 		launch(args);
+
 	}
 
 	@Override
@@ -94,7 +99,7 @@ public class Game extends Application
 
 		introRoot = new Pane();
 
-		//Create an intro for the game.
+		// Create an intro for the game.
 		Intro intro = new Intro();
 
 		// Create the scene for the intro.
@@ -103,12 +108,54 @@ public class Game extends Application
 		// Initialize the window.
 		primaryStage.setResizable(false);
 		primaryStage.setScene(scene);
-		primaryStage.setTitle("Generic Dungeon Crawler");
+		primaryStage.setTitle("Inda Dungeon");
 		primaryStage.show();
 
-		//Add the intro to the window
+		introRoot.setStyle(
+				"-fx-background-image: url(/Code/indaBackground.png)");
+
+		Button boyButton = new Button("Boy");
+		boyButton.setOnAction(e ->
+		{
+			playerGender = true;
+			initiateLevelContent(primaryStage);
+		});
+		introRoot.getChildren().add(boyButton);
+		boyButton.setLayoutX(160);
+		boyButton.setLayoutY(220);
+		boyButton.setScaleX(2);
+		boyButton.setScaleY(2);
+		boyButton.setStyle(
+				"-fx-font: 16 kefa; -fx-base: #522b25;-fx-text-fill: #000000");
+
+		Button girlButton = new Button("Girl");
+		girlButton.setOnAction(e ->
+		{
+			playerGender = false;
+			initiateLevelContent(primaryStage);
+		});
+		introRoot.getChildren().add(girlButton);
+		girlButton.setLayoutX(310);
+		girlButton.setLayoutY(220);
+		girlButton.setScaleX(2);
+		girlButton.setScaleY(2);
+		girlButton.setStyle("-fx-font: 16 kefa; -fx-base: #522b25;"
+				+ "-fx-text-fill: #000000;");
+
+		Text welcome = new Text("Welcome to the Dungeon");
+		welcome.setStyle("-fx-font: 45 kefa");
+		introRoot.getChildren().add(welcome);
+		welcome.setLayoutX(6);
+		welcome.setLayoutY(120);
+		Text welcome2 = new Text("Choose your character to start your journey");
+		welcome2.setStyle("-fx-font: 25 kefa");
+		introRoot.getChildren().add(welcome2);
+		welcome2.setLayoutX(11);
+		welcome2.setLayoutY(150);
+
+		// Add the intro to the window
 		introRoot.getChildren().addAll(intro.getCanvas());
-		
+
 		// Intro loop
 		AnimationTimer timer = new AnimationTimer()
 		{
@@ -118,7 +165,7 @@ public class Game extends Application
 				if(intro.finished())
 				{
 					stop();
-					//Start the game
+					// Start the game
 					initiateLevelContent(primaryStage);
 				}
 				intro.render();
@@ -130,6 +177,11 @@ public class Game extends Application
 		appRoot = new StackPane();
 		gameRoot = new Pane();
 		uiRoot = new Pane();
+
+		Sound sound = new Sound("bitsong.wav");
+		sound.play();
+		sound.loop();
+
 	}
 
 	/**
@@ -163,10 +215,10 @@ public class Game extends Application
 		double viewY = -(player.getY() - ROOM_HEIGHT / (4 * SCALE_Y));
 
 		// Make sure the view only shows the level.
-		viewX = MathMethods.clamp(viewX, -(4 * SCALE_X - 2) * 
-											ROOM_WIDTH / (4 * SCALE_X), 0);
-		viewY = MathMethods.clamp(viewY, -(4 * SCALE_Y - 2) * 
-											ROOM_HEIGHT / (4 * SCALE_Y), 0);
+		viewX = MathMethods.clamp(viewX,
+				-(4 * SCALE_X - 2) * ROOM_WIDTH / (4 * SCALE_X), 0);
+		viewY = MathMethods.clamp(viewY,
+				-(4 * SCALE_Y - 2) * ROOM_HEIGHT / (4 * SCALE_Y), 0);
 		// Move viewport to player
 		gc.translate(viewX, viewY);
 		viewportX = viewX;
@@ -191,7 +243,7 @@ public class Game extends Application
 		// Add listeners for input.
 		scene.setOnKeyPressed(e -> Input.pressKey(e.getCode()));
 		scene.setOnKeyReleased(e -> Input.releaseKey(e.getCode()));
-		scene.setOnMousePressed(e -> Input.pressMouse(e.getButton(), 
+		scene.setOnMousePressed(e -> Input.pressMouse(e.getButton(),
 				e.getSceneX() / SCALE_X - viewportX,
 				e.getSceneY() / SCALE_Y - viewportY));
 		scene.setOnMouseReleased(e -> Input.releaseMouse(e.getButton()));
@@ -230,7 +282,7 @@ public class Game extends Application
 		if(currentLevel < 10)
 		{
 			createLevel(ROOM_WIDTH, ROOM_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
-		} 
+		}
 		else
 		{
 			createBossLevel(ROOM_WIDTH, ROOM_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
@@ -239,7 +291,7 @@ public class Game extends Application
 
 		// Add the player to the room
 		setPlayer();
-		
+
 		// Add the enemies to the room
 		if(currentLevel < 10)
 		{
@@ -255,10 +307,10 @@ public class Game extends Application
 		double viewY = -(player.getY() - ROOM_HEIGHT / (4 * SCALE_Y));
 
 		// Make sure the view only shows the level.
-		viewX = MathMethods.clamp(viewX, -(4 * SCALE_X - 2) * 
-											ROOM_WIDTH / (4 * SCALE_X), 0);
-		viewY = MathMethods.clamp(viewY, -(4 * SCALE_Y - 2) * 
-											ROOM_HEIGHT / (4 * SCALE_Y), 0);
+		viewX = MathMethods.clamp(viewX,
+				-(4 * SCALE_X - 2) * ROOM_WIDTH / (4 * SCALE_X), 0);
+		viewY = MathMethods.clamp(viewY,
+				-(4 * SCALE_Y - 2) * ROOM_HEIGHT / (4 * SCALE_Y), 0);
 		// Move viewport to player
 		gc.translate(viewX, viewY);
 		viewportX = viewX;
@@ -307,7 +359,7 @@ public class Game extends Application
 				{
 					it.remove();
 				}
-			} 
+			}
 			else if(object instanceof PlayerAttackSlash)
 			{
 				if(((PlayerAttackSlash) object).isFinished())
@@ -325,7 +377,7 @@ public class Game extends Application
 					}
 					it.remove();
 				}
-			} 
+			}
 			else if(object instanceof Projectile)
 			{
 				if(((Projectile) object).shouldRemove())
@@ -341,10 +393,10 @@ public class Game extends Application
 				}
 			}
 		}
-		
-		//Create stairs if enough enemies are killed
-		if(((double)enemiesKilled)/((double)amountOfEnemies) > 0.8 &&
-				!stairsCreated)
+
+		// Create stairs if enough enemies are killed
+		if(((double) enemiesKilled) / ((double) amountOfEnemies) > 0.8
+				&& !stairsCreated)
 		{
 			stairsCreated = true;
 			createStairs();
@@ -359,34 +411,37 @@ public class Game extends Application
 
 	/**
 	 * Creates the level.
+	 *
 	 * @param roomWidth The width of the level.
 	 * @param roomHeight The height of the level.
 	 * @param cellWidth The width of a cell within the level.
 	 * @param cellHeight The height of a cell within the level.
 	 */
-	private void createLevel(int roomWidth, int roomHeight, 
-								int cellWidth, int cellHeight)
+	private void createLevel(int roomWidth, int roomHeight, int cellWidth,
+			int cellHeight)
 	{
-		level = RandomLevelGenerator.generateLevel(roomWidth, roomHeight, 
-													cellWidth, cellHeight);
+		level = RandomLevelGenerator.generateLevel(roomWidth, roomHeight,
+				cellWidth, cellHeight);
 	}
 
 	/**
 	 * Creates the boss level.
+	 *
 	 * @param roomWidth The width of the level.
 	 * @param roomHeight The height of the level.
 	 * @param cellWidth The width of a cell within the level.
 	 * @param cellHeight The height of a cell within the level.
 	 */
-	private void createBossLevel(int roomWidth, int roomHeight, 
-									int cellWidth, int cellHeight)
+	private void createBossLevel(int roomWidth, int roomHeight, int cellWidth,
+			int cellHeight)
 	{
-		level = RandomLevelGenerator.generateBossLevel(roomWidth, roomHeight, 
-														cellWidth, cellHeight);
+		level = RandomLevelGenerator.generateBossLevel(roomWidth, roomHeight,
+				cellWidth, cellHeight);
 	}
 
 	/**
 	 * Draws the level onto the canvas.
+	 *
 	 * @param gc The object to draw with.
 	 * @param canvas The canvas to draw on.
 	 * @param roomWidth The width of the level.
@@ -394,8 +449,8 @@ public class Game extends Application
 	 * @param cellWidth The width of a cell within the level.
 	 * @param cellHeight The height of a cell within the level.
 	 */
-	private void drawLevel(GraphicsContext gc, int roomWidth, int roomHeight, 
-												int cellWidth, int cellHeight)
+	private void drawLevel(GraphicsContext gc, int roomWidth, int roomHeight,
+			int cellWidth, int cellHeight)
 	{
 		// Draw the top of the walls
 		gc.setFill(new Color(.76863, .41569, .23922, 1));
@@ -412,8 +467,8 @@ public class Game extends Application
 				if(level[x][y] == FLOOR)
 				{
 					gc.setFill(Color.BURLYWOOD);
-					floor.draw(gc, x * cellWidth, y * cellHeight, 
-										cellWidth, cellHeight, 0, 0);
+					floor.draw(gc, x * cellWidth, y * cellHeight, cellWidth,
+							cellHeight, 0, 0);
 				}
 			}
 		}
@@ -455,32 +510,33 @@ public class Game extends Application
 						if(bottom)
 						{
 							// Bottom right corner tile
-							tiles.draw(gc, tileX + tileWidth, tileY, 
-											tileWidth, tileHeight, 4, 1);
-						} 
+							tiles.draw(gc, tileX + tileWidth, tileY, tileWidth,
+									tileHeight, 4, 1);
+						}
 						else if(top)
 						{
 							if(topRight)
 							{
 								// Top right corner tile
-								tiles.draw(gc, tileX + tileWidth, tileY - 
-									tileHeight, tileWidth, tileHeight, 4, 0);
-							} 
+								tiles.draw(gc, tileX + tileWidth,
+										tileY - tileHeight, tileWidth,
+										tileHeight, 4, 0);
+							}
 							else
 							{
 								// Top left corner tile
-								tiles.draw(gc, tileX, tileY - 
-									tileHeight, tileWidth, tileHeight, 3, 0);
+								tiles.draw(gc, tileX, tileY - tileHeight,
+										tileWidth, tileHeight, 3, 0);
 							}
 							// Right tile
-							tiles.draw(gc, tileX + tileWidth, tileY, 
-											tileWidth, tileHeight, 0, 1);
-						} 
+							tiles.draw(gc, tileX + tileWidth, tileY, tileWidth,
+									tileHeight, 0, 1);
+						}
 						else
 						{
 							// Right tile
-							tiles.draw(gc, tileX + tileWidth, tileY, 
-											tileWidth, tileHeight, 0, 1);
+							tiles.draw(gc, tileX + tileWidth, tileY, tileWidth,
+									tileHeight, 0, 1);
 						}
 					}
 					if(left)
@@ -488,27 +544,28 @@ public class Game extends Application
 						if(bottom)
 						{
 							// Bottom left corner tile
-							tiles.draw(gc, tileX - tileWidth, tileY, 
-											tileWidth, tileHeight, 3, 1);
-						} 
+							tiles.draw(gc, tileX - tileWidth, tileY, tileWidth,
+									tileHeight, 3, 1);
+						}
 						else if(top)
 						{
 							if(topLeft)
 							{
 								// Top left corner tile
-								tiles.draw(gc, tileX - tileWidth, tileY - 
-									tileHeight, tileWidth, tileHeight, 3, 0);
-							} 
+								tiles.draw(gc, tileX - tileWidth,
+										tileY - tileHeight, tileWidth,
+										tileHeight, 3, 0);
+							}
 							else
 							{
 								// Top right corner tile
-								tiles.draw(gc, tileX, tileY - tileHeight, 
-												tileWidth, tileHeight, 4, 0);
+								tiles.draw(gc, tileX, tileY - tileHeight,
+										tileWidth, tileHeight, 4, 0);
 							}
 							// Left tile
-							tiles.draw(gc, tileX - tileWidth, tileY, 
-											tileWidth, tileHeight, 2, 1);
-						} 
+							tiles.draw(gc, tileX - tileWidth, tileY, tileWidth,
+									tileHeight, 2, 1);
+						}
 						else
 						{
 							// Because of how these loops traverse the level,
@@ -518,8 +575,8 @@ public class Game extends Application
 							if(!(level[(x - 1) / 2][(y + 1) / 2] == FLOOR))
 							{
 								// Left tile
-								tiles.draw(gc, tileX - tileWidth, tileY, 
-												tileWidth, tileHeight, 2, 1);
+								tiles.draw(gc, tileX - tileWidth, tileY,
+										tileWidth, tileHeight, 2, 1);
 							}
 						}
 					}
@@ -528,20 +585,20 @@ public class Game extends Application
 						if(!topRight)
 						{
 							// Top left tile
-							tiles.draw(gc, tileX, tileY - tileHeight, 
-												tileWidth, tileHeight, 2, 2);
-						} 
+							tiles.draw(gc, tileX, tileY - tileHeight, tileWidth,
+									tileHeight, 2, 2);
+						}
 						else if(!topLeft)
 						{
 							// Top right tile
-							tiles.draw(gc, tileX, tileY - tileHeight, 
-												tileWidth, tileHeight, 0, 2);
-						} 
+							tiles.draw(gc, tileX, tileY - tileHeight, tileWidth,
+									tileHeight, 0, 2);
+						}
 						else
 						{
 							// Top tile
-							tiles.draw(gc, tileX, tileY - tileHeight, 
-												tileWidth, tileHeight, 1, 2);
+							tiles.draw(gc, tileX, tileY - tileHeight, tileWidth,
+									tileHeight, 1, 2);
 						}
 					}
 				}
@@ -566,10 +623,10 @@ public class Game extends Application
 
 					// Get checks to see what type of tile to add
 					boolean bottom = level[x / 2][(y + 1) / 2] != FLOOR;
-					boolean bottomRight = 
-									level[(x + 1) / 2][(y + 1) / 2] != FLOOR;
-					boolean bottomLeft = 
-									level[(x - 1) / 2][(y + 1) / 2] != FLOOR;
+					boolean bottomRight = level[(x + 1) / 2][(y + 1)
+							/ 2] != FLOOR;
+					boolean bottomLeft = level[(x - 1) / 2][(y + 1)
+							/ 2] != FLOOR;
 
 					// Draw depending on the checks above
 					if(bottom)
@@ -577,18 +634,20 @@ public class Game extends Application
 						if(!bottomRight)
 						{
 							// Bottom left tile
-							tiles.draw(gc, tileX, tileY + 1, 
-										tileWidth, tileHeight, 2, 0);
-						} else if(!bottomLeft)
+							tiles.draw(gc, tileX, tileY + 1, tileWidth,
+									tileHeight, 2, 0);
+						}
+						else if(!bottomLeft)
 						{
 							// Bottom right tile
-							tiles.draw(gc, tileX, tileY + 1, 
-										tileWidth, tileHeight, 0, 0);
-						} else
+							tiles.draw(gc, tileX, tileY + 1, tileWidth,
+									tileHeight, 0, 0);
+						}
+						else
 						{
 							// Bottom tile
-							tiles.draw(gc, tileX, tileY + 1, 
-										tileWidth, tileHeight, 1, 0);
+							tiles.draw(gc, tileX, tileY + 1, tileWidth,
+									tileHeight, 1, 0);
 						}
 					}
 				}
@@ -604,14 +663,14 @@ public class Game extends Application
 		double viewX = -(player.getX() - player.getPrevX());
 		double viewY = -(player.getY() - player.getPrevY());
 
-		if(player.getX() > ROOM_WIDTH / (4 * SCALE_X) && 
-				player.getX() < (4 * SCALE_X - 1) * ROOM_WIDTH / (4 * SCALE_X))
+		if(player.getX() > ROOM_WIDTH / (4 * SCALE_X) && player
+				.getX() < (4 * SCALE_X - 1) * ROOM_WIDTH / (4 * SCALE_X))
 		{
 			gc.translate(viewX, 0);
 			viewportX += viewX;
 		}
-		if(player.getY() > ROOM_HEIGHT / (4 * SCALE_Y) && 
-			player.getY() < (4 * SCALE_Y - 1) * ROOM_HEIGHT / (4 * SCALE_Y))
+		if(player.getY() > ROOM_HEIGHT / (4 * SCALE_Y) && player
+				.getY() < (4 * SCALE_Y - 1) * ROOM_HEIGHT / (4 * SCALE_Y))
 		{
 			gc.translate(0, viewY);
 			viewportY += viewY;
@@ -634,6 +693,7 @@ public class Game extends Application
 		double playerX = (double) x * CELL_WIDTH + 4;
 		double playerY = (double) y * CELL_HEIGHT + 4;
 		player = new Player(playerX, playerY);
+		player.setPlayer(playerGender);
 		objects.add(player);
 	}
 
@@ -700,7 +760,7 @@ public class Game extends Application
 			double playerY = (double) y * CELL_HEIGHT + 4;
 			player.setX(playerX);
 			player.setY(playerY);
-		} 
+		}
 		else
 		{
 			player.setX(ROOM_WIDTH / 2 - 8);
@@ -736,6 +796,7 @@ public class Game extends Application
 
 	/**
 	 * Draws the UI to the screen.
+	 *
 	 * @param uiGc The graphics object to draw with.
 	 */
 	private void drawUI(GraphicsContext uiGc)
@@ -747,21 +808,21 @@ public class Game extends Application
 
 		// Player health
 		uiGc.setFill(Color.RED);
-		uiGc.fillRect(16, 16, 
+		uiGc.fillRect(16, 16,
 				(player.getHealth() * 128) / player.getMaxHealth(), 32);
 		uiBar.draw(uiGc, 16, 16, uiBar.getCellWidth(), uiBar.getCellHeight());
 		// Player stamina
 		uiGc.setFill(Color.FORESTGREEN);
-		uiGc.fillRect(16, 64, 
+		uiGc.fillRect(16, 64,
 				(player.getStamina() * 128) / player.getMaxStamina(), 32);
 		uiBar.draw(uiGc, 16, 64, uiBar.getCellWidth(), uiBar.getCellHeight());
-		
-		//Draw text showing stairs have spawned
+
+		// Draw text showing stairs have spawned
 		Sprite spawnedStairs = new Sprite("Res/indaStairsSpawned.png", 1);
 		if(stairsCreated)
 		{
-			spawnedStairs.draw(uiGc, 16, 104, spawnedStairs.getCellWidth(), 
-											spawnedStairs.getCellHeight());
+			spawnedStairs.draw(uiGc, 16, 104, spawnedStairs.getCellWidth(),
+					spawnedStairs.getCellHeight());
 		}
 	}
 
@@ -773,7 +834,7 @@ public class Game extends Application
 		int x = r.nextInt(ROOM_WIDTH / CELL_WIDTH);
 		int y = r.nextInt(ROOM_HEIGHT / CELL_HEIGHT);
 		while(!(level[x][y] == RandomLevelGenerator.FLOOR
-				&& (level[x - 1][y] == RandomLevelGenerator.WALL 
+				&& (level[x - 1][y] == RandomLevelGenerator.WALL
 						|| level[x + 1][y] == RandomLevelGenerator.WALL
 						|| level[x][y - 1] == RandomLevelGenerator.WALL)
 				&& level[x][y + 1] != RandomLevelGenerator.WALL))
@@ -786,7 +847,7 @@ public class Game extends Application
 		stairs = new Stairs(stairX, stairY);
 		objects.add(stairs);
 	}
-	
+
 	/**
 	 * Creates the enemies based on the current level.
 	 * @return the amount of enemies created
@@ -794,12 +855,12 @@ public class Game extends Application
 	private int addEnemies()
 	{
 		int cr = currentLevel;
-		
+
 		// These functions were created using polynomial interpolation
 		double amountOfSnails = 1.161 * cr * cr + 11.518 * cr + 2.321;
 		double amountOfSnakes = 0.1786 * cr * cr + 9.464 * cr + 0.3571;
 		double amountOfSpiders = 0.625 * cr * cr + 3.125 * cr + 1.25;
-		
+
 		// Add the enemies depending on the above functions.
 		for(int i = 0; i < (int) amountOfSnails; i++)
 		{
@@ -815,9 +876,8 @@ public class Game extends Application
 		{
 			addSpider();
 		}
-		
-		return (int) amountOfSnails + 
-				(int) amountOfSnakes + 
-				(int) amountOfSpiders;
+
+		return (int) amountOfSnails + (int) amountOfSnakes
+				+ (int) amountOfSpiders;
 	}
 }
