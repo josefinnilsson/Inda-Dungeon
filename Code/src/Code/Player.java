@@ -44,6 +44,8 @@ public class Player extends LifeForm
 	private Alarm staminaRegenAlarm;
 	private Alarm attackAlarm;
 	private Alarm immortalTimer;
+	private Alarm speedAlarm;
+	private Alarm damageAlarm;
 
 	private double stamina;
 	private double maxStamina;
@@ -82,6 +84,8 @@ public class Player extends LifeForm
 		staminaRegenAlarm = new Alarm();
 
 		immortalTimer = new Alarm(30);
+		speedAlarm = new Alarm();
+		damageAlarm = new Alarm();
 
 	}
 
@@ -115,6 +119,8 @@ public class Player extends LifeForm
 		attackAlarm.tick();
 		staminaRegenAlarm.tick();
 		immortalTimer.tick();
+		speedAlarm.tick();
+		damageAlarm.tick();
 
 		// Choose what to do depending on which state the player is in.
 		switch(state)
@@ -160,6 +166,15 @@ public class Player extends LifeForm
 				break;
 		}
 
+		if(speedAlarm.done())
+		{
+			speed = 1;
+		}
+		if(damageAlarm.done())
+		{
+			damage = 25;
+		}
+
 		checkEnemyCollision();
 		regenerateStamina();
 	}
@@ -171,14 +186,14 @@ public class Player extends LifeForm
 	private void getInput()
 	{
 		// Keys
-		rightKey = (Input.keyPressed(KeyCode.D) || 
-					Input.keyPressed(KeyCode.RIGHT)) ? 1 : 0;
-		leftKey = (Input.keyPressed(KeyCode.A) || 
-					Input.keyPressed(KeyCode.LEFT)) ? 1 : 0;
-		upKey = (Input.keyPressed(KeyCode.W) || 
-					Input.keyPressed(KeyCode.UP)) ? 1 : 0;
-		downKey = (Input.keyPressed(KeyCode.S) || 
-					Input.keyPressed(KeyCode.DOWN)) ? 1 : 0;
+		rightKey = (Input.keyPressed(KeyCode.D)
+				|| Input.keyPressed(KeyCode.RIGHT)) ? 1 : 0;
+		leftKey = (Input.keyPressed(KeyCode.A)
+				|| Input.keyPressed(KeyCode.LEFT)) ? 1 : 0;
+		upKey = (Input.keyPressed(KeyCode.W) || Input.keyPressed(KeyCode.UP))
+				? 1 : 0;
+		downKey = (Input.keyPressed(KeyCode.S)
+				|| Input.keyPressed(KeyCode.DOWN)) ? 1 : 0;
 
 		// Mouse buttons
 		leftMouse = Input.mousePressed(MouseButton.PRIMARY);
@@ -204,11 +219,11 @@ public class Player extends LifeForm
 		if(direction > -67.5 && direction <= 67.5)
 		{
 			xAxis = 1;
-		} 
+		}
 		else if(direction < -112.5 || direction >= 112.5)
 		{
 			xAxis = -1;
-		} 
+		}
 		else
 		{
 			xAxis = 0;
@@ -217,11 +232,11 @@ public class Player extends LifeForm
 		if(direction > -157.5 && direction <= -22.5)
 		{
 			yAxis = -1;
-		} 
+		}
 		else if(direction > 22.5 && direction <= 157.5)
 		{
 			yAxis = 1;
-		} 
+		}
 		else
 		{
 			yAxis = 0;
@@ -238,19 +253,19 @@ public class Player extends LifeForm
 			if(malePlayer)
 			{
 				setImage("Res/Indo.png", 8);
-			} 
+			}
 			else
 			{
 				setImage("Res/Inda.png", 8);
 			}
 			flippedRight = true;
-		} 
+		}
 		else if(hspd < 0 && flippedRight)
 		{
 			if(malePlayer)
 			{
 				setImage("Res/IndoFlipped.png", 8);
-			} 
+			}
 			else
 			{
 				setImage("Res/IndaFlipped.png", 8);
@@ -277,7 +292,7 @@ public class Player extends LifeForm
 
 			// Switch sprite's direction depending on speed
 			setSpriteDirection();
-		} 
+		}
 		else
 		{
 			if(dashAlarm.done())
@@ -305,7 +320,7 @@ public class Player extends LifeForm
 				if(flippedRight)
 				{
 					setImage("Res/IndoAttack.png", 10);
-				} 
+				}
 				else
 				{
 					setImage("Res/IndoAttackFlipped.png", 10);
@@ -316,7 +331,7 @@ public class Player extends LifeForm
 				if(flippedRight)
 				{
 					setImage("Res/IndaAttack.png", 10);
-				} 
+				}
 				else
 				{
 					setImage("Res/IndaAttackFlipped.png", 10);
@@ -327,7 +342,7 @@ public class Player extends LifeForm
 			// of the attack.
 			imageSpeed = ((double) 10) / ((double) attackAlarm.currentTime());
 			imageIndex = 0;
-		} 
+		}
 		else
 		{
 			// Time to move again
@@ -349,10 +364,18 @@ public class Player extends LifeForm
 				// Set attack coordinates
 				double damageX = x + width / 2 + xAxis * 24;
 				double damageY = y + height / 2 + yAxis * 24;
-				Damage dmg = new Damage(damageX - 16, damageY - 16, 
-														this, damage);
+				Damage dmg = new Damage(damageX - 16, damageY - 16, this,
+						damage);
 				Game.objectWaitingRoom.add(dmg);
 				attacked = true;
+
+				// Create a slash for the attack
+				int slashDir = (int) (MathMethods.getDirectionBetweenPoints(0,
+						0, xAxis, yAxis) / 45);
+
+				PlayerAttackSlash slash = new PlayerAttackSlash(x - 32, y - 32,
+						slashDir);
+				Game.objectWaitingRoom.add(slash);
 			}
 		}
 
@@ -373,18 +396,18 @@ public class Player extends LifeForm
 			if(flippedRight)
 			{
 				setImage("Res/Indo.png", 8);
-			} 
+			}
 			else
 			{
 				setImage("Res/IndoFlipped.png", 8);
 			}
-		} 
+		}
 		else
 		{
 			if(flippedRight)
 			{
 				setImage("Res/Inda.png", 8);
-			} 
+			}
 			else
 			{
 				setImage("Res/IndaFlipped.png", 8);
@@ -439,12 +462,12 @@ public class Player extends LifeForm
 				imageIndex = (imageIndex + 1) % imageNumber;
 				image.animate(imageIndex);
 				incrementImage--;
-			} 
+			}
 			else
 			{
 				incrementImage += imageSpeed;
 			}
-		} 
+		}
 		else
 		{
 			image.animate(imageIndex);
@@ -491,6 +514,32 @@ public class Player extends LifeForm
 			}
 		}
 	}
+	
+	/**
+	 * Gives the player a speed boost for a while.
+	 * @param speed The new speed.
+	 */
+	public void speedBoost(double speed)
+	{
+		this.speed = speed;
+		speedAlarm.setTime(180);
+	}
 
+	/**
+	 * Gives the player a damage boost for a while.
+	 * @param damage The new damage.
+	 */
+	public void damageBoost(int damage)
+	{
+		this.damage = damage;
+		damageAlarm.setTime(360);
+	}
 
+	/**
+	 * Makes the player invincible for 10 seconds.
+	 */
+	public void setTemporaryInvincible()
+	{
+		immortalTimer.setTime(600);
+	}
 }

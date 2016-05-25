@@ -6,9 +6,6 @@ package Code;
  */
 public class Enemy extends LifeForm
 {
-
-	private int xAxis;
-	private int yAxis;
 	protected boolean flippedRight;
 
 	/**
@@ -25,14 +22,8 @@ public class Enemy extends LifeForm
 		damage = 0;
 		flippedRight = true;
 		health = 100;
-		xAxis = 0;
-		yAxis = 0;
 		speed = 1;
 		imageSpeed = .2;
-	}
-
-	public void update()
-	{
 	}
 
 }
