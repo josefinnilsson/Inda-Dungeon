@@ -48,6 +48,7 @@ public class Game extends Application
 
 	// The different parts of the game window
 	private Pane introRoot;
+	private Pane menuRoot;
 	private StackPane appRoot;
 
 	private Pane gameRoot;
@@ -83,7 +84,8 @@ public class Game extends Application
 	private int amountOfEnemies;
 	private boolean stairsCreated;
 
-	private boolean playerGender;
+	public static boolean playerGender;
+	private boolean chosenGender;
 
 	public static void main(String[] args)
 	{
@@ -97,13 +99,16 @@ public class Game extends Application
 		objectsID = 0;
 		r = new Random();
 
+		menuRoot = new Pane();
+		chosenGender = false;
+		
 		introRoot = new Pane();
 
 		// Create an intro for the game.
 		Intro intro = new Intro();
 
 		// Create the scene for the intro.
-		Scene scene = new Scene(introRoot, ROOM_WIDTH / 2, ROOM_HEIGHT / 2);
+		Scene scene = new Scene(menuRoot, ROOM_WIDTH / 2, ROOM_HEIGHT / 2);
 
 		// Initialize the window.
 		primaryStage.setResizable(false);
@@ -111,16 +116,19 @@ public class Game extends Application
 		primaryStage.setTitle("Inda Dungeon");
 		primaryStage.show();
 
-		introRoot.setStyle(
+		//The main menu
+		menuRoot.setStyle(
 				"-fx-background-image: url(/Code/indaBackground.png)");
 
+		//Button for boy
 		Button boyButton = new Button("Boy");
 		boyButton.setOnAction(e ->
 		{
 			playerGender = true;
-			initiateLevelContent(primaryStage);
+			chosenGender = true;
+			primaryStage.setScene(new Scene(introRoot, ROOM_WIDTH / 2, ROOM_HEIGHT / 2));
 		});
-		introRoot.getChildren().add(boyButton);
+		menuRoot.getChildren().add(boyButton);
 		boyButton.setLayoutX(160);
 		boyButton.setLayoutY(220);
 		boyButton.setScaleX(2);
@@ -128,13 +136,15 @@ public class Game extends Application
 		boyButton.setStyle(
 				"-fx-font: 16 kefa; -fx-base: #522b25;-fx-text-fill: #000000");
 
+		//Button for girl
 		Button girlButton = new Button("Girl");
 		girlButton.setOnAction(e ->
 		{
 			playerGender = false;
-			initiateLevelContent(primaryStage);
+			chosenGender = true;
+			primaryStage.setScene(new Scene(introRoot, ROOM_WIDTH / 2, ROOM_HEIGHT / 2));
 		});
-		introRoot.getChildren().add(girlButton);
+		menuRoot.getChildren().add(girlButton);
 		girlButton.setLayoutX(310);
 		girlButton.setLayoutY(220);
 		girlButton.setScaleX(2);
@@ -144,12 +154,12 @@ public class Game extends Application
 
 		Text welcome = new Text("Welcome to the Dungeon");
 		welcome.setStyle("-fx-font: 45 kefa");
-		introRoot.getChildren().add(welcome);
+		menuRoot.getChildren().add(welcome);
 		welcome.setLayoutX(6);
 		welcome.setLayoutY(120);
 		Text welcome2 = new Text("Choose your character to start your journey");
 		welcome2.setStyle("-fx-font: 25 kefa");
-		introRoot.getChildren().add(welcome2);
+		menuRoot.getChildren().add(welcome2);
 		welcome2.setLayoutX(11);
 		welcome2.setLayoutY(150);
 
@@ -168,7 +178,10 @@ public class Game extends Application
 					// Start the game
 					initiateLevelContent(primaryStage);
 				}
-				intro.render();
+				if(chosenGender)
+				{
+					intro.render();
+				}
 			}
 		};
 		timer.start();

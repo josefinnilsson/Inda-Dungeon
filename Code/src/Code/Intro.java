@@ -28,6 +28,7 @@ public class Intro
 	private boolean talking;
 	private boolean showTalk;
 	private boolean enteringGame;
+	private boolean genderSet;
 
 	/**
 	 * Initializes the Intro.
@@ -35,6 +36,7 @@ public class Intro
 	public Intro()
 	{
 		finished = false;
+		genderSet = false;
 
 		// The canvas to draw the intro on
 		canvas = new Canvas(Game.ROOM_WIDTH, Game.ROOM_HEIGHT);
@@ -42,8 +44,6 @@ public class Intro
 
 		// Create the player object that will be in the intro
 		player = new Player(-64, Game.ROOM_HEIGHT / 4 - 16);
-		player.setPlayer(true); // Temporary, should be replaced with what
-								// The user chooses
 
 		// Images used
 		background = new Sprite("Res/indaBackgroundIntro.png", 1);
@@ -69,6 +69,12 @@ public class Intro
 	 */
 	public void update()
 	{
+		if(!genderSet)
+		{
+			genderSet = true;
+			player.setPlayer(Game.playerGender);
+		}
+		
 		// Count down the alarms
 		talkAlarm.tick();
 		enterGameAlarm.tick();
@@ -125,15 +131,14 @@ public class Intro
 	{
 		update();
 
-		//Draw the background
+		// Draw the background
 		background.draw(gc, 0, 0, background.getCellWidth(),
 				background.getCellHeight());
-		
-		//Draw the player
+
+		// Draw the player
 		player.render(gc);
 
-		
-		//Draw the text bubble
+		// Draw the text bubble
 		if(talking && showTalk)
 		{
 			textBubble.draw(gc, 0, 0, textBubble.getCellWidth(),
