@@ -9,6 +9,7 @@ import javax.sound.sampled.*;
 public class Sound
 {
     private Clip clip;
+    public static Sound sound = new Sound("BitSong.wav");
 
     public Sound(String fileName) {
         try {
